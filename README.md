@@ -4,7 +4,7 @@
 
 ### Powered by Shodan - Supported by Binary Edge & WhoisXMLAPI
 
-writeup -
+writeup - https://medium.com/@woj_ciech/hack-the-planet-with-%EA%93%98amerka-gui-ultimate-internet-of-things-industrial-control-systems-5ff7d9686b29   
 Demo - https://woj-ciech.github.io/kamerka-demo/kamerka.html
 
 ## Requirements
