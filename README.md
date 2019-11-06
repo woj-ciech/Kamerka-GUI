@@ -128,6 +128,7 @@ I really care about feedback from you. If you have any idea how to make tool bet
 It's also possible to upload and host the tool online, if you want to help, dm me.
 
 # TODO
+- Live monitoring
 - Offensive capabilities
 - More devices
 - More sources (Instagram?, Youtube?)
