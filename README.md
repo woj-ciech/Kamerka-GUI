@@ -138,6 +138,7 @@ It's also possible to upload and host the tool online, if you want to help, dm m
 - Your ideas
 
 # Remarks
+- Tested only on Kali Linux 2019.3
 - It uses default sqlite Django database
 - Buttons in Intel tab for device do not show the progress bars, you have a results in max couple of seconds.
 - Own database button does not work, it shows that it's possible to load your own geolocation database. I haven't found better than Shodan's but let me know if you have access to one.
