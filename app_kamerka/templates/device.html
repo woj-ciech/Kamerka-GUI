@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+{% block page_content %}
+    <head>
+        <!-- META SECTION -->
+        <title>{{ device.ip }} - ꓘamerka</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!-- END META SECTION -->
+
+        <!-- CSS INCLUDE -->
+
+        <link rel="stylesheet" type="text/css" id="theme" href="{% static 'css/theme-default.css' %}"/>
+        <!-- EOF CSS INCLUDE -->
+    </head>
+    <body>
+        <!-- START PAGE CONTAINER -->
+        <div class="page-container">
+
+            <!-- START PAGE SIDEBAR -->
+            <div class="page-sidebar">
+                <!-- START X-NAVIGATION -->
+                <ul class="x-navigation">
+                    <li class="xn-logo">
+                        <a href="/">ꓘamerka</a>
+                        <a href="#" class="x-navigation-control"></a>
+                    </li>
+                    <li class="xn-profile">
+
+                        <div class="profile">
+                            <div class="profile-image">
+                            </div>
+                            <div class="profile-data">
+                                                               <p><h3 style="color:white;">Wojciech <br><a href="https://github.com/woj-ciech">Github</a> <br> <a href="https://twitter.com/@the_wojciech">Twitter</a></h3> </p>
+
+                            </div>
+
+                        </div>
+                    </li>
+                    <li class="xn-title">Navigation</li>
+                    <li class="">
+                        <a href="/index"><span class="fa fa-desktop"></span> <span class="xn-text">Dashboard</span></a>
+                    </li>
+                    <li class="">
+                        <a href="/history"><span class="fa fa-files-o"></span> <span class="xn-text">History</span></a>
+                    </li>
+                    <li class="">
+                        <a href="/map"><span class="fa fa-map-marker"></span> <span class="xn-text">Map</span></a>
+                    </li>
+                    <li class="">
+                        <a href="/devices"><span class="fa fa-search"></span> <span class="xn-text">Search</span></a>
+                    </li>
+
+                    <li class="xn-title">Components</li>
+
+                    <li>
+                        <a href="/sources"><span class="fa fa-book"></span> <span class="xn-text">Useful links</span></a>
+                    </li>
+
+
+                </ul>
+                <!-- END X-NAVIGATION -->
+            </div>
+            <!-- END PAGE SIDEBAR -->
+
+            <!-- PAGE CONTENT -->
+            <div class="page-content">
+
+                <!-- START X-NAVIGATION VERTICAL -->
+                <ul class="x-navigation x-navigation-horizontal x-navigation-panel">
+                    <!-- TOGGLE NAVIGATION -->
+
+                   
+                </ul>
+                <!-- START BREADCRUMB -->
+<ul class="breadcrumb">
+
+
+                </ul>
+                <!-- END BREADCRUMB -->
+
+                <!-- PAGE CONTENT WRAPPER -->
+                <div class="page-content-wrap">
+
+                    <!-- START WIDGETS -->
+                 <div class="row">
+                        <div class="col-md-6" style="width:100%">
+                            <!-- START JUSTIFIED TABS -->
+                            <div class="panel panel-default tabs">
+                                <ul class="nav nav-tabs nav-justified">
+                                    <li class="active"><a href="#tab8" data-toggle="tab">Locate</a></li>
+                                    <li><a href="#tab9" data-toggle="tab">Intel</a></li>
+                                    <li><a href="#tab10" data-toggle="tab">Exploit</a></li>
+                                </ul>
+                                <div class="panel-body tab-content">
+                                    <div class="tab-pane active" id="tab8">
+                                        <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title"> {{ device.lat }},{{ device.lon }} - {% for a in device.indicator %}{{ a }} {% endfor %}
+
+</h3>
+                                </div>
+                                <div class="panel-body panel-body-map">
+                                    <div id="google_world_map" style="width: 100%; height: 400px;"></div>
+
+                                    <form id="form1" runat="server">
+    <div>
+
+        &nbsp; Destination:
+        <input type="text" id="txtDestination" placeholder="Find device" style="width: 300px" />
+        <input type="button" value="Find route" class="btn btn-success active" onclick="GetRoute()" />
+
+
+
+
+
+    </div>                            <!-- END GOOGLE WORLD MAP-->
+                                    </form>
+
+
+                                    </div>
+
+                                </div>
+                                        <div class="panel panel-default">
+
+                                <div class="panel-heading ui-draggable-handle">
+                                    <h3 class="panel-title">Shodan scan for nearby devices</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <input type="text" id="nearby_search" placeholder="device:webcam" style="width: 300px" />
+                                    <button type="button" id="nearby" class="btn btn-danger active">Search</button>
+
+
+
+                                                                    <button type="button" id="show_nearby_devices" class="btn btn-danger active">Show</button>
+
+
+                                    <button type="button" id="add_nearby_devices" class="btn btn-danger active">Add</button>
+                                    <progress id="progress-bar3" value="0" max="100" style="display:block; margin-bottom: 1em;"></progress>
+                                    <div id="nearby_devices_result" style="display:none;"></div>
+                                    No. of results: {{ nearby.count }}
+
+                                </div>
+                            </div>
+
+                                                                                <div class="panel panel-default">
+                                <div class="panel-heading ui-draggable-handle">
+                                    <h3 class="panel-title">Tweets</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <button type="button" id="nearby_twitter" class="btn btn-info active" >Scan</button></a>
+
+                                    <button type="button" id="twitter_show" class="btn btn-info active">Show</button></a>
+
+                                                                        <button type="button" id="markers_twitter" class="btn btn-info active">Add</button>
+
+<progress id="progress-bar4" value="0" max="100" style="display:block; margin-bottom: 1em;"></progress>
+                                                                                                         No. of results:   {% if twitter %} {{twitter.count}}{% else %}  {% endif %}
+<div id="twitter_results"></div>
+                                </div>
+                            </div>
+                                        <div class="panel panel-default">
+                                <div class="panel-heading ui-draggable-handle">
+                                    <h3 class="panel-title">Flickr photos</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <button type="button" id="nearby_flickr" class="btn btn-primary active">Scan</button></a>
+                                                                        <button type="button" id="flickr_show" class="btn btn-primary active">Show</button></a>
+
+                                                                        <button type="button" id="markers_flickr" class="btn btn-primary active">Add</button>
+<progress id="progress-bar" value="0" max="100" style="display:block; margin-bottom: 1em;"></progress>
+
+                                    No. of results:   {{ flickr.count }}
+                                    <div id="results"></div>
+
+
+                                </div>
+                            </div>
+                                </div>
+
+
+
+<div class="tab-pane" id="tab9">
+    <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">{{ device.ip }}</h3>
+                                </div>
+                                <div class="panel-body"><center>
+                                        <b>{{ device.hostnames }}<br>
+                                        {{ device.product }}<br>
+                                        {{ device.type }}<br>
+                                        {{ device.org }}<br>
+                                        {{ device.vulns }}<br>
+                                            {{ device.city }}</b><br><br>
+                                        {{ device.data }}<br>
+</center>
+                                    </div>
+                            </div>
+
+<div class="row">
+                        <div class="col-md-4">
+
+                            <!-- START USERS ACTIVITY BLOCK -->
+                            <div class="panel panel-default">
+                                <div class="panel-heading ui-draggable-handle">
+                                    <div class="panel-title-box">
+                                        <h3><a href="https://shodan.io/host/{{device.ip}}">Shodan Scan</a>  </h3>
+                                    </div>
+
+                                </div>
+                                <div class="panel-body padding-0">
+                                    <button type="button" id="shodan_scan" class="btn btn-danger active">Scan</button>
+                                                                        <button type="button" id="shodan_show" class="btn btn-danger active">Display</button>
+
+                                    <progress id="progress-bar2" value="0" max="100" style="display:none; margin-bottom: 1em;"></progress>
+                                    <div id="shodan_results" style="display: none;"></div>
+
+                                </div>
+                            </div>
+                            <!-- END USERS ACTIVITY BLOCK -->
+
+                        </div>
+
+    <div class="col-md-4">
+
+                            <!-- START USERS ACTIVITY BLOCK -->
+                            <div class="panel panel-default">
+                                <div class="panel-heading ui-draggable-handle">
+                                    <div class="panel-title-box">
+                                        <h3><a href="https://app.binaryedge.io/services/risk/score?type=ip&query={{device.ip}}">Binary Edge</a></h3>
+                                    </div>
+
+                                </div>
+                                <div class="panel-body padding-0">
+                                    <button type="button" id="binaryedge_scan" class="btn btn-warning active">Scan</button>
+                                                                        <button type="button" id="binaryedge_show" class="btn btn-warning active">Display</button>
+                                    <div id="binaryedge_results" class="contact-info" style="display: none;"></div>
+                                    <progress id="progress-bar5" value="0" max="100" style="display:none; margin-bottom: 1em;"></progress>
+
+                                </div>
+                            </div>
+                            <!-- END USERS ACTIVITY BLOCK -->
+
+                        </div>
+
+   <div class="col-md-4">
+
+                            <!-- START USERS ACTIVITY BLOCK -->
+                            <div class="panel panel-default">
+                                <div class="panel-heading ui-draggable-handle">
+                                    <div class="panel-title-box">
+                                        <h3>Whois XML API</h3>
+                                    </div>
+
+                                </div>
+                                <div class="panel-body padding-0">
+                                    <button type="button" id="whois_scan" class="btn btn-info active">Scan</button>
+                                                                        <button type="button" id="whois_show" class="btn btn-info    active">Display</button>
+                                    <div id="whois_results" class="contact-info" style="display: none;"></div>
+                                    <progress id="progress-bar6" value="0" max="100" style="display:none; margin-bottom: 1em;"></progress>
+
+                                </div>
+                            </div>
+                            <!-- END USERS ACTIVITY BLOCK -->
+
+                        </div>
+                        </div>
+
+
+
+
+                                    </div>
+                                        <div class="tab-pane" id="tab10">
+                                            Exploit
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END JUSTIFIED TABS -->
+                            <!-- START GOOGLE WORLD MAP -->
+
+                            </div>
+            </div>
+</div>
+            </div>
+        </div>
+
+                            <!-- START DATATABLE EXPORT -->
+
+
+<script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_key }}&callback=myMap&libraries=places"></script>
+
+<script>
+function AddMarker() {
+{% for dev in nearby %}
+       var init_marker = new google.maps.LatLng({{ dev.lat }},{{ dev.lon }});
+    var marker = new google.maps.Marker({
+    map: map,
+    title: 'Coordinates',
+    position: init_marker,
+  });
+  {% endfor %}
+    };
+
+
+
+
+    var source, destination;
+    var directionsDisplay;
+    var directionsService = new google.maps.DirectionsService();
+    google.maps.event.addDomListener(window, 'load', function () {
+var options = { componentRestrictions: { country: '{{ device.country_code}}' } };
+
+        new google.maps.places.Autocomplete(document.getElementById('txtDestination'), options);
+        directionsDisplay = new google.maps.DirectionsRenderer({ 'draggable': true });
+        directionsDisplay.setMap(map);
+        directionsDisplay.setPanel(document.getElementById('dvPanel'));
+
+    });
+
+
+
+    var init_marker = new google.maps.LatLng({{ device.lat }},{{ device.lon }});
+    var mapOptions = {
+        zoom: 13,
+        center: init_marker,
+        durationInTraffic: true
+    };
+    map = new google.maps.Map(document.getElementById('google_world_map'), mapOptions);
+
+var marker = new google.maps.Marker({
+    map: map,
+    title: 'Coordinates',
+    position: init_marker,
+  });
+
+   var bounds = new google.maps.LatLngBounds();
+
+    function GetRoute() {
+    //*********DIRECTIONS AND ROUTE**********************//
+    destination = document.getElementById("txtDestination").value;
+
+    var request = {
+        origin: "{{ device.lat }},{{ device.lon }}",
+        destination: destination,
+        travelMode: google.maps.TravelMode.DRIVING
+    };
+    directionsService.route(request, function (response, status) {
+        if (status == google.maps.DirectionsStatus.OK) {
+            directionsDisplay.setDirections(response);
+        }
+        });
+
+
+    }
+</script>
+
+
+                <!-- END PAGE CONTENT WRAPPER -->
+            <!-- END PAGE CONTENT -->
+        <!-- END PAGE CONTAINER -->
+
+
+        <!-- END MESSAGE BOX-->
+
+
+    <!-- START SCRIPTS -->
+        <!-- START PLUGINS -->
+        <script type="text/javascript" src="{% static 'js/plugins/jquery/jquery.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/plugins/jquery/jquery-ui.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/plugins/bootstrap/bootstrap.min.js' %}"></script>
+        <!-- END PLUGINS -->
+
+        <!-- START THIS PAGE PLUGINS-->
+        <script type='text/javascript' src="{% static 'js/plugins/icheck/icheck.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/plugins/mcustomscrollbar/jquery.mCustomScrollbar.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/plugins/scrolltotop/scrolltopcontrol.js' %}"></script>
+
+        <script type='text/javascript' src="{% static 'js/plugins/bootstrap/bootstrap-datepicker.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/plugins/owl/owl.carousel.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+        <!-- END THIS PAGE PLUGINS-->
+
+<script src="{% static 'js/markerclusterer.js' %}"></script>
+
+                <script type="text/javascript">
+                    var pgrbar3 = $('#progress-bar3');
+
+
+    $('#nearby').on('click', function(){
+    var bla = $('#nearby_search').val();
+        $.ajax({
+        type: "GET",
+        url: "/{{device.id}}/nearby/"+bla,
+        success: function (data) {
+                if (data.task_id != null) {
+                    get_task_info(data.task_id,pgrbar3);
+                }
+            },
+        error: function(xhr, status, error) {
+  alert(xhr.responseText);
+}
+    });
+    });;
+    </script>
+
+                <script>
+                    var marker;
+            $('#markers_flickr').on('click', function(){
+        $.ajax({
+            url: "/get_flickr_coordinates/{{device.id}}",
+            type: "get",
+            success: function(response) {
+
+            $.each(response, function(key, val) {
+            var infowindow = new google.maps.InfoWindow({
+            content: "<div style=width:600px; height:640px><img src="+val.fields.url+" width='600px' height='640'></div>",
+  });
+            var marker = new google.maps.Marker({
+            map: map,
+            icon: "{% static 'images/flickr.png' %}",
+            title: 'Coordinates',
+            position: new google.maps.LatLng(val.fields.lat , val.fields.lon )
+
+  })
+marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+            })
+            }
+        })
+  });
+</script>
+
+        <script>
+var marker;
+            $('#add_nearby_devices').on('click', function(){
+                $.ajax({
+                    url: "/get_nearby_devices_coordinates/{{device.id}}",
+                    type: "get",
+                    success: function(response) {
+            $.each(response, function(key, val) {
+            var infowindow = new google.maps.InfoWindow({
+            content: val.fields.org + " <br> " + val.fields.product + "<br>"+val.fields.ip+"<br>"+val.fields.port
+  });
+
+            var marker = new google.maps.Marker({
+            map: map,
+            title: 'Coordinates',
+            icon:"{% static 'images/shodan.png' %}",
+            position: new google.maps.LatLng(val.fields.lat , val.fields.lon )
+  })
+marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+            })
+            }
+        })
+  });
+        </script>
+<script>
+    var pgrbar4 = $('#progress-bar4');
+
+    $('#nearby_twitter').on('click', function(){
+        $.ajax({
+        type: "GET",
+        url: "/{{device.id}}/twitter/nearby",
+        success: function (data) {
+                if (data.task_id != null) {
+                    get_task_info(data.task_id,pgrbar4);
+                }
+                else if (data.Error){
+                noty({text: data.Error , layout: 'topRight', type: 'error', timeout: 1000});
+                }
+            },
+            error: function (data) {
+                console.log("Something went wrong!");
+            }
+        });
+        return false;
+    });</script>
+
+            <script type="text/javascript">
+    var pgrbar2 = $('#progress-bar2');
+    $('#shodan_scan').on('click', function(){
+        $.ajax({
+        type: "GET",
+        url: "/{{device.id}}/shodan/scan",
+        success: function (data) {
+                if (data.task_id != null) {
+                    get_task_info(data.task_id,pgrbar2);
+                }
+                else if (data.Error){
+                noty({text: data.Error , layout: 'topRight', type: 'error', timeout: 1000});
+                }
+            },
+            error: function (data) {
+                console.log("Something went wrong!");
+            }
+        });
+        return false;
+    });
+    var pgrbar5 = $('#progress-bar5');
+
+$('#binaryedge_scan').on('click', function(){
+       $.ajax({
+        type: "GET",
+        url: "/get_binaryedge_score/{{device.id}}",
+        success: function (data) {
+                if (data.task_id != null) {
+                    get_task_info(data.task_id,pgrbar5);
+                }
+                else if (data.Error){
+                noty({text: data.Error , layout: 'topRight', type: 'error', timeout: 1000});
+                }
+            },
+            error: function (data) {
+                console.log("Something went wrong!");
+            }
+        });
+        return false;
+    });
+        var pgrbar6 = $('#progress-bar6');
+
+$('#whois_scan').on('click', function(){
+       $.ajax({
+        type: "GET",
+        url: "/whois/{{device.id}}",
+        success: function (data) {
+                if (data.task_id != null) {
+                    get_task_info(data.task_id,pgrbar6);
+                }
+                else if (data.Error){
+                noty({text: data.Error , layout: 'topRight', type: 'error', timeout: 1000});
+                }
+            },
+            error: function (data) {
+                console.log("Something went wrong!");
+            }
+        });
+        return false;
+    });
+
+
+$('#whois_show').on('click', function(){
+var x = document.getElementById("whois_results");
+if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  } if(x.innerHTML == ""){
+        $.ajax({
+            url: "/get_whois/{{device.id}}",
+            type: "get",
+            success: function(response) {
+           if (response.length==0) {
+                            noty({text: "No records" , layout: 'topRight', type: 'error', timeout: 1000});
+}
+            else {
+            $.each(response, function(key, val) {
+
+              $.each(val.fields, function(fieldname, field) {
+                 // response is form in html format
+                 if (fieldname!="device"){
+              $("#whois_results").append("<p><b>" + fieldname + ' </b><br> ' + field +"</p>");
+}
+            });
+
+              }
+              )
+            }}
+        })
+        }
+  });
+
+
+$('#binaryedge_show').on('click', function() {
+            var x = document.getElementById("binaryedge_results");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+            if (x.innerHTML == "") {
+                $.ajax({
+                    url: "/get_binaryedge_score_results/{{device.id}}",
+                    type: "get",
+                    success: function(response) {
+                        $.each(response, function(key, val) {
+                            $("#binaryedge_results").append("<p><b>" + "Score" + ' </b><br> ' + val.fields.score + " </p>");
+
+                            $.each(val.fields, function(fieldname, field) {
+                                if (fieldname == "device") {
+                                    {}
+                                } else if (fieldname == 'grades') {
+                                    var grades = JSON.parse(field);
+                                    for (var key in grades) {
+                                        // check if the property/key is defined in the object itself, not in parent
+                                        if (grades.hasOwnProperty(key)) {
+                            $("#binaryedge_results").append("<p><b>" + key + ' </b><br> ' + grades[key] + " </p>");
+}
+                                    }
+                                } else if (fieldname == "cve") {
+                                var cve = JSON.parse(field);
+
+                                    for (var key in cve) {
+
+                                        // check if the property/key is defined in the object itself, not in parent
+                                        if (cve.hasOwnProperty(key)) {
+                                            $("#binaryedge_results").append("<p><b><h3>" + key + '</h3> </b> </p>')
+                                            for (var cc in cve[key]){
+                                             if (cve[key].hasOwnProperty(cc)) {
+                            $("#binaryedge_results").append("<p><b>" + cve[key][cc].cve + ' </b><br> ' + cve[key][cc].cvss + " </p>");
+                                             }
+}
+                                        }
+                                        }
+                                    }
+
+
+                                })
+
+                            })
+
+                        }})
+                    }
+                })
+
+var frm = $('#generate-user-form');
+    var pgrbar = $('#progress-bar');
+    $('#nearby_flickr').on('click', function(){
+        $.ajax({
+        type: "GET",
+        url: "/{{device.id}}/flickr/nearby",
+        success: function (data) {
+                if (data.task_id != null) {
+                    get_task_info(data.task_id,pgrbar);
+                }
+                else if (data.Error){
+                noty({text: data.Error , layout: 'topRight', type: 'error', timeout: 1000});
+                }
+            },
+            error: function (data) {
+                console.log("Something went wrong!");
+            }
+        });
+        return false;
+    });
+
+function get_task_info(task_id,pgrbar) {
+        $.ajax({
+            type: 'get',
+            url: '/get-task-info/',
+            data: {'task_id': task_id},
+            success: function (data) {
+                frm.html('');
+                if (data.state == 'PENDING') {
+                    frm.html('Please wait...');
+                }
+                else if (data.state == 'PROGRESS') {
+                    pgrbar.css('display', 'block');
+                    pgrbar.val(data.result.percent);
+                }
+                else if (data.state == 'SUCCESS') {
+                                    pgrbar.css('display', 'none');
+}
+                if (data.state != 'SUCCESS') {
+                    setTimeout(function () {
+                        get_task_info(task_id, pgrbar)
+                    }, 100);
+
+                }
+            },
+            error: function (data) {
+                frm.html("Something went wrong!");
+            }
+        });
+    }
+
+$('#twitter_show').on('click', function(){
+var x = document.getElementById("twitter_results");
+if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  } if(x.innerHTML == ""){
+        $.ajax({
+            url: "/{{device.id}}/twitter/show",
+            type: "get",
+            success: function(response) {
+            if (response.length==0) {
+                            noty({text: "No records" , layout: 'topRight', type: 'error', timeout: 1000});
+}
+            else {
+            $.each(response, function(key, val) {
+              $.each(val.fields, function(fieldname, field) {
+                 // response is form in html format
+                 if (fieldname=="device"){ {} }
+                 else {
+                 $("#twitter_results").append("<p><b>" + fieldname + ' </b><br> ' + field + " </p>");
+}
+            }  );$("#twitter_results").append('------------------');
+
+              }
+              )
+            }}
+        })
+        }
+  });
+
+
+$('#flickr_show').on('click', function(){
+var x = document.getElementById("results");
+if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  } if(x.innerHTML == ""){
+        $.ajax({
+            url: "/get_flickr_results/{{device.id}}",
+            type: "get",
+            success: function(response) {
+            $.each(response, function(key, val) {
+              $.each(val.fields, function(fieldname, field) {
+                 // response is form in html format
+                 if (fieldname=="device"){ {} }
+                 else {
+                 $("#results").append("<p><b>" + fieldname + ' </b><br> ' + field + " </p>");
+}
+            }  );$("#results").append('------------------');
+
+              }
+              )
+            }
+        })
+        }
+  });
+
+$('#show_nearby_devices').on('click', function(){
+var x = document.getElementById("nearby_devices_result");
+if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  } if(x.innerHTML == ""){
+        $.ajax({
+            url: "/get_nearby_devices/{{device.id}}",
+            type: "get",
+            success: function(response) {
+            $.each(response, function(key, val) {
+        $.each(val.fields, function(fieldname, field) {
+                 // response is form in html format
+                 if (fieldname=="device"){ {} }
+                 else{
+            $("#nearby_devices_result").append("<p><b>" + fieldname + ' </b><br> ' + field + " </p>");
+}
+})
+                          $("#nearby_devices_result").append("---------");
+              }
+
+
+              )
+            }
+        })
+    }
+
+});
+
+$('#shodan_show').on('click', function(){
+var x = document.getElementById("shodan_results");
+if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  } if(x.innerHTML == ""){
+        $.ajax({
+            url: "/get_shodan_scan_results/{{device.id}}",
+            type: "get",
+            success: function(response) {
+            $.each(response, function(key, val) {
+                 // response is form in html format
+             $("#shodan_results").append("<p><b>" + val.fields.ports + ' </b><br> ' + val.fields.products + " </p>"+' ' + val.fields.module +"</p>");
+
+
+              }
+              )
+            }
+        })
+    }
+
+});
+
+</script>
+
+        <!-- START TEMPLATE -->
+
+            <script type='text/javascript' src="{% static 'js/plugins/noty/jquery.noty.js' %}"></script>
+            <script type='text/javascript' src="{% static 'js/plugins/noty/themes/default.js' %}"></script>
+            <script type='text/javascript' src="{% static 'js/plugins/noty/layouts/topRight.js' %}"></script>
+
+            <script type='text/javascript' src='js/plugins/noty/themes/default.js'></script>
+        <script type="text/javascript" src="{% static 'js/settings.js' %}"></script>
+
+        <script type="text/javascript" src="{% static 'js/plugins.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/actions.js' %}"></script>
+
+        <script type="text/javascript" src="{% static 'js/index_charts.js' %}"></script>
+        <!-- END TEMPLATE -->
+
+
+   <!-- END SCRIPTS -->
+    </body>
+
+</html>
+
+{% endblock %}
+
+
+
+
+

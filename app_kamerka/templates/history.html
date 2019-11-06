@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+{% block page_content %}
+    <head>
+        <!-- META SECTION -->
+        <title>History - ꓘamerka</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!-- END META SECTION -->
+
+        <!-- CSS INCLUDE -->
+
+        <link rel="stylesheet" type="text/css" id="theme" href="{% static 'css/theme-default.css' %}"/>
+        <!-- EOF CSS INCLUDE -->
+    </head>
+    <body>
+        <!-- START PAGE CONTAINER -->
+        <div class="page-container">
+
+            <!-- START PAGE SIDEBAR -->
+            <div class="page-sidebar">
+                <!-- START X-NAVIGATION -->
+                <ul class="x-navigation">
+                    <li class="xn-logo">
+                        <a href="/">ꓘamerka</a>
+                        <a href="#" class="x-navigation-control"></a>
+                    </li>
+                    <li class="xn-profile">
+
+                        <div class="profile">
+                            <div class="profile-image">
+                            </div>
+                            <div class="profile-data">
+                                                              <p><h3 style="color:white;">Wojciech <br><a href="https://github.com/woj-ciech">Github</a> <br> <a href="https://twitter.com/@the_wojciech">Twitter</a></h3> </p>
+
+                            </div>
+
+                        </div>
+                    </li>
+                    <li class="xn-title">Navigation</li>
+                    <li class="">
+                        <a href="index"><span class="fa fa-desktop"></span> <span class="xn-text">Dashboard</span></a>
+                    </li>
+                    <li class="">
+                        <a href="history"><span class="fa fa-files-o"></span> <span class="xn-text">History</span></a>
+                    </li>
+                    <li class="">
+                        <a href="map"><span class="fa fa-map-marker"></span> <span class="xn-text">Map</span></a>
+                    </li>
+                    <li class="">
+                        <a href="devices"><span class="fa fa-search"></span> <span class="xn-text">Search</span></a>
+                    </li>
+
+                    <li class="xn-title">Components</li>
+
+                    <li>
+                        <a href="sources"><span class="fa fa-book"></span> <span class="xn-text">Useful links</span></a>
+                    </li>
+
+
+                </ul>
+                <!-- END X-NAVIGATION -->
+            </div>
+            <!-- END PAGE SIDEBAR -->
+
+            <!-- PAGE CONTENT -->
+            <div class="page-content">
+
+                <!-- START X-NAVIGATION VERTICAL -->
+                <ul class="x-navigation x-navigation-horizontal x-navigation-panel">
+                    <!-- TOGGLE NAVIGATION -->
+
+
+                    <!-- END TASKS -->
+                </ul>
+                <!-- START BREADCRUMB -->
+
+                <!-- END BREADCRUMB -->
+
+                <!-- PAGE CONTENT WRAPPER -->
+                <div class="page-content-wrap">
+
+                    <!-- START WIDGETS -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default tabs">
+
+                                <div class="panel-body tab-content">
+                                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Search history</h3>
+
+
+                                </div>
+                                <div class="panel-body">
+                                    <table id="customers2" class="table datatable">
+                                        <thead>
+                                            <tr>
+                                                <th>Country/Coordinates</th>
+                                                <th>Devices</th>
+
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            {% for search in history %}
+
+                                            <tr>
+                                                <td><a href="{% url 'results' id=search.id %}">{{ search.country }} {{ search.coordinates }}</a>
+</td>
+                                                <td>{% for i in search.ics %} {{ i }} {% endfor %} {% for i in search.coordinates_search %} {{ i }} {% endfor %}</td>
+                                            </tr>
+
+                                        {% endfor %}
+
+                                        </tbody>
+                                    </table>
+</div>
+
+
+                                </div>
+
+                </div>
+
+                <!-- END PAGE CONTENT WRAPPER -->
+            </div>
+            <!-- END PAGE CONTENT -->
+        </div>
+        <!-- END PAGE CONTAINER -->
+
+<script src="{% static 'js/d3.wordcloud.js' %}" charset="UTF-8"></script>
+                <script src="{% static 'js/d3.layout.cloud.js' %}" charset="UTF-8"></script>
+
+                <script type="text/javascript" src="{% static 'js/plugins/jquery/jquery.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/plugins/jquery/jquery-ui.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/plugins/bootstrap/bootstrap.min.js' %}"></script>
+        <!-- END PLUGINS -->
+
+        <!-- START THIS PAGE PLUGINS-->
+        <script type='text/javascript' src="{% static 'js/plugins/icheck/icheck.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/plugins/mcustomscrollbar/jquery.mCustomScrollbar.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/plugins/scrolltotop/scrolltopcontrol.js' %}"></script>
+                <script type="text/javascript" src="{% static 'js/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/plugins/owl/owl.carousel.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/plugins/moment.min.js' %}"></script>
+        <!-- END THIS PAGE PLUGINS-->
+
+        <!-- START TEMPLATE -->
+        <script type="text/javascript" src="{% static 'js/settings.js' %}"></script>
+
+        <script type="text/javascript" src="{% static 'js/plugins.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/actions.js' %}"></script>
+
+        <!-- END TEMPLATE -->
+    <!-- END SCRIPTS -->
+    </body>
+</html>
+
+{% endblock %}
+
+
+
+
+

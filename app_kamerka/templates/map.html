@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+{% block page_content %}
+    <head>
+        <!-- META SECTION -->
+        <title>Map - ꓘamerka</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!-- END META SECTION -->
+
+        <!-- CSS INCLUDE -->
+        <script src="{% static 'js/d3.js' %}"></script>
+        <script src="{% static 'js/d3.layout.cloud.js' %}" charset="UTF-8"></script>
+        <script src="{% static 'js/d3.wordcloud.js' %}" charset="UTF-8"></script>
+        <link rel="stylesheet" type="text/css" id="theme" href="{% static 'css/theme-default.css' %}"/>
+        <!-- EOF CSS INCLUDE -->
+    </head>
+    <body>
+        <!-- START PAGE CONTAINER -->
+        <div class="page-container">
+
+            <!-- START PAGE SIDEBAR -->
+            <div class="page-sidebar">
+                <!-- START X-NAVIGATION -->
+                <ul class="x-navigation">
+                    <li class="xn-logo">
+                        <a href="/">ꓘamerka</a>
+                        <a href="#" class="x-navigation-control"></a>
+                    </li>
+                    <li class="xn-profile">
+
+                        <div class="profile">
+                            <div class="profile-image">
+                            </div>
+                            <div class="profile-data">
+                                                               <p><h3 style="color:white;">Wojciech <br><a href="https://github.com/woj-ciech">Github</a> <br> <a href="https://twitter.com/@the_wojciech">Twitter</a></h3> </p>
+
+                            </div>
+
+                        </div>
+                    </li>
+                    <li class="xn-title">Navigation</li>
+                    <li class="">
+                        <a href="index"><span class="fa fa-desktop"></span> <span class="xn-text">Dashboard</span></a>
+                    </li>
+                    <li class="">
+                        <a href="history"><span class="fa fa-files-o"></span> <span class="xn-text">History</span></a>
+                    </li>
+                    <li class="">
+                        <a href="map"><span class="fa fa-map-marker"></span> <span class="xn-text">Map</span></a>
+                    </li>
+                    <li class="">
+                        <a href="devices"><span class="fa fa-search"></span> <span class="xn-text">Search</span></a>
+                    </li>
+
+                    <li class="xn-title">Components</li>
+
+                    <li>
+                        <a href="sources"><span class="fa fa-book"></span> <span class="xn-text">Useful links</span></a>
+                    </li>
+
+
+                </ul>
+                <!-- END X-NAVIGATION -->
+            </div>
+            <!-- END PAGE SIDEBAR -->
+
+            <!-- PAGE CONTENT -->
+            <div class="page-content">
+
+                <!-- START X-NAVIGATION VERTICAL -->
+                <ul class="x-navigation x-navigation-horizontal x-navigation-panel">
+
+                    <!-- END TASKS -->
+                </ul>
+                <!-- START BREADCRUMB -->
+<ul class="breadcrumb">
+
+
+                </ul>
+                <!-- END BREADCRUMB -->
+
+                <!-- PAGE CONTENT WRAPPER -->
+                <!-- END BREADCRUMB -->
+
+                <!-- PAGE CONTENT WRAPPER -->
+                <div class="page-content-wrap">
+
+                    <!-- START WIDGETS -->
+                    <div class="row">
+                       <div class="panel panel-default">
+                                <div class="panel-heading ui-draggable-handle">
+                                    <h3 class="panel-title">Google World Map</h3>
+                                </div>
+                                <div class="panel-body panel-body-map">
+                                    <div id="google_world_map" style="width: 100%; height: 600px;">
+                                        Loading...
+                                    </div>
+                                </div>
+                       </div>
+                </div>
+
+                <!-- END PAGE CONTENT WRAPPER -->
+            </div>
+            </div>
+        </div>
+
+            <!-- END PAGE CONTENT -->
+        <!-- END PAGE CONTAINER -->
+
+    <!-- START SCRIPTS -->
+        <!-- START PLUGINS -->
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_key }}&callback=myMap&libraries=places" type="text/javascript"></script>
+         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="{% static 'js/markerclusterer.js' %}"></script>
+
+<script type="text/javascript">
+var marker;
+var gm_map;
+var markerArray = [];
+{% for device in devices %}
+    {% if forloop.first %}
+    var mumbai = new google.maps.LatLng({{ device.lat }},{{ device.lon }});
+    {% endif %}
+    {% endfor %}
+var infoWindow = new google.maps.InfoWindow();
+function initialize() {
+    var marker, i;
+    var clusterMarkers = [
+              {% for device in devices %}
+
+            marker = new google.maps.Marker({
+            position: new google.maps.LatLng({{device.lat}},{{device.lon}}),
+            map: gm_map,
+            title: "<a href=/results/{{device.search_id}}/{{device.id}}/{{device.ip}}> {{device.type}} - {{device.ip}}</a>",
+            {% if device.type == "niagara" %}
+            icon: "{% static 'images/blue.png' %}",
+            {% elif device.type == "modbus" %}
+            icon: "{% static 'images/factory_orange.png' %}",
+            {% elif device.type == "bacnet" %}
+            icon: "{% static 'images/green.png' %}",
+            {% elif device.type == "siemens" %}
+            icon: "{% static 'images/pink.png' %}",
+            {% elif device.type == "ethernetip" %}
+            icon: "{% static 'images/purple' %}",
+            {% elif device.type == "dnp3" %}
+            icon: "{% static 'images/purple.png' %}",
+            {% elif device.type == "pcworx" %}
+            icon: "{% static 'images/light_purple.png' %}",
+            {% elif device.type == "iphart" %}
+            icon: "{% static 'images/orange2.png' %}",
+            {% elif device.type == "mitsubishi" %}
+            icon: "{% static 'images/white.png' %}",
+            {% elif device.type == "omron" %}
+            icon: "{% static 'images/blue2.png' %}",
+            {% elif device.type == "redlion" %}
+            icon: "{% static 'images/green2.png' %}",
+            {% elif device.type == "codesys" %}
+            icon: "{% static 'images/purple2.png' %}",
+            {% elif device.type == "iec" %}
+            icon: "{% static 'images/yellow2.png' %}",
+            {% elif device.type == "proconos" %}
+            icon: "{% static 'images/pink2.png' %}",
+            {% elif device.type == "webcam" %}
+            icon: "{% static 'images/camera_black.png' %}",
+            {% elif device.type == "rtsp" %}
+            icon: "{% static 'images/camera_blue.png' %}",
+            {% elif device.type == "ipcamera" %}
+            icon: "{% static 'images/camera_blue2.png' %}",
+            {% elif device.type == "yawcam" %}
+            icon: "{% static 'images/camera_brown.png' %}",
+            {% elif device.type == "blueiris" %}
+            icon: "{% static 'images/camera_green.png' %}",
+            {% elif device.type == "ubnt" %}
+            icon: "{% static 'images/camera_orange.png' %}",
+            {% elif device.type == "go1984" %}
+            icon: "{% static 'images/camera_pink.png' %}",
+            {% elif device.type == "dlink" %}
+            icon: "{% static 'images/camera_red.png' %}",
+            {% elif device.type == "avtech" %}
+            icon: "{% static 'images/camera_yellow.png' %}",
+            {% elif device.type == "mqtt" %}
+            icon: "{% static 'images/mqtt.png' %}",
+            {% elif device.type == "dicom" %}
+            icon: "{% static 'images/dicom.png' %}",
+            {% elif device.type == "printer" %}
+            icon: "{% static 'images/printer.png' %}",
+
+
+            {% else %}
+            icon: "{% static 'images/black.png' %}",
+            {% endif %}
+        }),
+
+                {% endfor %}]
+    var options_googlemaps = {
+        minZoom: 1,
+        zoom: 3,
+        center: mumbai,
+        maxZoom: 17,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        streetViewControl: false
+    }
+
+    gm_map = new google.maps.Map(document.getElementById('google_world_map'), options_googlemaps);
+
+
+    var options_markerclusterer = {
+        gridSize: 20,
+        maxZoom: 18,
+        zoomOnClick: false,
+        imagePath:  'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+    };
+
+
+    var markerCluster = new MarkerClusterer(gm_map, clusterMarkers, options_markerclusterer);
+
+    google.maps.event.addListener(markerCluster, 'clusterclick', function(cluster) {
+
+        var markers = cluster.getMarkers();
+
+        var array = [];
+        var num = 0;
+
+        for(i = 0; i < markers.length; i++) {
+
+            num++;
+            array.push(markers[i].getTitle() + '<br>');
+        }
+        if (gm_map.getZoom() <= markerCluster.getMaxZoom()) {
+           infoWindow.setContent(markers.length + " markers<br>"+array.join(""));
+           infoWindow.setPosition(cluster.getCenter());
+           infoWindow.open(gm_map);
+        }
+    });
+
+
+    for(i = 0; i < clusterMarkers.length; i++) {
+       var marker = clusterMarkers[i];
+
+        google.maps.event.addListener(marker, 'click', (function(marker) {
+            return function() {
+           infoWindow.setContent(this.getTitle());
+           infoWindow.open(gm_map, this);
+            }
+        })(marker));
+    }
+
+}$(document).ready(function() {
+
+    // INITIALIZE GOOGLE MAPS
+    initialize();
+});
+
+</script>
+        <!-- END PLUGINS -->
+<script src="{% static 'js/d3.wordcloud.js' %}" charset="UTF-8"></script>
+                <script src="{% static 'js/d3.layout.cloud.js' %}" charset="UTF-8"></script>
+
+                <script type="text/javascript" src="{% static 'js/plugins/jquery/jquery.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/plugins/jquery/jquery-ui.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/plugins/bootstrap/bootstrap.min.js' %}"></script>
+        <!-- END PLUGINS -->
+
+        <!-- START THIS PAGE PLUGINS-->
+        <script type='text/javascript' src="{% static 'js/plugins/icheck/icheck.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/plugins/mcustomscrollbar/jquery.mCustomScrollbar.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/plugins/scrolltotop/scrolltopcontrol.js' %}"></script>
+
+
+        <!-- END THIS PAGE PLUGINS-->
+
+        <!-- START TEMPLATE -->
+        <script type="text/javascript" src="{% static 'js/settings.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/plugins.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/actions.js' %}"></script>
+
+
+        <!-- END TEMPLATE -->
+    <!-- END SCRIPTS -->
+
+    </body>
+</html>
+
+{% endblock %}
+
+
+
+
+
