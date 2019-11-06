@@ -145,4 +145,4 @@ It's also possible to upload and host the tool online, if you want to help, dm m
 - Own database button does not work, it shows that it's possible to load your own geolocation database. I haven't found better than Shodan's but let me know if you have access to one.
 - Looking for nearby Tweets works but I wasn't able to find any tweets. It may be a problem with Twitter API. Let me know if you can find anything.
 - Don't blame me for unintentional bug that might exhaust your Shodan/BinaryEdge/WHOISXMLAPI credits.
-- I'm not responsible for any damage caused by use this tool.
+- I'm not responsible for any damage caused by using this tool.
