@@ -28,7 +28,7 @@ python3 manage.py makemigrations
 python3 manage.py migrate
 python3 manage.py runserver
 ```
-In a new window run celery worker
+In a new window (in main directory) run celery worker
 ```celery -A kamerka --loglevel=info```
 
 In a new window fire up redis
