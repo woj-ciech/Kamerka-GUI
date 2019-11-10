@@ -106,6 +106,7 @@ def devices_nearby(lat, lon, id, query):
 
     api = Shodan(SHODAN_API_KEY)
     fail = 0
+    # Shodan sometimes fails with no reason, sleeping when it happens and it prevents rate limitation
     try:
         # Search Shodan
         results = api.search("geo:" + lat + "," + lon + ",15 " + query)
@@ -118,6 +119,7 @@ def devices_nearby(lat, lon, id, query):
             results = api.search("geo:" + lat + "," + lon + ",15 " + query)
         except Exception as e:
             print(e)
+
 
     try:  # Show the results
         total = len(results['matches'])
@@ -200,6 +202,7 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
             results = False
             break
 
+        # Shodan sometimes fails with no reason, sleeping when it happens and it prevents rate limitation
         search = Search.objects.get(id=fk)
         api = Shodan(SHODAN_API_KEY)
         fail = 0
@@ -261,6 +264,7 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
             except:
                 pass
 
+            # get indicator from niagara fox
             if result['port'] == 1911 or result['port'] == 4911:
                 try:
                     fox_data_splitted = result['data'].split("\n")
@@ -271,7 +275,7 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
                 except:
                     pass
 
-
+            # get indicator from tank
             elif result['port'] == 10001:
                 try:
                     tank_info = result['data'].split("\r\n\r\n")
@@ -279,7 +283,7 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
                 except:
                     pass
 
-
+            # get indicator from bacnet
             elif result['port'] == 47808:
                 try:
                     bacnet_data_splitted = result['data'].split("\n")
