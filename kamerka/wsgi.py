@@ -16,9 +16,3 @@ from app_kamerka.models import Device, Search, DeviceNearby
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'kamerka.settings')
 
 application = get_wsgi_application()
-all_objects = DeviceNearby.objects.all().values()
-# pl = Search.objects.filter().values()
-# det = DeviceDetails.objects.filter().values()
-# print(pl)
-# print(all_objects)
-# print(det)

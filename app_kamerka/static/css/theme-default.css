@@ -4,7 +4,6 @@
 @import "jquery/jquery-ui.min.css";
 @import "bootstrap/bootstrap.min.css";
 @import "fontawesome/font-awesome.min.css";
-@import "mcustomscrollbar/jquery.mCustomScrollbar.css";
 @import "dropzone/dropzone.css";
 @import "animate/animate.min.css";
 
@@ -3559,49 +3558,7 @@ background: #1caf9a !important;
 }
 /* eof search restult */
 
-/* Dropzone */
-.dropzone.dropzone-mini {
-  min-height: 150px;
-}
-.dropzone.dropzone-mini .dz-message {
-  background: none;
-  position: relative;
-  margin: 0px;
-  padding: 0px;
-  left: auto;
-  top: auto;
-  width: 100%;
-  float: left;
-  height: 120px;
-}
-.dropzone.dropzone-mini .dz-message:after {
-  content: "\f0ee";
-  position: absolute;
-  width: 80px;
-  height: 80px;
-  text-align: center;
-  font-family: FontAwesome;
-  font-size: 88px;
-  top: 26px;
-  left: 50%;
-  margin: 0px 0px 0px -40px;
-  line-height: 80px;
-  opacity: 0.5;
-  filter: alpha(opacity = 50);
-  -webkit-transition: all 200ms ease;
-  -moz-transition: all 200ms ease;
-  -ms-transition: all 200ms ease;
-  -o-transition: all 200ms ease;
-  transition: all 200ms ease;
-}
-.dropzone.dropzone-mini .dz-message:hover:after {
-  opacity: 1;
-  filter: alpha(opacity = 100);
-}
-.dropzone.dz-started .dz-message {
-  display: none;
-}
-/* end Dropzone */
+
 /* errors */
 .error-container {
   width: 500px;
@@ -4603,78 +4560,7 @@ input.ui-editRangeSlider-inputValue {
   top: 30px;
 }
 /* END jVectorMaps */
-/* tagsinput */
-div.tagsinput {
-  border: 1px solid #D5D5D5;
-  background: #FFF;
-  width: 100%;
-  min-height: 30px;
-  overflow-y: auto;
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
-  border-radius: 3px;
-}
-div.tagsinput span.tag {
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
-  border-radius: 3px;
-  display: block;
-  float: left;
-  text-decoration: none;
-  background: #1b1e24;
-  color: #FFF;
-  margin: 2px 0px 2px 2px;
-  line-height: 20px;
-  padding: 2px 5px 2px 20px;
-  position: relative;
-}
-div.tagsinput span.tag a {
-  color: #FFF;
-  text-decoration: none;
-  position: absolute;
-  left: 5px;
-  width: 15px;
-  height: 20px;
-  opacity: 0.5;
-  filter: alpha(opacity = 50);
-}
-div.tagsinput span.tag a:hover {
-  opacity: 1;
-  filter: alpha(opacity = 100);
-}
-div.tagsinput span.tag a:before {
-  position: absolute;
-  font-family: "FontAwesome";
-  content: "\f00d";
-  color: #FFF;
-  font-size: 12px;
-  line-height: 20px;
-}
-div.tagsinput input {
-  width: 80px;
-  margin: 4px 5px;
-  border: 0px;
-  height: 20px;
-  line-height: 20px;
-}
-div.tagsinput div {
-  display: block;
-  float: left;
-}
-.tags_clear {
-  clear: both;
-  width: 100%;
-  height: 0px;
-}
-.not_valid {
-  background: #E04B4A !important;
-  color: #FFF !important;
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
-  border-radius: 3px;
-  padding: 0px 5px;
-}
-/* END tagsinput */
+
 /* sparkline */
 .sparkline {
   display: inline-block;

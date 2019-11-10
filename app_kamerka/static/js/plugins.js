@@ -110,22 +110,7 @@ $(function() {
             $(".popover-dismiss").popover({trigger: 'focus'});
         }//END Bootstrap Popover
         
-        //Tagsinput
-        var feTagsinput = function(){
-            if($(".tagsinput").length > 0){
-                
-                $(".tagsinput").each(function(){
-                    
-                    if($(this).data("placeholder") != ''){
-                        var dt = $(this).data("placeholder");
-                    }else
-                        var dt = 'add a tag';
-                                                            
-                    $(this).tagsInput({width: '100%',height:'auto',defaultText: dt});
-                });
 
-            }
-        }// END Tagsinput
         
         //iCheckbox and iRadion - custom elements
         var feiCheckbox = function(){
@@ -154,7 +139,6 @@ $(function() {
                     feMasked();
                     feTooltips();
                     fePopover();
-                    feTagsinput();
                     feiCheckbox();
                     feBsFileInput();
                     feDaterangepicker();
@@ -181,61 +165,7 @@ $(function() {
             }            
         }//END Datatable        
         
-        //RangeSlider // This function can be removed or cleared.
-        var uiRangeSlider = function(){
-            
-            //Default Slider with start value
-            if($(".defaultSlider").length > 0){                
-                $(".defaultSlider").each(function(){                    
-                    var rsMin = $(this).data("min");
-                    var rsMax = $(this).data("max");
 
-                    $(this).rangeSlider({                        
-                        bounds: {min: 1, max: 200},
-                        defaultValues: {min: rsMin, max: rsMax}
-                    });                    
-                });                                
-            }//End Default
-            
-            //Date range slider
-            if($(".dateSlider").length > 0){                
-                $(".dateSlider").each(function(){
-                    $(this).dateRangeSlider({
-                        bounds: {min: new Date(2012, 1, 1), max: new Date(2015, 12, 31)},
-                        defaultValues:{min: new Date(2012, 10, 15),max: new Date(2014, 12, 15)}
-                    });
-                });                                                
-            }//End date range slider
-            
-            //Range slider with predefinde range            
-            if($(".rangeSlider").length > 0){                
-                $(".rangeSlider").each(function(){                    
-                    var rsMin = $(this).data("min");
-                    var rsMax = $(this).data("max");
-
-                    $(this).rangeSlider({
-                        bounds: {min: 1, max: 200},
-                        range: {min: 20, max: 40},
-                        defaultValues: {min: rsMin, max: rsMax}
-                    });                    
-                });                                
-            }//End
-            
-            //Range Slider with custom step
-            if($(".stepSlider").length > 0){                
-                $(".stepSlider").each(function(){
-                    var rsMin = $(this).data("min");
-                    var rsMax = $(this).data("max");
-
-                    $(this).rangeSlider({                        
-                        bounds: {min: 1, max: 200},
-                        defaultValues: {min: rsMin, max: rsMax},
-                        step: 10
-                    });    
-                });                                                
-            }//End
-            
-        }//END RangeSlider
         
         //Start Knob Plugin
         var uiKnob = function(){
@@ -422,7 +352,6 @@ $(function() {
         return {
             init: function(){
                 uiDatatable();
-                uiRangeSlider();
                 uiKnob();
                 uiSmartWizard();
                 uiOwlCarousel();

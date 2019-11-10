@@ -447,25 +447,20 @@ function initialize() {
         <!-- END PLUGINS -->
 
         <!-- START THIS PAGE PLUGINS-->
-        <script type='text/javascript' src="{% static 'js/plugins/icheck/icheck.min.js' %}"></script>
-        <script type="text/javascript" src="{% static 'js/plugins/mcustomscrollbar/jquery.mCustomScrollbar.min.js' %}"></script>
-        <script type="text/javascript" src="{% static 'js/plugins/scrolltotop/scrolltopcontrol.js' %}"></script>
 
         <script type="text/javascript" src="{% static 'js/plugins/morris/raphael-min.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/plugins/morris/morris.min.js' %}"></script>
                 <script type="text/javascript" src="{% static 'js/plugins/datatables/jquery.dataTables.min.js' %}"></script>
         <script type='text/javascript' src="{% static 'js/plugins/bootstrap/bootstrap-datepicker.js' %}"></script>
 
-        <script type="text/javascript" src="{% static 'js/plugins/moment.min.js' %}"></script>
 
         <!-- END THIS PAGE PLUGINS-->
 <!--                           <script type="text/javascript" src="js/plugins/morris/raphael-min.js"></script>-->
 <!--        <script type="text/javascript" src="js/plugins/morris/morris.min.js"></script>-->
 
         <!-- START TEMPLATE -->
-        <script type="text/javascript" src="{% static 'js/settings.js' %}"></script>
-
         <script type="text/javascript" src="{% static 'js/plugins.js' %}"></script>
+
         <script type="text/javascript" src="{% static 'js/actions.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/draw_charts_results.js' %}"></script>
                 <script>drawCharts({{ports|safe}}, {{city|safe}},{{category|safe}});</script>
