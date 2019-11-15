@@ -10,6 +10,7 @@ Demo - https://woj-ciech.github.io/kamerka-demo/kamerka.html
 ## Update 15-11.2019 - Maritime support
 
 ## Requirements
+- beautiful soup
 - python3
 - django
 - celery
@@ -107,6 +108,8 @@ Type your coordinates in format "lat,lon", hardcoded radius is 20km.
 "vtscada": "Server: VTScada",
 'zworld': "Z-World Rabbit 200 OK",
 "nordex": "Jetty 3.1.8 (Windows 2000 5.0 x86) \"200 OK\" "
+
+"sailor":"http.favicon.hash:-1222972060" # Sailor VSAT 900
 ```
 
 # Used components

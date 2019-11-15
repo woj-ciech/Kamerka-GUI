@@ -349,6 +349,8 @@ function initialize() {
             icon: "{% static 'images/dicom.png' %}",
             {% elif device.type == "printer" %}
             icon: "{% static 'images/printer.png' %}",
+            {% elif device.type == "sailor" %}
+            icon: "{% static 'images/ship.png' %}",
             {% else %}
             icon: "{% static 'images/black.png' %}",
             {% endif %}
@@ -356,7 +358,7 @@ function initialize() {
 
                 {% endfor %}]
     var options_googlemaps = {
-        minZoom: 4,
+        minZoom: 1,
         zoom: 4,
         center: mumbai,
         maxZoom: 17,

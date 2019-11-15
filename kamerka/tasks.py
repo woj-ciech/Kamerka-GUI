@@ -9,6 +9,7 @@ from pybinaryedge import BinaryEdge
 from shodan import Shodan
 from twitter import *
 import time
+from bs4 import BeautifulSoup
 
 from app_kamerka.models import Device, DeviceNearby, Search, TwitterNearby, FlickrNearby, ShodanScan, BinaryEdgeScore, \
     Whois
@@ -39,7 +40,8 @@ ics_queries = {"niagara": "port:1911,4911 product:Niagara",
                "is2": "IS2 Web Server",
                "vtscada": "Server: VTScada",
                'zworld': "Z-World Rabbit 200 OK",
-               "nordex": "Jetty 3.1.8 (Windows 2000 5.0 x86) \"200 OK\" "}
+               "nordex": "Jetty 3.1.8 (Windows 2000 5.0 x86) \"200 OK\" ",
+               "sailor":"http.favicon.hash:-1222972060"}
 
 coordinates_queries = {"webcam": "device:webcam",
                        'printer': "device:printer",
@@ -227,17 +229,22 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
             except Exception as e:
                 results = False
                 print(e)
-
-        total = results['total']
-        if total == 0:
-            print("no results")
+        try:
+            total = results['total']
+            if total == 0:
+                print("no results")
+                break
+        except Exception as e:
+            print(e)
             break
+
 
         pages = math.ceil(total / 100) + 1
         print(pages)
 
-
         for counter, result in enumerate(results['matches']):
+            lat = str(result['location']['latitude'])
+            lon = str(result['location']['longitude'])
             city = ""
             indicator = []
             print(counter)
@@ -264,6 +271,21 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
             except:
                 pass
 
+            try:
+                if 'SAILOR' in result['http']['title']:
+                    html = result['http']['html']
+                    soup = BeautifulSoup(html)
+                    for gps in soup.find_all("span", {"id": "gnss_position"}):
+                        coordinates = gps.contents[0]
+                        space = coordinates.split(' ')
+                        if "W" in space:
+                            lon = "-" + space[2][:-1]
+                        else:
+                            lon = space[2][:-1]
+                        lat = space[0][:-1]
+            except Exception as e:
+                print(e)
+
             # get indicator from niagara fox
             if result['port'] == 1911 or result['port'] == 4911:
                 try:
@@ -275,6 +297,7 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
                 except:
                     pass
 
+
             # get indicator from tank
             elif result['port'] == 10001:
                 try:
@@ -282,6 +305,8 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
                     indicator.append(tank_info[1])
                 except:
                     pass
+
+
 
             # get indicator from bacnet
             elif result['port'] == 47808:
@@ -305,7 +330,7 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
 
             device = Device(search=search, ip=result['ip_str'], product=product, org=result['org'],
                             data=result['data'], port=str(result['port']), type=search_type, city=city,
-                            lat=str(result['location']['latitude']), lon=str(result['location']['longitude']),
+                            lat=lat, lon=lon,
                             country_code=result['location']['country_code'], query=search_type, category=category,
                             vulns=vulns, indicator=indicator, hostnames=hostnames)
             device.save()

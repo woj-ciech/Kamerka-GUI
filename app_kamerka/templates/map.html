@@ -188,6 +188,9 @@ function initialize() {
             icon: "{% static 'images/dicom.png' %}",
             {% elif device.type == "printer" %}
             icon: "{% static 'images/printer.png' %}",
+            {% elif device.type == "sailor" %}
+            icon: "{% static 'images/ship.png' %}",
+
 
 
             {% else %}
