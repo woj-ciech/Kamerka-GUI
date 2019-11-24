@@ -8,11 +8,13 @@ writeup - https://medium.com/@woj_ciech/hack-the-planet-with-%EA%93%98amerka-gui
 Demo - https://woj-ciech.github.io/kamerka-demo/kamerka.html
 
 ## Update 15-11.2019 - Maritime support
+## Update 24-11.2019 - NMEA support
 
 ## Requirements
 - beautiful soup
 - python3
 - django
+- pynmea2
 - celery
 - redis
 - Shodan

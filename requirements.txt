@@ -7,3 +7,4 @@ pycountry==19.8.18
 shodan==1.19.0
 python_twitter==3.5
 bs4
+pynmea2

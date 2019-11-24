@@ -10,6 +10,7 @@ from shodan import Shodan
 from twitter import *
 import time
 from bs4 import BeautifulSoup
+import pynmea2
 
 from app_kamerka.models import Device, DeviceNearby, Search, TwitterNearby, FlickrNearby, ShodanScan, BinaryEdgeScore, \
     Whois
@@ -41,7 +42,8 @@ ics_queries = {"niagara": "port:1911,4911 product:Niagara",
                "vtscada": "Server: VTScada",
                'zworld': "Z-World Rabbit 200 OK",
                "nordex": "Jetty 3.1.8 (Windows 2000 5.0 x86) \"200 OK\" ",
-               "sailor":"http.favicon.hash:-1222972060"}
+               "sailor":"http.favicon.hash:-1222972060",
+               'nmea':"$GPGGA"}
 
 coordinates_queries = {"webcam": "device:webcam",
                        'printer': "device:printer",
@@ -284,7 +286,7 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
                             lon = space[2][:-1]
                         lat = space[0][:-1]
             except Exception as e:
-                print(e)
+                pass
 
             # get indicator from niagara fox
             if result['port'] == 1911 or result['port'] == 4911:
@@ -306,6 +308,18 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
                 except:
                     pass
 
+            if "GPGGA" in result['data']:
+                try:
+                    print('in')
+                    splitted_data = result['data'].split('\n')
+                    for i in splitted_data:
+                        if "GPGGA" in i:
+                            msg = pynmea2.parse(i)
+                            lat = msg.latitude
+                            lon = msg.longitude
+                            break
+                except Exception as e:
+                    print(e)
 
 
             # get indicator from bacnet

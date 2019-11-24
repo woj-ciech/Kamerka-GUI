@@ -238,7 +238,7 @@ def history(request):
         except Exception as e:
             print(e)
 
-    context = {'history': a}
+    context = {'history': all_searches}
     return render(request, 'history.html', context)
 
 

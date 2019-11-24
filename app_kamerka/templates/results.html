@@ -279,7 +279,6 @@
 var marker;
 var gm_map;
 var markerArray = [];
-var address = 'Sweden';
 {% for device in search %}
     {% if forloop.first %}
     var mumbai = new google.maps.LatLng({{ device.lat }},{{ device.lon }});
@@ -323,6 +322,8 @@ function initialize() {
             icon: "{% static 'images/yellow2.png' %}",
             {% elif device.type == "proconos" %}
             icon: "{% static 'images/pink2.png' %}",
+            {% elif device.type == "nmea" %}
+            icon: "{% static 'images/sat.png' %}",
 
 
             {% elif device.type == "webcam" %}
