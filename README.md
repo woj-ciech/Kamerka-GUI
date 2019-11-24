@@ -8,7 +8,10 @@ writeup - https://medium.com/@woj_ciech/hack-the-planet-with-%EA%93%98amerka-gui
 Demo - https://woj-ciech.github.io/kamerka-demo/kamerka.html
 
 ## Update 15-11.2019 - Maritime support
+https://twitter.com/the_wojciech/status/1195381924098904065
+
 ## Update 24-11.2019 - NMEA support
+https://twitter.com/the_wojciech/status/1198598585182494720
 
 ## Requirements
 - beautiful soup
