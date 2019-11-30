@@ -37,7 +37,7 @@ python3 manage.py migrate
 python3 manage.py runserver
 ```
 In a new window (in main directory) run celery worker
-```celery -A kamerka --loglevel=info```
+```celery worker -A kamerka --loglevel=info```
 
 In a new window fire up redis
 ```redis-server```
