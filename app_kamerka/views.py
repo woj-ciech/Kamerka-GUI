@@ -242,6 +242,19 @@ def history(request):
     return render(request, 'history.html', context)
 
 
+def update_coordinates(request,id, coordinates):
+    if request.is_ajax() and request.method == 'GET':
+        dev = Device.objects.get(id=id)
+        splitted_coord = coordinates.split(",")
+        dev.lat = splitted_coord[0]
+        dev.lon = splitted_coord[1]
+        dev.located = True
+        dev.save()
+        return HttpResponse(json.dumps({'Status': "OK"}), content_type='application/json')
+    else:
+        return HttpResponse(json.dumps({'Status': "NO OK"}), content_type='application/json')
+
+
 def device(request, id, device_id, ip):
     all_devices = Device.objects.get(search_id=id, id=device_id)
     nearby = DeviceNearby.objects.filter(device_id=all_devices.id)

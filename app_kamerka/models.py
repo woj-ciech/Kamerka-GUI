@@ -11,7 +11,6 @@ class Search(models.Model):
     ics = models.CharField(max_length=100)
     coordinates_search = models.CharField(max_length=1000)
 
-
 class Device(models.Model):
     search = models.ForeignKey(Search, on_delete=models.CASCADE)
     ip = models.CharField(max_length=100, default="")
@@ -29,6 +28,8 @@ class Device(models.Model):
     vulns = models.CharField(max_length=100, default="")
     indicator = models.CharField(max_length=100, default="")
     hostnames = models.CharField(max_length=100, default="")
+    screenshot = models.CharField(max_length=100000, default="")
+    located = models.BooleanField(default=False, null=True)
 
 
 class DeviceNearby(models.Model):

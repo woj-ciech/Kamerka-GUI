@@ -90,15 +90,23 @@
                             <!-- START JUSTIFIED TABS -->
                             <div class="panel panel-default tabs">
                                 <ul class="nav nav-tabs nav-justified">
+                                       {% if device.located %}
+                                                                    <li class="active"><a href="#tab8" data-toggle="tab" style="background:#1caf9a">Locate</a></li>
+                                    {% else %}
                                     <li class="active"><a href="#tab8" data-toggle="tab">Locate</a></li>
+                                        {% endif %}
                                     <li><a href="#tab9" data-toggle="tab">Intel</a></li>
                                     <li><a href="#tab10" data-toggle="tab">Exploit</a></li>
                                 </ul>
                                 <div class="panel-body tab-content">
                                     <div class="tab-pane active" id="tab8">
                                         <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title"> {{ device.lat }},{{ device.lon }} - {% for a in device.indicator %}{{ a }} {% endfor %}
+                                            {% if device.located %}
+                                <div class="panel-heading" style="background:#1caf9a">
+                                    {% else %}
+                                    <div class="panel-heading">
+                                        {% endif %}
+                                    <h3 class="panel-title"> {{ device.lat }},{{ device.lon }} - {% for a in device.indicator %}{{ a }} {% endfor %} {% if device.located %} LOCATED {% endif %}
 
 </h3>
                                 </div>
@@ -111,6 +119,9 @@
         &nbsp; Destination:
         <input type="text" id="txtDestination" placeholder="Find device" style="width: 300px" />
         <input type="button" value="Find route" class="btn btn-success active" onclick="GetRoute()" />
+
+        <input type="text" id="update_location" placeholder="Update location" style="width: 300px" />
+        <input type="button" id="btn_update_location" value="Update location" class="btn btn-info active"/>
 
 
 
@@ -195,6 +206,9 @@
                                         {{ device.vulns }}<br>
                                             {{ device.city }}</b><br><br>
                                         {{ device.data }}<br>
+                                    {% if device.screenshot %}
+                                    <img src="data:image/jpeg;base64,{{ device.screenshot }}">
+                                    {% endif %}
 </center>
                                     </div>
                             </div>
@@ -337,6 +351,7 @@ var marker = new google.maps.Marker({
 
    var bounds = new google.maps.LatLngBounds();
 
+
     function GetRoute() {
     //*********DIRECTIONS AND ROUTE**********************//
     destination = document.getElementById("txtDestination").value;
@@ -381,7 +396,11 @@ var marker = new google.maps.Marker({
 
 <script src="{% static 'js/markerclusterer.js' %}"></script>
 
+
                 <script type="text/javascript">
+
+
+
                     var pgrbar3 = $('#progress-bar3');
 
 
@@ -401,7 +420,26 @@ var marker = new google.maps.Marker({
     });
     });;
     </script>
+<script>
+        $('#btn_update_location').on('click', function(){
+    var bla = $('#update_location').val();
+        $.ajax({
+        type: "GET",
+        url: "/{{device.id}}/update_coordinates/"+bla,
+        success: function (data) {
+        noty({text: "Updated" , layout: 'topRight', type: 'success', timeout: 1000});
+        splitted_coord = bla.split(",");
+        var marker = new google.maps.Marker({
+            map: map,
+            position: new google.maps.LatLng(splitted_coord[0] , splitted_coord[1] )
+            })},
+        error: function(xhr, status, error) {
+  alert(xhr.responseText);
+}
+    });
+    });;
 
+</script>
                 <script>
                     var marker;
             $('#markers_flickr').on('click', function(){

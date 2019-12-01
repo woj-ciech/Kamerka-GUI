@@ -11,6 +11,7 @@ from twitter import *
 import time
 from bs4 import BeautifulSoup
 import pynmea2
+import base64
 
 from app_kamerka.models import Device, DeviceNearby, Search, TwitterNearby, FlickrNearby, ShodanScan, BinaryEdgeScore, \
     Whois
@@ -58,6 +59,10 @@ coordinates_queries = {"webcam": "device:webcam",
                        "dlink": "Server: Camera Web Server",
                        "avtech": "linux upnp avtech",
                        "adh": "ADH-web",
+                       "axis":'http.title:"axis" http.html:live',
+                       "rdp":"has_screenshot:true port:3389",
+                       "vnc":"has_screenthos:true port:5901",
+                       "screenshot":"has_screenshot:true !port:3389 !port:3388 !port:5900",
 
                        "niagara": "port:1911,4911 product:Niagara",
                        'bacnet': "port:47808",
@@ -162,7 +167,7 @@ def shodan_search(self, fk, country=None, coordinates=None, ics=None, coordinate
         total = len(coordinates_search)
         print(total)
         for c, i in enumerate(coordinates_search):
-            print(coordinates_search[i])
+            # print(coordinates_search[i])
             if i in coordinates_queries:
                 result += c
                 shodan_search_worker(fk=fk, query=coordinates_queries[i], search_type=i, category="coordinates",
@@ -201,6 +206,8 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
     page = 1
     SHODAN_API_KEY = keys['keys']['shodan']
     pages = 0
+    screenshot = ""
+
     while results:
         if pages == page:
             results = False
@@ -243,6 +250,7 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
 
         pages = math.ceil(total / 100) + 1
         print(pages)
+        print(query)
 
         for counter, result in enumerate(results['matches']):
             lat = str(result['location']['latitude'])
@@ -287,6 +295,20 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
                         lat = space[0][:-1]
             except Exception as e:
                 pass
+
+
+            if 'opts' in result:
+                try:
+                    screenshot = result['opts']['screenshot']['data']
+
+                    with open("app_kamerka/static/images/screens/"+result['ip_str']+".jpg", "wb") as fh:
+                        fh.write(base64.b64decode(screenshot))
+                        fh.close()
+                        for i in result['opts']['screenshot']['labels']:
+                            indicator.append(i)
+                except Exception as e:
+                    pass
+
 
             # get indicator from niagara fox
             if result['port'] == 1911 or result['port'] == 4911:
@@ -346,7 +368,7 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
                             data=result['data'], port=str(result['port']), type=search_type, city=city,
                             lat=lat, lon=lon,
                             country_code=result['location']['country_code'], query=search_type, category=category,
-                            vulns=vulns, indicator=indicator, hostnames=hostnames)
+                            vulns=vulns, indicator=indicator, hostnames=hostnames, screenshot=screenshot)
             device.save()
 
 

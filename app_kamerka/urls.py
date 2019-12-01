@@ -14,6 +14,8 @@ urlpatterns = [
     path("results/<id>/<device_id>/<ip>", views.device, name='device'),
     path(r'^celery-progress/', include('celery_progress.urls')),
     path("<id>/nearby/<query>", views.nearby, name='nearby'),
+    path("<id>/update_coordinates/<coordinates>", views.update_coordinates, name='update_coordinates'),
+
     path("<id>/twitter/nearby", views.twitter_nearby, name='twitter_nearby'),
     path("<id>/twitter/show", views.twitter_show, name='twitter_show'),
 
@@ -24,6 +26,7 @@ urlpatterns = [
     path('get_flickr_coordinates/<id>', views.get_flickr_coordinates, name="get_flickr_coordinates"),
     path('get_shodan_scan_results/<id>', views.get_shodan_scan_results, name="get_shodan_scan_results"),
     path('get_nearby_devices/<id>', views.get_nearby_devices, name="get_nearby_devices"),
+
     path('get_nearby_devices_coordinates/<id>', views.get_nearby_devices_coordinates,
          name="get_nearby_devices_coordinates"),
     path('get_binaryedge_score/<id>', views.get_binaryedge_score, name="get_binaryedge_score"),
