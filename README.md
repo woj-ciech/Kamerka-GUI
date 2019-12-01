@@ -13,6 +13,8 @@ https://twitter.com/the_wojciech/status/1195381924098904065
 ## Update 24-11.2019 - NMEA support
 https://twitter.com/the_wojciech/status/1198598585182494720
 
+## Update 01-12-2019 - Axis, RDP, VNC, Screenshot support
+
 ## Requirements
 - beautiful soup
 - python3
