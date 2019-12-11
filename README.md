@@ -17,7 +17,7 @@ https://twitter.com/the_wojciech/status/1198598585182494720
 https://twitter.com/the_wojciech/status/1201159932499963905
 
 ## Update 11-12-2019 - Lots of new devices
-
+https://twitter.com/the_wojciech/status/1204774550241722368
 
 ## Requirements
 - beautiful soup
