@@ -28,7 +28,7 @@ ics_queries = {"niagara": "port:1911,4911 product:Niagara",
                "mitsubishi": "port:5006,5007 product:mitsubishi",
                "omron": "port:9600 response code",
                "redlion": 'port:789 product:"Red Lion Controls"',
-               'codesys': "port:2455 operating system",
+               'codesys': 'product:"3S-Smart Software Solutions"',
                "iec": "port:2404 asdu address",
                'proconos': "port:20547 PLC",
 
@@ -44,9 +44,53 @@ ics_queries = {"niagara": "port:1911,4911 product:Niagara",
                'zworld': "Z-World Rabbit 200 OK",
                "nordex": "Jetty 3.1.8 (Windows 2000 5.0 x86) \"200 OK\" ",
                "sailor":"http.favicon.hash:-1222972060",
-               'nmea':"$GPGGA"}
+               'nmea':"$GPGGA",
+
+               "axc":"PLC Type: AXC",
+               "modicon":"modicon",
+               "xp277":"HMI, XP277",
+               "vxworks":"vxworks",
+               "eig":"EIG Embedded Web Server",
+               "digi":"TransPort WR21",
+               "windweb":"server: WindWeb",
+                "moxahttp":"MoxaHttp",
+               "lantronix":"lantronix",
+               "entelitouch":"Server: DELTA enteliTOUCH",
+               "energyict_rtu":"EnergyICT RTU",
+               "crestron":"crestron",
+               "saphir":'Server: "Microsoft-WinCE" "Content-Length: 12581"',
+               "ipc@chip":"IPC@CHIP",
+               "addup":"addUPI",
+               "anybus":'"anybus-s"',
+                "windriver":"WindRiver-WebServer",
+                "wago":"wago",
+               "niagara_audit":"niagara_audit",
+               "niagara_web_server":"Niagara Web Server",
+               "trendnet":"trendnet",
+               "stulz_klimatechnik":"Stulz GmbH Klimatechnik",
+               "somfy":"title:Somfy",
+               "scalance":"scalance",
+               "simatic":"simatic",
+               "simatic_s7":"Portal0000",
+                "schneider_electric":"Schneider Electric",
+               "power_measurement":"Power Measurement Ltd",
+               "power_logic":"title:PowerLogic",
+               "telemecanique_bxm":"TELEMECANIQUE BMX",
+               "schneider_web":"Schneider-WEB",
+                "fujitsu_serverview":"serverview",
+                "eiportal":"eiPortal",
+                "ilon":"i.LON",
+               "webvisu":"Webvisu",
+               "total_access": 'ta gen3 port:2000'
+               }
 
 coordinates_queries = {"webcam": "device:webcam",
+                       "webcamxp":"webcamxp",
+                       "vivotek":"vivotek",
+                       "techwin":"techwin",
+                       "mobotix":"mobotix",
+                       "iqinvision":"iqinvision",
+                       "grandstream":"Grandstream",
                        'printer': "device:printer",
                        'mqtt': 'product:mqtt',
                        'rtsp': "port:'554'",
@@ -89,11 +133,46 @@ coordinates_queries = {"webcam": "device:webcam",
                        "iq3": "Server: IQ3",
                        "is2": "IS2 Web Server",
                        "vtscada": "Server: VTScada",
-                       'zworld': "Z-World Rabbit 200 OK",
-                       "nordex": "Jetty 3.1.8 (Windows 2000 5.0 x86) \"200 OK\" "
+                       'zworld': "Z-World Rabbit",
+                       "nordex": "Jetty 3.1.8 (Windows 2000 5.0 x86)",
+
+                "axc":"PLC Type: AXC",
+               "modicon":"modicon",
+               "xp277":"HMI, XP277",
+               "vxworks":"vxworks",
+               "eig":"EIG Embedded Web Server",
+               "digi":"TransPort WR21",
+               "windweb":"server: WindWeb",
+                "moxahttp":"MoxaHttp",
+               "lantronix":"lantronix",
+               "entelitouch":"Server: DELTA enteliTOUCH",
+               "energyict_rtu":"EnergyICT RTU",
+               "crestron":"crestron",
+               "wince":'Server: "Microsoft-WinCE"',
+               "ipc@chip":"IPC@CHIP",
+               "addup":"addUPI",
+               "anybus":'"anybus-s"',
+                "windriver":"WindRiver-WebServer",
+                "wago":"wago",
+               "niagara_audit":"niagara_audit",
+               "niagara_web_server":"Niagara Web Server",
+               "trendnet":"trendnet",
+               "stulz_klimatechnik":"Stulz GmbH Klimatechnik",
+               "somfy":"title:Somfy",
+               "scalance":"scalance",
+               "simatic":"simatic",
+               "simatic_s7":"Portal0000",
+                "schneider_electric":"Schneider Electric",
+               "power_measurement":"Power Measurement Ltd",
+               "power_logic":"title:PowerLogic",
+               "telemecanique_bxm":"TELEMECANIQUE BMX",
+               "schneider_web":"Schneider-WEB",
+                "fujitsu_serverview":"serverview",
+                "eiportal":"eiPortal",
+                "ilon":"i.LON",
+               "Webvisu":"Webvisu",
+               "total_access": 'ta gen3 port:2000'
                        }
-
-
 def get_keys():
     try:
         with open('keys.json') as keys:
@@ -157,23 +236,28 @@ def shodan_search(self, fk, country=None, coordinates=None, ics=None, coordinate
     if country:
         total = len(ics)
         for c, i in enumerate(ics):
-            print(ics_queries[i])
             if i in ics_queries:
-                result += c
-                shodan_search_worker(country=country, fk=fk, query=ics_queries[i], search_type=i, category="ics",
-                                     all_results=all_results)
-                progress_recorder.set_progress(c + 1, total=total)
+                try:
+                    result += c
+                    shodan_search_worker(country=country, fk=fk, query=ics_queries[i], search_type=i, category="ics",
+                                         all_results=all_results)
+                    progress_recorder.set_progress(c + 1, total=total)
+                except:
+                    pass
+
     if coordinates:
         total = len(coordinates_search)
         print(total)
         for c, i in enumerate(coordinates_search):
             # print(coordinates_search[i])
             if i in coordinates_queries:
-                result += c
-                shodan_search_worker(fk=fk, query=coordinates_queries[i], search_type=i, category="coordinates",
-                                     coordinates=coordinates, all_results=all_results)
-                progress_recorder.set_progress(c + 1, total=total)
-
+                try:
+                    result += c
+                    shodan_search_worker(fk=fk, query=coordinates_queries[i], search_type=i, category="coordinates",
+                                         coordinates=coordinates, all_results=all_results)
+                    progress_recorder.set_progress(c + 1, total=total)
+                except:
+                    pass
     return result
 
 
@@ -240,6 +324,7 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
                 print(e)
         try:
             total = results['total']
+
             if total == 0:
                 print("no results")
                 break
@@ -310,6 +395,14 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
                     pass
 
 
+            if query == "Niagara Web Server":
+                try:
+                    soup = BeautifulSoup(result['http']['html'], features="html.parser")
+                    nws = soup.find("div", {"class": "top"})
+                    indicator.append(nws.contents[0])
+                except:
+                    pass
+
             # get indicator from niagara fox
             if result['port'] == 1911 or result['port'] == 4911:
                 try:
@@ -323,10 +416,25 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
 
 
             # get indicator from tank
-            elif result['port'] == 10001:
+            if result['port'] == 10001:
                 try:
                     tank_info = result['data'].split("\r\n\r\n")
                     indicator.append(tank_info[1])
+                except:
+                    pass
+
+            if result['port'] == 2000:
+                try:
+                    ta_data = result['data'].split("\\n")
+                    indicator.append(ta_data[1][:-3])
+                except Exception as e:
+                    pass
+
+            if result['port'] == 502:
+                try:
+                    sch_el = result['data'].split('\n')
+                    if sch_el[4].startswith("-- Project"):
+                        indicator.append(sch_el[4].split(": ")[1])
                 except:
                     pass
 
@@ -344,8 +452,20 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
                     print(e)
 
 
+            if result['port'] == 102:
+                try:
+                    s7_data = result['data'].split("\n")
+                    for i in s7_data:
+                        if i.startswith("Plant"):
+                            indicator.append(i.split(":")[1])
+                        if i.startswith("PLC"):
+                            indicator.append(i.split(":")[1])
+                        if i.startswith("Module name"):
+                            indicator.append(i.split(":")[1])
+                except:
+                    pass
             # get indicator from bacnet
-            elif result['port'] == 47808:
+            if result['port'] == 47808:
                 try:
                     bacnet_data_splitted = result['data'].split("\n")
                     for i in bacnet_data_splitted:
@@ -361,8 +481,7 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
                             indicator.append(splitted3[1])
                 except:
                     pass
-            else:
-                indicator = ""
+
 
             device = Device(search=search, ip=result['ip_str'], product=product, org=result['org'],
                             data=result['data'], port=str(result['port']), type=search_type, city=city,

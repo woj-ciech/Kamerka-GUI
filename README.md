@@ -14,6 +14,10 @@ https://twitter.com/the_wojciech/status/1195381924098904065
 https://twitter.com/the_wojciech/status/1198598585182494720
 
 ## Update 01-12-2019 - Axis, RDP, VNC, Screenshot support
+https://twitter.com/the_wojciech/status/1201159932499963905
+
+## Update 11-12-2019 - Lots of new devices
+
 
 ## Requirements
 - beautiful soup
@@ -75,6 +79,12 @@ Type your coordinates in format "lat,lon", hardcoded radius is 20km.
 ## Full list of supported devices with corresponding queries
 ```
 "webcam": "device:webcam",
+"webcamxp":"webcamxp",
+"vivotek":"vivotek",
+"techwin":"techwin",
+"mobotix":"mobotix",
+"iqinvision":"iqinvision",
+"grandstream":"Grandstream",
 'printer': "device:printer",
 'mqtt': 'product:mqtt',
 'rtsp': "port:'554'",
@@ -87,6 +97,10 @@ Type your coordinates in format "lat,lon", hardcoded radius is 20km.
 "dlink": "Server: Camera Web Server",
 "avtech": "linux upnp avtech",
 "adh": "ADH-web",
+"axis":'http.title:"axis" http.html:live',
+"rdp":"has_screenshot:true port:3389",
+"vnc":"has_screenthos:true port:5901",
+"screenshot":"has_screenshot:true !port:3389 !port:3388 !port:5900",
 
 "niagara": "port:1911,4911 product:Niagara",
 'bacnet': "port:47808",
@@ -113,10 +127,45 @@ Type your coordinates in format "lat,lon", hardcoded radius is 20km.
 "iq3": "Server: IQ3",
 "is2": "IS2 Web Server",
 "vtscada": "Server: VTScada",
-'zworld': "Z-World Rabbit 200 OK",
-"nordex": "Jetty 3.1.8 (Windows 2000 5.0 x86) \"200 OK\" "
+'zworld': "Z-World Rabbit",
+"nordex": "Jetty 3.1.8 (Windows 2000 5.0 x86)",
 
-"sailor":"http.favicon.hash:-1222972060" # Sailor VSAT 900
+"axc":"PLC Type: AXC",
+"modicon":"modicon",
+"xp277":"HMI, XP277",
+"vxworks":"vxworks",
+"eig":"EIG Embedded Web Server",
+"digi":"TransPort WR21",
+"windweb":"server: WindWeb",
+"moxahttp":"MoxaHttp",
+"lantronix":"lantronix",
+"entelitouch":"Server: DELTA enteliTOUCH",
+"energyict_rtu":"EnergyICT RTU",
+"crestron":"crestron",
+"wince":'Server: "Microsoft-WinCE"',
+"ipc@chip":"IPC@CHIP",
+"addup":"addUPI",
+"anybus":'"anybus-s"',
+"windriver":"WindRiver-WebServer",
+"wago":"wago",
+"niagara_audit":"niagara_audit",
+"niagara_web_server":"Niagara Web Server",
+"trendnet":"trendnet",
+"stulz_klimatechnik":"Stulz GmbH Klimatechnik",
+"somfy":"title:Somfy",
+"scalance":"scalance",
+"simatic":"simatic",
+"simatic_s7":"Portal0000",
+"schneider_electric":"Schneider Electric",
+"power_measurement":"Power Measurement Ltd",
+"power_logic":"title:PowerLogic",
+"telemecanique_bxm":"TELEMECANIQUE BMX",
+"schneider_web":"Schneider-WEB",
+"fujitsu_serverview":"serverview",
+"eiportal":"eiPortal",
+"ilon":"i.LON",
+"Webvisu":"Webvisu",
+"total_access": 'ta gen3 port:2000'
 ```
 
 # Used components
@@ -127,6 +176,7 @@ Type your coordinates in format "lat,lon", hardcoded radius is 20km.
 - country picker - https://github.com/mojoaxel/bootstrap-select-country
 - Multiselect - https://github.com/varundewan/multiselect/
 - Arsen Zbidniakov Flat UI Checkbox https://codepen.io/ARS/pen/aeDHE/
+- icon from icons8.com and icon-icons.com
 
 # Known bugs:
 - It's version 1.0 so please raise an issue if you think you found any bug or have an idea to make it better.
@@ -142,7 +192,7 @@ It's also possible to upload and host the tool online, if you want to help, dm m
 # TODO
 - Live monitoring
 - Offensive capabilities
-- More devices
+- More devices 
 - More sources (Instagram?, Youtube?)
 - Integration with Nmap and plcscan
 - Extensive error checking/debugging

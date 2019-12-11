@@ -363,7 +363,7 @@ function initialize() {
             icon: "{% static 'images/camera_red.png' %}",
             {% elif device.type == "avtech" %}
             icon: "{% static 'images/camera_yellow.png' %}",
-                                    {% elif device.type == "mqtt" %}
+            {% elif device.type == "mqtt" %}
             icon: "{% static 'images/mqtt.png' %}",
             {% elif device.type == "dicom" %}
             icon: "{% static 'images/dicom.png' %}",
@@ -377,6 +377,92 @@ function initialize() {
             icon: "{% static 'images/vnc.png' %}",
             {% elif device.type == "screenshot" %}
             icon: "{% static 'images/screen.png' %}",
+
+            {% elif device.type == "axc" %}
+            icon: "{% static 'images/axc.png' %}",
+            {% elif device.type == "modicon" %}
+            icon: "{% static 'images/modicon.png' %}",
+            {% elif device.type == "xp277" %}
+            icon: "{% static 'images/xp277.png' %}",
+            {% elif device.type == "vxworks" %}
+            icon: "{% static 'images/vxworks.png' %}",
+            {% elif device.type == "eig" %}
+            icon: "{% static 'images/eig.png' %}",
+            {% elif device.type == "digi" %}
+            icon: "{% static 'images/digi.png' %}",
+            {% elif device.type == "windweb" %}
+            icon: "{% static 'images/windweb.png' %}",
+            {% elif device.type == "moxahttp" %}
+            icon: "{% static 'images/moxahttp.png' %}",
+            {% elif device.type == "lantronix" %}
+            icon: "{% static 'images/lantronix.png' %}",
+            {% elif device.type == "entelitouch" %}
+            icon: "{% static 'images/entelitouch.png' %}",
+            {% elif device.type == "energyict_rtu" %}
+            icon: "{% static 'images/energyict_rtu.png' %}",
+            {% elif device.type == "crestron" %}
+            icon: "{% static 'images/crestron.png' %}",
+            {% elif device.type == "wince" %}
+            icon: "{% static 'images/wince.png' %}",
+            {% elif device.type == "ipc@chip" %}
+            icon: "{% static 'images/ipc@chip.png' %}",
+            {% elif device.type == "addup" %}
+            icon: "{% static 'images/addup.png' %}",
+            {% elif device.type == "anybus" %}
+            icon: "{% static 'images/anybus.png' %}",
+            {% elif device.type == "windriver" %}
+            icon: "{% static 'images/windriver.png' %}",
+            {% elif device.type == "wago" %}
+            icon: "{% static 'images/wago.png' %}",
+            {% elif device.type == "niagara_audit" %}
+            icon: "{% static 'images/niagara_audit.png' %}",
+            {% elif device.type == "niagara_web_server" %}
+            icon: "{% static 'images/niagara_web_server.png' %}",
+            {% elif device.type == "trendnet" %}
+            icon: "{% static 'images/trendnet.png' %}",
+            {% elif device.type == "stulz_klimatechnik" %}
+            icon: "{% static 'images/stulz_klimatechnik.png' %}",
+            {% elif device.type == "scalance" %}
+            icon: "{% static 'images/scalance.png' %}",
+            {% elif device.type == "somfy" %}
+            icon: "{% static 'images/somfy.png' %}",
+            {% elif device.type == "simatic" %}
+            icon: "{% static 'images/simatic.png' %}",
+            {% elif device.type == "simatic_s7" %}
+            icon: "{% static 'images/simatic_s7.png' %}",
+            {% elif device.type == "schneider_electric" %}
+            icon: "{% static 'images/schneider_electric.png' %}",
+            {% elif device.type == "power_measurement" %}
+            icon: "{% static 'images/power_measurement.png' %}",
+            {% elif device.type == "power_logic" %}
+            icon: "{% static 'images/power_logic.png' %}",
+            {% elif device.type == "telemecanique_bxm" %}
+            icon: "{% static 'images/telemecanique_bxm.png' %}",
+            {% elif device.type == "schneider_web" %}
+            icon: "{% static 'images/schneider_web.png' %}",
+            {% elif device.type == "fujitsu_serverview" %}
+            icon: "{% static 'images/fujitsu_serverview.png' %}",
+            {% elif device.type == "eiportal" %}
+            icon: "{% static 'images/eiportal.png' %}",
+            {% elif device.type == "ilon" %}
+            icon: "{% static 'images/ilon.png' %}",
+            {% elif device.type == "webvisu" %}
+            icon: "{% static 'images/webvisu.png' %}",
+            {% elif device.type == "total_access" %}
+            icon: "{% static 'images/total_access.png' %}",
+
+            {% elif device.type == "webcamxp" %}
+            icon: "{% static 'images/webcamxp.png' %}",
+            {% elif device.type == "vivotek" %}
+            icon: "{% static 'images/vivotek.png' %}",
+            {% elif device.type == "mobotix" %}
+            icon: "{% static 'images/mobotix.png' %}",
+            {% elif device.type == "techwin" %}
+            icon: "{% static 'images/techwin.png' %}",
+            {% elif device.type == "iqinvision" %}
+            icon: "{% static 'images/iqinvision.png' %}",
+            {% elif device.type == "grandstream" %}
+            icon: "{% static 'images/grandstream.png' %}",
             {% else %}
             icon: "{% static 'images/black.png' %}",
             {% endif %}
