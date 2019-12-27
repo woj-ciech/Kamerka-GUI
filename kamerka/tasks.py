@@ -16,6 +16,96 @@ import base64
 from app_kamerka.models import Device, DeviceNearby, Search, TwitterNearby, FlickrNearby, ShodanScan, BinaryEdgeScore, \
     Whois
 
+
+healthcare_queries = {"zoll":"http.favicon.hash:-236942626",
+'dicom': "dicom",
+"perioperative":"HoF Perioperative",
+"wall_of_analytics":"title:'Wall of Analytics'",
+"viztek_exa":"X-Super-Powered-By: VIZTEK EXA",
+"medweb":"html:'DBA Medweb. All rights reserved.'",
+"intuitim":"http.favicon.hash:159662640",
+"medcon_archiving_system":"http.favicon.hash:-897903496",
+"orthanc_explorer":"title:'Orthanc Explorer'",
+"Marco Pacs":"title:'Marco pacs'",
+"osirix":"title:OsiriX",
+"clari_pacs":"title:ClariPACS",
+"siste_lab":"http.html:SisteLAB",
+"opalweb":"html:opalweb",
+"neuropro":"title:'EEG Laboratory'",
+"tmw_document_imaging":"title:'TMW Document Imaging'",
+"erez":"title:'eRez Imaging'",
+"gluco_care":"html:'GlucoCare igc'",
+"glucose_guide":"title:'glucose guide'",
+"grandmed_glucose":"title:'Grandmed Glucose'",
+"philips_digital_pathology":"title:'Philips Digital Pathology'",
+"tricore_pathology":"title:'TriCore Pathology'",
+"appsmart_ophthalmology":"title:'Appsmart Ophthalmology'",
+"chs_ophthalmology":"title:'CHS Ophthalmology'",
+"ram_soft":"html:powerreader",
+"xnat":"http.favicon.hash:-230640598",
+"iris_emr":"title:'Iris EMR'",
+"eclinicalworks_emr":"title:'Web EMR Login Page'",
+"open_emr":"http.favicon.hash:1971268439",
+"oscar_emr":"title:'OSCAR EMR'",
+"wm_emr":"http.favicon.hash:1617804812",
+"doctors_partner_emr":"title:'DoctorsPartner'",
+"mckesson_radiology":"title:'McKesson Radiology'",
+"kodak_carestream":"title:'Carestream PACS'",
+"meded":"title:meded",
+"centricity_radiology":"http.favicon.hash:-458315012",
+"openeyes":"http.favicon.hash:-885931907",
+"orthanc":"orthanc",
+"horos":"http.favicon.hash:398467600",
+"open_mrs":"title:openmrs",
+"mirth_connect":"http.favicon.hash:1502215759",
+"acuity_logic":"title:AcuityLogic",
+"optical_coherence_tomography":"title:'OCT Webview'",
+"philips_intellispace":"title:INTELLISPACE",
+"vitrea_intelligence":"title:'Vitrea intelligence'",
+"phenom_electron_microscope":"title:'Phenom-World'",
+"meddream_dicom_viewer":"html:Softneta",
+"merge_pacs":"http.favicon.hash:-74870968",
+"synapse_3d":"http.favicon.hash:394706326",
+"navify":"title:navify",
+"telemis_tmp":"http.favicon.hash:220883165",
+"brainlab":"title:'Brainlab Origin Server'",
+"nexus360":"http.favicon.hash:125825464",
+"brain_scope":"title:BrainScope",
+"omero_microscopy":"http.favicon.hash:2140687598",
+"meditech":"Meditech",
+"cynetics":"cynetics",
+"promed":"Promed",
+"carestream":"Carestream",
+"carestream_web":"title:Carestream",
+"vet_rocket":"http.html:'Vet Rocket'",
+"planmeca":"Planmeca",
+"vet_view":"http.favicon.hash:1758472204",
+"lumed":"http.html:'LUMED'",
+"infinitt":"http.favicon.hash:-255936262",
+"labtech":"labtech",
+"progetti":"http.html:'Progetti S.r.l.'",
+"qt_medical":"http.html:'QT Medical'",
+"aspel":"ASPEL",
+"huvitz_optometric":"http.html:'Huvitz'",
+"optovue":"Optovue",
+"optos_advance":"http.title:'OptosAdvance'",
+"asthma_monitoring_adamm":"http.title:'HCO Telemedicine'",
+"pregnabit":"http.html:'Pregnabit'",
+"prime_clinical_systems":"http.html:'Prime Clinical Systems'",
+"omni_explorer":"http.title:OmniExplorer",
+"avizia":"http.html:'Avizia'",
+"operamed":"Operamed",
+"early_sense":"http.favicon.hash:-639764351",
+"tunstall":"http.html:'Tunstall'",
+"clini_net":"http.html:'CliniNet®'",
+"intelesens":"title:'zensoronline)) - online monitoring'",
+"kb_port":"http.html:'KbPort'",
+"nursecall_message_service":"http.title:'N.M.S. - Nursecall Message Service'",
+"image_information_systems":"http.html:'IMAGE Information Systems'",
+"agilent_technologies":"Agilent Technologies port:5025",
+"praxis_portal2":"http.html:'Medigration'",
+"xero_viewer":"http.title:'XERO Viewer'"}
+
 ics_queries = {"niagara": "port:1911,4911 product:Niagara",
                'bacnet': "port:47808",
                'modbus': "port:502",
@@ -81,7 +171,18 @@ ics_queries = {"niagara": "port:1911,4911 product:Niagara",
                 "eiportal":"eiPortal",
                 "ilon":"i.LON",
                "webvisu":"Webvisu",
-               "total_access": 'ta gen3 port:2000'
+               "total_access": 'ta gen3 port:2000',
+"vantage_infusion":"http.html:'InFusion Controller'",
+"sensoteq":"title:'sensoteq'",
+"sicon-8":"sicon-8",
+"automation_direct_hmi":"Server: EA-HTTP/1.0",
+"flotrac":"FloTrac",
+"innotech_bms":"http.title:'Innotech BMS'",
+"skylog":"http.title:skylog",
+"miele@home":"title:Miele@home",
+"alphacom":"http.title:Alphacom",
+"simplex_grinnell":"http.html:SimplexGrinnell title:login",
+"bosch_security":"http.html:'Bosch Security'"
                }
 
 coordinates_queries = {"webcam": "device:webcam",
@@ -94,7 +195,6 @@ coordinates_queries = {"webcam": "device:webcam",
                        'printer': "device:printer",
                        'mqtt': 'product:mqtt',
                        'rtsp': "port:'554'",
-                       'dicom': "dicom",
                        "ipcamera": "IPCamera_Logo",
                        "yawcam": "yawcam",
                        "blueiris": "http.favicon.hash:-520888198",
@@ -171,7 +271,18 @@ coordinates_queries = {"webcam": "device:webcam",
                 "eiportal":"eiPortal",
                 "ilon":"i.LON",
                "Webvisu":"Webvisu",
-               "total_access": 'ta gen3 port:2000'
+               "total_access": 'ta gen3 port:2000',
+"vantage_infusion":"http.html:'InFusion Controller'",
+"sensoteq":"title:'sensoteq'",
+"sicon-8":"sicon-8",
+"automation_direct_hmi":"Server: EA-HTTP/1.0",
+"flotrac":"FloTrac",
+"innotech_bms":"http.title:'Innotech BMS'",
+"skylog":"http.title:skylog",
+"miele@home":"title:Miele@home",
+"alphacom":"http.title:Alphacom",
+"simplex_grinnell":"http.html:SimplexGrinnell title:login",
+"bosch_security":"http.html:'Bosch Security'"
                        }
 def get_keys():
     try:
@@ -230,20 +341,33 @@ def devices_nearby(lat, lon, id, query):
 
 
 @shared_task(bind=True)
-def shodan_search(self, fk, country=None, coordinates=None, ics=None, coordinates_search=None, all_results=False):
+def shodan_search(self, fk, country=None, coordinates=None, ics=None, healthcare=None,coordinates_search=None, all_results=False):
     progress_recorder = ProgressRecorder(self)
     result = 0
     if country:
         total = len(ics)
         for c, i in enumerate(ics):
-            if i in ics_queries:
-                try:
-                    result += c
-                    shodan_search_worker(country=country, fk=fk, query=ics_queries[i], search_type=i, category="ics",
-                                         all_results=all_results)
-                    progress_recorder.set_progress(c + 1, total=total)
-                except:
-                    pass
+            if healthcare:
+                if i in healthcare_queries:
+                    print(i)
+                    try:
+                        result += c
+                        shodan_search_worker(country=country, fk=fk, query=healthcare_queries[i], search_type=i,
+                                             category="healthcare",
+                                             all_results=all_results)
+                        progress_recorder.set_progress(c + 1, total=total)
+                    except:
+                        pass
+            else:
+
+                if i in ics_queries:
+                    try:
+                        result += c
+                        shodan_search_worker(country=country, fk=fk, query=ics_queries[i], search_type=i, category="ics",
+                                             all_results=all_results)
+                        progress_recorder.set_progress(c + 1, total=total)
+                    except:
+                        pass
 
     if coordinates:
         total = len(coordinates_search)

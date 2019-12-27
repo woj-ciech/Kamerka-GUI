@@ -206,6 +206,8 @@
                                         {{ device.vulns }}<br>
                                             {{ device.city }}</b><br><br>
                                         {{ device.data }}<br>
+                                                                                    <td>{{ device.category }}</td>
+
                                     {% if device.screenshot %}
                                     <img src="data:image/jpeg;base64,{{ device.screenshot }}">
                                     {% endif %}

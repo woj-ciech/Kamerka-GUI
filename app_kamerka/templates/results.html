@@ -169,6 +169,7 @@
                                                 <td>{{ device.located }}</td>
 
 
+
                                             </tr>
 
 
@@ -463,6 +464,8 @@ function initialize() {
             icon: "{% static 'images/iqinvision.png' %}",
             {% elif device.type == "grandstream" %}
             icon: "{% static 'images/grandstream.png' %}",
+            {% elif device.category == "healthcare" %}
+            icon: "{% static 'images/hospital.png' %}",
             {% else %}
             icon: "{% static 'images/black.png' %}",
             {% endif %}

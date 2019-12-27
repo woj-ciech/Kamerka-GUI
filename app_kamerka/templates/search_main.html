@@ -82,6 +82,9 @@ min-height: 58px;
                         <li class="tab-list__item">
                             <a class="tab-list__link" href="#tab2"  id='tab' onclick="replace()" data-toggle="tab">Internet of Things</a>
                         </li>
+                         <li class="tab-list__item">
+                            <a class="tab-list__link" href="#tab3"  id='tab4' onclick="replace2()" data-toggle="tab">Healthcare</a>
+                        </li>
 
 
                     </ul>
@@ -165,6 +168,18 @@ min-height: 58px;
                                                     <option value="webvisu">Webvisu</option>
                                                     <option value="total_access">Total Access</option>
 
+                                                    <option value="vantage_infusion">Vantage InFusion</option>
+                                                    <option value="automation_direct_hmi">AutomationDirect HMI</option>
+                                                    <option value="sensoteq">Sensoteq</option>
+  													<option value="sicon-8">Sicon-8</option>
+                                                    <option value="flotrac">FloTrac</option>
+  													<option value="innotech_bms">Innotech BMS</option>
+  													<option value="skylog">Skylog</option>
+                                                    <option value="miele@home">Miele@home</option>
+                                                    <option value="alphacom">Alphacom</option>
+                                                    <option value="simplex_grinnell">SimplexGrinnell</option>
+                                                    <option value="bosch_security">Bosch Security</option>
+
                                                                                                    </select>
 <br>
 
@@ -225,7 +240,6 @@ min-height: 58px;
                                 <select name="coordinates_search" id='other' multiple>
                                                      <option value="mqtt">MQTT</option>
   													<option value="printer">Printers</option>
-  													<option value="Dicom">dicom</option>
                                                     <option value="rdp">RDP</option>
                                                      <option value="vnc">VNC</option>
                                                      <option value="screenshot">Screenshot</option>
@@ -306,9 +320,129 @@ min-height: 58px;
                                 <br>
 <button class="btn-submit m-t-0" type="submit">search</button>
 
+
+
+
+
+
+
                             </form>
 
 
+                        </div>
+                         <div class="tab-pane" id="tab3">
+                                                                           <h3><center style="color: white;">Country</center></h3>
+                            <form method="POST" action="">
+
+	 <select class="selectpicker countrypicker" name='country_healthcare' id='country_healthcare' data-default="CA" data-flag="true" ></select>
+
+<br>
+                                <br>
+                                                <h3><center style="color: white;">Device</center></h3>
+
+                                                <select id="healthcare" multiple name="healthcare">
+                                                    <option value="dicom">Dicom</option>
+                                                    <option value="zoll">Zoll</option>
+  													<option value="perioperative">GE Perioperative</option>
+  													<option value="wall_of_analytics">Wall of Analytics</option>
+                                                    <option value="viztek_exa">VIZTEK EXA</option>
+  													<option value="medweb">Medweb</option>
+  													<option value="intuitim">Intuitim</option>
+                                                    <option value="medcon_archiving_system">Medcon Archiving System</option>
+  													<option value="orthanc_explorer">Orthanc Explorer</option>
+  													<option value="osirix">OsiriX</option>
+                                                    <option value="clari_pacs">ClariPACS</option>
+  													<option value="siste_lab">SisteLAB</option>
+  													<option value="opalweb">Opalweb</option>
+                                                    <option value="neuropro">Neuropro</option>
+  													<option value="tmw_document_imaging">TMW Document Imaging</option>
+  													<option value="erez">eRez Imaging</option>
+                                                    <option value="gluco_care">GlucoCare igc</option>
+                                                    <option value="glucose_guide">Glucose guide</option>
+  													<option value="grandmed_glucose">Grandmed Glucose</option>
+  													<option value="philips_digital_pathology">Philips Digital Pathology</option>
+                                                    <option value="tricore_pathology">Tricore Pathology</option>
+  													<option value="appsmart_ophthalmology">Appsmart Pathology</option>
+  													<option value="chs_ophthalmology">CHS Ophthalmology</option>
+                                                    <option value="ram_soft">RamSoft</option>
+  													<option value="xnat">XNAT</option>
+  													<option value="iris_emr">Iris EMR</option>
+                                                    <option value="eclinicalworks_emr">eClinicalWorks EMR</option>
+                                                    <option value="open_emr">OpenEMR</option>
+                                                    <option value="oscar_emr">OSCAR EMR</option>
+                                                    <option value="wm_emr">WM EMR</option>
+                                                    <option value="doctors_partner_emr">DoctorsPartner EMR</option>
+  													<option value="mckesson_radiology">McKesson Radiology</option>
+  													<option value="kodak_carestream">KODAK CARESTREAM PACS</option>
+                                                    <option value="meded">MedEd</option>
+  													<option value="centricity_radiology">Centricity Radiology</option>
+  													<option value="openeyes">OpenEyes</option>
+                                                    <option value="orthanc">Orthanc</option>
+  													<option value="horos">Horos</option>
+  													<option value="open_mrs">OpenMRS</option>
+                                                    <option value="mirth_connect">Mirth Connect</option>
+                                                    <option value="acuity_logic">AcuityLogic</option>
+                                                    <option value="optical_coherence_tomography">Optical Coherence Tomography</option>
+                                                    <option value="philips_intellispace">Philips Intellispace</option>
+                                                     <option value="vitrea_intelligence">Vitrea intelligence</option>
+                                                    <option value="phenom_electron_microscope">Phenom-World Microscope</option>
+  													<option value="meddream_dicom_viewer">MedDream DICOM Viewer</option>
+  													<option value="merge_pacs">Merge PACS</option>
+                                                    <option value="synapse_3d">Synapse 3D</option>
+  													<option value="navify">NAVIFY® Oncology Workflow</option>
+  													<option value="telemis_tmp">Telemis TMP</option>
+                                                    <option value="brainlab">Brainlab</option>
+  													<option value="nexus360">Nexus360</option>
+  													<option value="brain_scope">BrainScope</option>
+                                                    <option value="omero_microscopy">OMERO Microscopy</option>
+                                                    <option value="meditech">Meditech</option>
+                                                    <option value="cynetics">Cynetics</option>
+                                                    <option value="promed">Promed</option>
+  													<option value="carestream">Carestream</option>
+                                                    <option value="carestream_web">Carestream web</option>
+  													<option value="vet_rocket">Vet Rocket</option>
+  													<option value="vet_view">VetView</option>
+                                                    <option value="lumed">LUMED</option>
+                                                    <option value="infinitt">INFINITT</option>
+                                                    <option value="labtech">Labtech</option>
+                                                    <option value="progetti">Progetti</option>
+                                                    <option value="qt_medical">QT Medical</option>
+  													<option value="huvitz_optometric">Huvitz Optometric</option>
+  													<option value="optos_advance">OptosAdvance</option>
+                                                    <option value="optovue">Optovue</option>
+                                                    <option value="asthma_monitoring_adamm">Asthma Monitoring ADAMM</option>
+                                                    <option value="pregnabit">Pregnabit</option>
+                                                    <option value="prime_clinical_systems">Prime Clinical Systems</option>
+  													<option value="omni_explorer">OmniExplorer</option>
+                                                    <option value="avizia">Avizia</option>
+  													<option value="operamed">Operamed</option>
+  													<option value="early_sense">EarlySense</option>
+                                                    <option value="tunstall">Tunstall</option>
+                                                    <option value="clini_net">CliniNet</option>
+                                                    <option value="intelesens">Intelesens</option>
+                                                    <option value="kb_port">KbPort</option>
+                                                    <option value="nursecall_message_service">Nursecall Message Service</option>
+                                                    <option value="image_information_systems">IMAGE Information Systems</option>
+                                                    <option value="agilent_technologies">Agilent Technologies</option>
+                                                    <option value="praxis_portal2">Medigration PraxisPortal2</option>
+                                                    <option value="xero_viewer">XERO Viewer</option>
+
+                                                                                                   </select>
+<br>
+
+
+<input type="checkbox" id="test7" name="all" /><label for="test7"><span class="ui"></span> <h4>All results </h4></label>
+
+                                <input type="checkbox" id="test8" name="own_database"/><label style="float:right" for="test7"><span class="ui"></span> <h4>Own database</h4></label>
+
+
+                                <br>
+                                <br>
+
+<button class="btn-submit m-t-0" type="submit">search</button>
+
+
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -331,6 +465,9 @@ a = document.querySelector(".bg-img-1").style.background = 'url({% static 'image
 function replace() {
 a = document.querySelector(".bg-img-1").style.background = 'url({% static 'images/camera3.jpg' %}) center center/cover no-repeat';
 }
+function replace2() {
+a = document.querySelector(".bg-img-1").style.background = 'url({% static 'images/hospital.jpeg' %}) center center/cover no-repeat';
+}
 </script>
     <script>
 			$('.country').countrypicker();
@@ -338,6 +475,15 @@ a = document.querySelector(".bg-img-1").style.background = 'url({% static 'image
 
     <script>
         a = new Selectr('#ics_country', {
+	searchable: true,
+	width: 300,
+		multiple: true,
+
+});
+a.selectedValues = [];
+</script>
+    <script>
+        a = new Selectr('#healthcare', {
 	searchable: true,
 	width: 300,
 		multiple: true,

@@ -38,25 +38,9 @@ def search_main(request):
         # create a form instance and populate it with data from the request:
         coordinates_form = forms.CoordinatesForm(request.POST)
         ics_form = forms.CountryForm(request.POST)
-        if coordinates_form.is_valid():
+        healthcare_form = forms.CountryHealthcareForm(request.POST)
 
-            coordinates = coordinates_form.cleaned_data['coordinates']
-            if len(coordinates) == 0:
-                form = forms.CountryForm()
-                return render(request, 'search_main.html', {'form': form})
-
-            search = Search(coordinates=coordinates_form.cleaned_data['coordinates'],
-                            coordinates_search=request.POST.getlist('coordinates_search'))
-
-            search.save()
-            shodan_search_task = shodan_search.delay(fk=search.id, coordinates=coordinates,
-                                     coordinates_search=request.POST.getlist('coordinates_search'))
-
-            request.session['task_id'] = shodan_search_task.task_id
-
-            return HttpResponseRedirect('index')
-
-        elif ics_form.is_valid():
+        if ics_form.is_valid():
             code = ics_form.cleaned_data['country']
 
             ics_country = request.POST.getlist('ics_country')
@@ -78,6 +62,52 @@ def search_main(request):
             request.session['task_id'] = shodan_search_task.task_id
 
             return HttpResponseRedirect('index')
+
+
+        elif healthcare_form.is_valid():
+            code = healthcare_form.cleaned_data['country_healthcare']
+
+            healthcare_country = request.POST.getlist('healthcare')
+
+
+            if len(healthcare_country) == 0:
+
+                form = forms.CountryHealthcareForm()
+                return render(request, 'search_main.html', {'form': form})
+
+            search = Search(country=code, ics=healthcare_country)
+            search.save()
+            post = request.POST.getlist('healthcare')
+
+            if healthcare_form.cleaned_data['all'] == True:
+                all_results = True
+            else:
+                all_results = False
+
+            shodan_search_task = shodan_search.delay(fk=search.id, country=code, ics=post, healthcare=True, all_results=all_results)
+            request.session['task_id'] = shodan_search_task.task_id
+
+            return HttpResponseRedirect('index')
+
+        elif coordinates_form.is_valid():
+
+            coordinates = coordinates_form.cleaned_data['coordinates']
+            if len(coordinates) == 0:
+                form = forms.CountryForm()
+                return render(request, 'search_main.html', {'form': form})
+
+            search = Search(coordinates=coordinates_form.cleaned_data['coordinates'],
+                            coordinates_search=request.POST.getlist('coordinates_search'))
+
+            search.save()
+            shodan_search_task = shodan_search.delay(fk=search.id, coordinates=coordinates,
+                                     coordinates_search=request.POST.getlist('coordinates_search'))
+
+            request.session['task_id'] = shodan_search_task.task_id
+
+            return HttpResponseRedirect('index')
+
+
 
         else:
             form = forms.CountryForm()
