@@ -19,6 +19,9 @@ https://twitter.com/the_wojciech/status/1201159932499963905
 ## Update 11-12-2019 - Lots of new devices
 https://twitter.com/the_wojciech/status/1204774550241722368
 
+## Update 27-12-2019 - Added medical devices
+https://medium.com/@woj_ciech/when-%EA%93%98amerka-meets-healthcare-research-on-exposed-medical-devices-ac62f2840da4
+
 ## Requirements
 - beautiful soup
 - python3
