@@ -1,6 +1,7 @@
 import ast
 import json
 from collections import Counter
+import requests
 
 import pycountry
 from celery.result import AsyncResult
@@ -14,7 +15,7 @@ from app_kamerka import forms
 from app_kamerka.models import Search, Device, DeviceNearby, FlickrNearby, ShodanScan, BinaryEdgeScore, Whois, \
     TwitterNearby
 from kamerka.tasks import shodan_search, devices_nearby, twitter_nearby_task, flickr, shodan_scan_task, \
-    binary_edge_scan, whoisxml, check_credits
+    binary_edge_scan, whoisxml, check_credits, send_to_field_agent_task
 
 
 # Create your views here.
@@ -398,11 +399,15 @@ def get_shodan_scan_results(request, id):
     if request.is_ajax() and request.method == 'GET':
         shodan_scan2 = ShodanScan.objects.filter(device_id=id)
 
-        for i in shodan_scan2:
-            try:
-                i.tags = ast.literal_eval(i.tags)
-            except:
-                pass
+        print(shodan_scan2)
+
+        # shodan_scan2[0].ports = shodan_scan2[0].ports[:1][:-1]
+        # shodan_scan2[0].tags = shodan_scan2[0].tags[:1][:-1]
+        # shodan_scan2[0].vulns = shodan_scan2[0].vulns[:1][:-1]
+        # shodan_scan2[0].products = shodan_scan2[0].products[:1][:-1]
+
+        print(shodan_scan2[0].ports)
+
         response_data = serializers.serialize('json', shodan_scan2)
 
         return HttpResponse(response_data, content_type="application/json")
@@ -442,6 +447,20 @@ def get_nearby_devices_coordinates(request, id):
         response_data = serializers.serialize('json', nearby_devices)
 
         return HttpResponse(response_data, content_type="application/json")
+
+def send_to_field_agent(request, id, notes):
+    if request.is_ajax() and request.method == 'GET':
+        print(id)
+
+        host = Device.objects.get(id=id)
+        host.notes = notes
+        host.save()
+
+        af_task = send_to_field_agent_task.delay(id, notes)
+
+        return HttpResponse(json.dumps({'Status': "OK"}), content_type='application/json')
+    else:
+        return HttpResponse(json.dumps({'task_id': None}), content_type='application/json')
 
 
 def get_binaryedge_score(request, id):

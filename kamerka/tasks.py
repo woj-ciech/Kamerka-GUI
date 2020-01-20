@@ -13,6 +13,10 @@ from bs4 import BeautifulSoup
 import pynmea2
 import base64
 
+import urllib.parse
+import urllib.request
+import xml.etree.ElementTree as et
+
 from app_kamerka.models import Device, DeviceNearby, Search, TwitterNearby, FlickrNearby, ShodanScan, BinaryEdgeScore, \
     Whois
 
@@ -111,7 +115,7 @@ ics_queries = {"niagara": "port:1911,4911 product:Niagara",
                'modbus': "port:502",
                'siemens': 'Original Siemens Equipment Basic Firmware:',
                'dnp3': "port:20000 source address",
-               "ethernetip": "port:44818",
+               "ethernetip": "port:44818 Product name",
                "gestrip": 'port:18245,18246 product:"general electric"',
                'hart': "port:5094 hart-ip",
                'pcworx': "port:1962 PLC",
@@ -182,7 +186,44 @@ ics_queries = {"niagara": "port:1911,4911 product:Niagara",
 "miele@home":"title:Miele@home",
 "alphacom":"http.title:Alphacom",
 "simplex_grinnell":"http.html:SimplexGrinnell title:login",
-"bosch_security":"http.html:'Bosch Security'"
+"bosch_security":"http.html:'Bosch Security'",
+
+"fronius":"title:fronius",
+"webview":"http.favicon.hash:207964650",
+"Siemens Sm@rtClient":"title:'Siemens Sm@rtClient'",
+"WAGO":"title:'wago ethernet'",
+"sensatronics":"html:sensatronics",
+"extron":"Extron Electronics",
+"mikrotik_streetlighs":"mikrotik streetlight",
+"kesseltronics":"Kesseltronics",
+"unitronics":"title:'Unitronics PLC'",
+"atvise":"Server: atvise",
+"clearSCADA":"ClearSCADA",
+"youless":"title:YouLess",
+"DLILPC":"DLILPC",
+"intelliSlot":"title:IntelliSlot",
+"temperature_monitor":"title:'Temperature Monitor' !title:avtech",
+"CirCarLife":"CirCarLife",
+"web_scada":"title:'web scada'",
+"kaco":"kaco",
+"indect_parkway":"title:indect",
+"intuitive_Controller":"http.favicon.hash:1434282111",
+"intuitive_controller_2":"http.favicon.hash:-1011909571",
+"homeLYnk":"homeLYnk",
+"APC":"Location: home.htm Content-Length: 0 WebServer",
+"netio":"title:netio",
+"asi_controls":"title:'ASI Controls'",
+"myscada":"title:myscada",
+"iB-COM":"title:iB-COM",
+"building_operation_webstation":"title:'building operation'",
+"ftp_scada":"scada login",
+"apc_ftp":"APC FTP server",
+"network_management_card":"Network Management Card",
+"wemo_insight":"Belkin WeMo",
+"connect_ups":"title:ConnectUPS",
+"upshttpd":"Server: upshttpd",
+"poweragent":"PowerAgent",
+"CS121":"title:'CS121 SNMP/Web Adapter'",
                }
 
 coordinates_queries = {"webcam": "device:webcam",
@@ -207,6 +248,9 @@ coordinates_queries = {"webcam": "device:webcam",
                        "rdp":"has_screenshot:true port:3389",
                        "vnc":"has_screenthos:true port:5901",
                        "screenshot":"has_screenshot:true !port:3389 !port:3388 !port:5900",
+                        "bbvs":"Server: BBVS",
+                        "baudisch":"http.favicon.hash:746882768",
+"loxone_intercom":"title:'Loxone Intercom Video'",
 
                        "niagara": "port:1911,4911 product:Niagara",
                        'bacnet': "port:47808",
@@ -282,7 +326,46 @@ coordinates_queries = {"webcam": "device:webcam",
 "miele@home":"title:Miele@home",
 "alphacom":"http.title:Alphacom",
 "simplex_grinnell":"http.html:SimplexGrinnell title:login",
-"bosch_security":"http.html:'Bosch Security'"
+"bosch_security":"http.html:'Bosch Security'",
+
+"fronius":"title:fronius",
+"webview":"http.favicon.hash:207964650",
+"siemens_Sm@rtClient":"title:'Siemens Sm@rtClient'",
+"WAGO":"title:'wago ethernet'",
+"sensatronics":"html:sensatronics",
+"extron":"Extron Electronics",
+"mikrotik_streetlighs":"mikrotik streetlight",
+"kesseltronics":"Kesseltronics",
+"unitronics":"title:'Unitronics PLC'",
+"atvise":"Server: atvise",
+"clearSCADA":"ClearSCADA",
+"youless":"title:YouLess",
+"DLILPC":"DLILPC",
+"intelliSlot":"title:IntelliSlot",
+"temperature_monitor":"title:'Temperature Monitor' !title:avtech",
+"CirCarLife":"CirCarLife",
+"web_scada":"title:'web scada'",
+"kaco":"kaco",
+"indect_parkway":"title:indect",
+"intuitive_Controller":"http.favicon.hash:1434282111",
+"intuitive_controller_2":"http.favicon.hash:-1011909571",
+"homeLYnk":"homeLYnk",
+"APC":"Location: home.htm Content-Length: 0 WebServer",
+"netio":"title:netio",
+"asi_controls":"title:'ASI Controls'",
+"myscada":"title:myscada",
+"iB-COM":"title:iB-COM",
+"building_operation_webstation":"title:'building operation'",
+"ftp_scada":"scada login",
+
+"apc_ftp":"APC FTP server",
+"network_management_card":"Network Management Card",
+"wemo_insight":"Belkin WeMo",
+"connect_ups":"title:ConnectUPS",
+"upshttpd":"Server: upshttpd",
+"poweragent":"PowerAgent",
+"CS121":"title:'CS121 SNMP/Web Adapter'",
+
                        }
 def get_keys():
     try:
@@ -415,6 +498,7 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
     SHODAN_API_KEY = keys['keys']['shodan']
     pages = 0
     screenshot = ""
+    print(query)
 
     while results:
         if pages == page:
@@ -425,6 +509,8 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
         search = Search.objects.get(id=fk)
         api = Shodan(SHODAN_API_KEY)
         fail = 0
+
+
 
         try:
             time.sleep(5)
@@ -459,14 +545,13 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
 
         pages = math.ceil(total / 100) + 1
         print(pages)
-        print(query)
 
         for counter, result in enumerate(results['matches']):
             lat = str(result['location']['latitude'])
             lon = str(result['location']['longitude'])
             city = ""
             indicator = []
-            print(counter)
+            # print(counter)
             # time.sleep(20)
 
             try:
@@ -564,7 +649,6 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
 
             if "GPGGA" in result['data']:
                 try:
-                    print('in')
                     splitted_data = result['data'].split('\n')
                     for i in splitted_data:
                         if "GPGGA" in i:
@@ -661,6 +745,115 @@ def twitter_nearby_task(id, lat, lon):
 
     return {'current': num_pages, 'total': num_pages, 'percent': 100}
 
+def paste_login(username, password, key):
+    login_url = "https://pastebin.com/api/api_login.php"
+    login_payload = {"api_dev_key": key, "api_user_name": username, "api_user_password": password}
+
+    login = requests.post(login_url, data=login_payload)
+    user_key = login.text
+    return user_key
+
+def retrieve_pastes(key, user_key):
+    url = "http://pastebin.com/api/api_post.php"
+    paste_dict = {}
+
+    values_list = {'api_option': 'list',
+                   'api_dev_key': key,
+                   'api_user_key': user_key}
+
+    data = urllib.parse.urlencode(values_list)
+    data = data.encode('utf-8')  # data should be bytes
+    req = urllib.request.Request(url, data)
+    with urllib.request.urlopen(req) as response:
+        the_page = response.read()
+
+    key_v = ""
+    title = ""
+
+
+    root = et.fromstring("<root>" + str(the_page) + "</root>")
+    for paste_root in root:
+        for paste_element in paste_root:
+            key = paste_element.tag.split("_", 1)[-1]
+            if key == "key":
+                key_v = paste_element.text
+            if key == "title":
+                title = paste_element.text
+
+        paste_dict[title] = key_v
+    return paste_dict
+
+def delete_paste(key,user_key, paste_code):
+    url = "http://pastebin.com/api/api_post.php"
+
+    values_list = {'api_option': 'delete',
+                   'api_dev_key': key,
+                   'api_user_key': user_key,
+                   "api_paste_key":paste_code}
+
+    data = urllib.parse.urlencode(values_list)
+    data = data.encode('utf-8')  # data should be bytes
+    req = urllib.request.Request(url, data)
+    urllib.request.urlopen(req)
+
+def create_paste(key,user_key,filename,text):
+    url = "http://pastebin.com/api/api_post.php"
+
+    values = {'api_option': 'paste',
+              'api_dev_key': key,
+              'api_paste_code': text,
+              'api_paste_private': '2',
+              'api_paste_name': filename,
+              'api_user_key': user_key}
+
+    data = urllib.parse.urlencode(values)
+    data = data.encode('utf-8')  # data should be bytes
+    req = urllib.request.Request(url, data)
+    with urllib.request.urlopen(req) as response:
+        the_page = response.read()
+
+@shared_task(bind=False)
+def send_to_field_agent_task(id, notes):
+    cve = ""
+    indicator = ""
+
+
+    af = Device.objects.get(id=id)
+    ports = af.port
+    try:
+        af_details = ShodanScan.objects.get(device_id=id)
+        ports = af_details.ports[1:][:-1]
+        if af_details.vulns:
+            cve = af_details.vulns[1:][:-1]
+        if af.indicator:
+            indicator = af.indicator[2:][:-2]
+    except:
+        print("Not scanned")
+        pass
+
+    user_key = paste_login(keys['keys']['pastebin_user'],keys['keys']['pastebin_password'],
+                           keys['keys']['pastebin_dev_key'])
+
+    pastes = retrieve_pastes(keys['keys']['pastebin_dev_key'], user_key=user_key)
+
+
+    ip = af.ip
+    lat = af.lat
+    lon = af.lon
+    org = af.org
+    type = af.type
+
+    notes = af.notes
+
+    merge_string = "ꓘ;"+lat+";"+lon+";"+ ip+";"+ports+";"+org+";"+type+";"+cve+";"+indicator+";"+notes
+
+    print("\\xea\\x93\\x98amerka_"+af.ip)
+    if "\\xea\\x93\\x98amerka_"+af.ip in pastes.keys():
+        delete_paste(keys['keys']['pastebin_dev_key'],user_key,pastes["\\xea\\x93\\x98amerka_"+af.ip])
+        create_paste(keys['keys']['pastebin_dev_key'], user_key,"ꓘamerka_"+af.ip,merge_string)
+    else:
+        create_paste(keys['keys']['pastebin_dev_key'], user_key, "ꓘamerka_" + af.ip, merge_string)
+
 
 @shared_task(bind=False)
 def flickr(id, lat, lon):
@@ -695,29 +888,37 @@ def shodan_scan_task(id):
     SHODAN_API_KEY = keys['keys']['shodan']
     device = Device.objects.get(id=id)
     api = Shodan(SHODAN_API_KEY)
+    product = []
+    tags = []
+    vulns = []
     try:
         # Search Shodan
         results = api.host(device.ip)
         # Show the results
         total = len(results['ports'])
+        print(total)
         for counter, i in enumerate(results['data']):
 
-            product = ''
-            tags = ""
-
             if 'product' in i:
-                product = i['product']
+                product.append(i['product'])
 
             if 'tags' in i:
-                tags = i['tags']
+                for j in i['tags']:
+                    tags.append(j)
 
-            print(counter)
-            device1 = ShodanScan(device=device, products=product,
-                                 ports=str(i['port']), module=i['_shodan']['module'], tags=tags)
-            device1.save()
             current_task.update_state(state='PROGRESS',
                                       meta={'current': counter, 'total': total,
-                                            'percent': int((float(counter) / total) * 100)})
+
+                                       'percent': int((float(counter) / total) * 100)})
+        if 'vulns' in results:
+            vulns = results['vulns']
+
+        ports = results['ports']
+        device1 = ShodanScan(device=device, products=product,
+                             ports=ports, tags=tags, vulns=vulns)
+        device1.save()
+        print(results['ports'])
+
         return {'current': total, 'total': total, 'percent': 100}
 
     except Exception as e:

@@ -30,6 +30,7 @@ class Device(models.Model):
     hostnames = models.CharField(max_length=100, default="")
     screenshot = models.CharField(max_length=100000, default="")
     located = models.BooleanField(default=False, null=True)
+    notes = models.CharField(max_length=1000, default="")
 
 
 class DeviceNearby(models.Model):
@@ -64,6 +65,7 @@ class ShodanScan(models.Model):
     tags = models.CharField(max_length=100)
     products = models.CharField(max_length=100)
     module = models.CharField(max_length=100)
+    vulns = models.CharField(max_length=100)
 
 
 class BinaryEdgeScore(models.Model):

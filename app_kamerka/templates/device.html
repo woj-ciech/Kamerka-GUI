@@ -122,7 +122,13 @@
 
         <input type="text" id="update_location" placeholder="Update location" style="width: 300px" />
         <input type="button" id="btn_update_location" value="Update location" class="btn btn-info active"/>
-
+        <BR>
+        <center>
+            <br>
+            <b>Notes for field agent</b>
+        <input type="text" id="notes" value="" placeholder="Notes for field agent" style="width: 300px" />
+        <input type="button" id="btn_send_all" value="Send all" class="btn btn-danger active"/>
+</center>
 
 
 
@@ -206,7 +212,7 @@
                                         {{ device.vulns }}<br>
                                             {{ device.city }}</b><br><br>
                                         {{ device.data }}<br>
-                                                                                    <td>{{ device.category }}</td>
+                                                                                    <td>{{ device.category }}</td><br>
 
                                     {% if device.screenshot %}
                                     <img src="data:image/jpeg;base64,{{ device.screenshot }}">
@@ -566,6 +572,8 @@ $('#whois_scan').on('click', function(){
         type: "GET",
         url: "/whois/{{device.id}}",
         success: function (data) {
+
+
                 if (data.task_id != null) {
                     get_task_info(data.task_id,pgrbar6);
                 }
@@ -575,6 +583,31 @@ $('#whois_scan').on('click', function(){
             },
             error: function (data) {
                 console.log("Something went wrong!");
+            }
+        });
+        return false;
+    });
+
+$('#btn_send_all').on('click', function(){
+    var bla = $('#notes').val();
+
+       $.ajax({
+        type: "GET",
+        url: "/send_to_field_agent/{{device.id}}/"+bla,
+        success: function (data) {
+        noty({text: "Updated" , layout: 'topRight', type: 'success', timeout: 1000});
+                if (data.task_id != null) {
+<!--                    get_task_info(data.task_id,pgrbar6);-->
+                    noty({text: "Updated" , layout: 'topRight', type: 'success', timeout: 1000});
+
+                }
+                else if (data.Error){
+                noty({text: "Error" , layout: 'topRight', type: 'error', timeout: 1000});
+                }
+            },
+            error: function (data) {
+                console.log("Something went wrong!");
+                noty({text: "Error" , layout: 'topRight', type: 'error', timeout: 1000});
             }
         });
         return false;
@@ -816,9 +849,11 @@ if (x.style.display === "none") {
             url: "/get_shodan_scan_results/{{device.id}}",
             type: "get",
             success: function(response) {
+            console.log(response);
+<!--            console.log(fields.ports);-->
             $.each(response, function(key, val) {
                  // response is form in html format
-             $("#shodan_results").append("<p><b>" + val.fields.ports + ' </b><br> ' + val.fields.products + " </p>"+' ' + val.fields.module +"</p>");
+             $("#shodan_results").append("<p><b>" + val.fields.ports + ' </b><br> ' + val.fields.products + " </p>"+' ' + val.fields.module +"</p>" + val.fields.vulns + " </p>"+' ' + val.fields.tags);
 
 
               }

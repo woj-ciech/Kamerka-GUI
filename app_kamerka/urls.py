@@ -30,6 +30,7 @@ urlpatterns = [
     path('get_nearby_devices_coordinates/<id>', views.get_nearby_devices_coordinates,
          name="get_nearby_devices_coordinates"),
     path('get_binaryedge_score/<id>', views.get_binaryedge_score, name="get_binaryedge_score"),
+    path('send_to_field_agent/<id>/<notes>', views.send_to_field_agent, name="send_to_field_agent"),
     path('get_binaryedge_score_results/<id>', views.get_binaryedge_score_results, name="get_binaryedge_score_results"),
     path('whois/<id>', views.whois, name="whois"),
     path('get_whois/<id>', views.get_whois, name="get_whois"),
