@@ -82,7 +82,7 @@ Type your coordinates in format "lat,lon", hardcoded radius is 20km.
 ![](https://i.imgur.com/M7V4IAq.jpg)
 
 ## Full list of supported devices with corresponding queries
-
+https://github.com/woj-ciech/Kamerka-GUI/blob/master/queries.md
 
 # Used components
 - Background IoT photo by https://unsplash.com/@pawel_czerwinski
