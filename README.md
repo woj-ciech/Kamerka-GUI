@@ -22,6 +22,9 @@ https://twitter.com/the_wojciech/status/1204774550241722368
 ## Update 27-12-2019 - Added medical devices
 https://medium.com/@woj_ciech/when-%EA%93%98amerka-meets-healthcare-research-on-exposed-medical-devices-ac62f2840da4
 
+## Update 20.01.2020 - New device & mobile support
+https://medium.com/@woj_ciech/hack-like-its-2077-presenting-%EA%93%98amerka-mobile-8886bc2680bf
+
 ## Requirements
 - beautiful soup
 - python3
