@@ -22,6 +22,9 @@ https://twitter.com/the_wojciech/status/1204774550241722368
 ## Update 27-12-2019 - Added medical devices
 https://medium.com/@woj_ciech/when-%EA%93%98amerka-meets-healthcare-research-on-exposed-medical-devices-ac62f2840da4
 
+## Update 23-01.2020 - NMAP scan upload update
+To make this work you need to download database "GeoLite2-City.mmdb" from MaxMind https://dev.maxmind.com/geoip/geoip2/geolite2/ and put it in root directory of project
+
 ## Requirements
 - beautiful soup
 - python3
@@ -35,6 +38,7 @@ https://medium.com/@woj_ciech/when-%EA%93%98amerka-meets-healthcare-research-on-
 - Flickr
 - Google Maps API
 - Pastebin PRO
+- MaxMind DB
 
 ```pip3 install -r requirements.txt```
 
@@ -86,6 +90,7 @@ Type your coordinates in format "lat,lon", hardcoded radius is 20km.
 
 # Used components
 - Background IoT photo by https://unsplash.com/@pawel_czerwinski
+- Background NMAP photo by Markus Spiske on Unsplash
 - Background ICS photo by https://unsplash.com/@wimvanteinde
 - Background Healthcare photo by Arseny Togulev - https://unsplash.com/@tetrakiss 
 - Joli admin template - https://github.com/sbilly/joli-admin
@@ -94,6 +99,7 @@ Type your coordinates in format "lat,lon", hardcoded radius is 20km.
 - Multiselect - https://github.com/varundewan/multiselect/
 - Arsen Zbidniakov Flat UI Checkbox https://codepen.io/ARS/pen/aeDHE/
 - icon from icons8.com and icon-icons.com
+- Upload form - https://codepen.io/aaronvanston
 
 # Known bugs:
 - It's version 1.0 so please raise an issue if you think you found any bug or have an idea to make it better.

@@ -217,7 +217,7 @@
                                             <tbody>
                                                 <tr>{% for object in search %}
 
-                                                        <td><strong><a href="{% url 'results' id=object.id %}">{{object.country}} {{object.coordinates }} - {% for a in object.ics %} {{ a }} {% endfor %} {% for b in object.coordinates_search %} {{ b}} {% endfor %}</strong></td>
+                                                        <td><strong><a href="{% url 'results' id=object.id %}">{{object.country}} {{object.coordinates }} - {% if object.country == "NMAP Scan" %} {{object.ics}} {% else %} {% for a in object.ics %} {{ a }} {% endfor %} {% for b in object.coordinates_search %} {{ b}} {% endfor %}{% endif %}</strong></td>
                                                 </a>
                                                 </tr>
 

@@ -10,6 +10,7 @@ class Search(models.Model):
     country = models.CharField(max_length=100)
     ics = models.CharField(max_length=100)
     coordinates_search = models.CharField(max_length=1000)
+    nmap = models.BooleanField(default=False)
 
 class Device(models.Model):
     search = models.ForeignKey(Search, on_delete=models.CASCADE)

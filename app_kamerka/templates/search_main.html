@@ -61,6 +61,71 @@ min-height: 58px;
     background: #1caf9a;
     }
     </style>
+
+    <style>
+        .file-upload {
+  background-color: #ffffff;
+  width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+
+.file-upload-content {
+  display: none;
+  text-align: center;
+}
+
+.file-upload-input {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.image-upload-wrap {
+  margin-top: 20px;
+  border: 4px dashed #1caf9a;
+  position: relative;
+}
+
+.image-dropping,
+.image-upload-wrap:hover {
+  background-color: #1caf9a;
+  border: 4px dashed #ffffff;
+}
+
+.image-title-wrap {
+  padding: 0 15px 15px 15px;
+  color: #222;
+}
+
+.drag-text {
+  text-align: center;
+}
+
+.drag-text h3 {
+  text-transform: uppercase;
+  color: white;
+  padding: 60px 0;
+  font-family: "Poppins", "Arial", "Helvetica Neue", sans-serif;
+font-weight: 500;
+font-size: 22px;
+}
+
+.file-upload-image {
+  max-height: 200px;
+  max-width: 200px;
+  margin: auto;
+  padding: 20px;
+}
+
+
+    </style>
     <!-- Title Page-->
     <title>Search - ꓘamerka</title>
 
@@ -84,6 +149,9 @@ min-height: 58px;
                         </li>
                          <li class="tab-list__item">
                             <a class="tab-list__link" href="#tab3"  id='tab4' onclick="replace2()" data-toggle="tab">Healthcare</a>
+                        </li>
+                        <li class="tab-list__item">
+                            <a class="tab-list__link" href="#tab5"  id='tab6' onclick="replace3()" data-toggle="tab">Upload NMAP Scan</a>
                         </li>
 
 
@@ -537,6 +605,43 @@ min-height: 58px;
 
                             </form>
                         </div>
+
+
+
+
+                            <div class="tab-pane" id="tab5">
+                            <form method="post" action="" enctype="multipart/form-data">
+
+
+<!--  <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button>-->
+<script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+  <div class="image-upload-wrap">
+    <input class="file-upload-input" type='file' name="myfile" onchange="readURL(this);"/>
+    <div class="drag-text">
+      <h3>Upload NMAP scan in XML format </h3>
+    </div>
+  </div>
+                                <div class="file-upload-content">
+    <div class="image-title-wrap">
+        <span style='color:white;font-family: "Poppins", "Arial", "Helvetica Neue", sans-serif;
+font-weight: 500;
+font-size: 22px;' class="image-title">
+            </span>
+    </div>
+  </div>
+                                <br>
+
+<!--    <input type="file" name="myfile">-->
+    <button class="btn-submit m-t-0" type="submit">Upload</button>
+  </form>
+                        </div>
+
+
+
+
+
+
+
                     </div>
                 </div>
             </div>
@@ -551,6 +656,29 @@ min-height: 58px;
   <script src="https://unpkg.com/bootstrap-select@1.12.4/dist/js/bootstrap-select.min.js"></script>
   <script src="https://unpkg.com/bootstrap-select-country@4.0.0/dist/js/bootstrap-select-country.min.js"></script>
 <script>
+    function readURL(input) {
+  if (input.files && input.files[0]) {
+
+    var reader = new FileReader();
+
+    reader.onload = function(e) {
+      $('.image-upload-wrap').hide();
+      $('.image-title').html(input.files[0].name);
+
+<!--      $('.file-upload-image').html(input.files[0].name);-->
+      $('.file-upload-content').show();
+
+    };
+
+    reader.readAsDataURL(input.files[0]);
+
+  } else {
+    removeUpload();
+  }
+}
+</script>
+
+    <script>
 function replaceback() {
 a = document.querySelector(".bg-img-1").style.background = 'url({% static 'images/plant.jpg' %}) center center/cover no-repeat';
 }
@@ -560,6 +688,11 @@ a = document.querySelector(".bg-img-1").style.background = 'url({% static 'image
 }
 function replace2() {
 a = document.querySelector(".bg-img-1").style.background = 'url({% static 'images/hospital.jpeg' %}) center center/cover no-repeat';
+}
+function replace3() {
+a = document.querySelector(".bg-img-1").style.background = 'url({% static 'images/nmap.jpg' %}) center center/cover no-repeat';
+document.getElementByClassName("rapper wrapper--w900").getElementsByTagName('h1')[0].style.color = "#fff";
+
 }
 </script>
     <script>

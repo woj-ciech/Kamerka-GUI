@@ -1,6 +1,8 @@
 from django import forms
 
-
+class UploadFileForm(forms.Form):
+    title = forms.CharField(max_length=50)
+    file = forms.FileField()
 #
 class CoordinatesForm(forms.Form):
     coordinates = forms.CharField(max_length=100)

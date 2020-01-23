@@ -137,7 +137,7 @@
                                         <tr>
                                                 <th>IP</th>
                                                 <th>Type</th>
-                                                <th>Product</th>
+                                                <th>{% if device.nmap %} Product {% else %} Ports {% endif %}</th>
                                                 <th>Country</th>
                                                 <th>Latitude</th>
                                                 <th>Longitude</th>
@@ -160,7 +160,7 @@
                                                 <td>                                     <a href="{% url 'device' id=device.search_id ip=device.ip device_id=device.id %}">
                                                     {{ device.ip }}</a></td>
                                                 <td>{{ device.type }}</td>
-                                                <td>{{ device.product }}</td>
+                                                <td>{%if device.type == "NMAP" %} {{device.port}} {% else %} {{ device.product }}{% endif %}</td>
                                                 <td>{{ device.country_code }}</td>
                                                 <td>{{ device.lat }}</td>
                                                 <td>{{ device.lon }}</td>

@@ -36,6 +36,8 @@ CELERY_TIMEZONE = 'Africa/Nairobi'
 CELERY_IMPORTS = ('kamerka.tasks',)
 # Application definition
 STATIC_URL = '/static/'
+MEDIA_URL = '/scans/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'scans')
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',

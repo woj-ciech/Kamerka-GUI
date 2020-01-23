@@ -2,12 +2,13 @@ import ast
 import json
 from collections import Counter
 import requests
-
+from django.core.files.storage import FileSystemStorage
+from .forms import UploadFileForm
 import pycountry
 from celery.result import AsyncResult
 from django.core import serializers
 from django.db.models import Count
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
@@ -15,7 +16,7 @@ from app_kamerka import forms
 from app_kamerka.models import Search, Device, DeviceNearby, FlickrNearby, ShodanScan, BinaryEdgeScore, Whois, \
     TwitterNearby
 from kamerka.tasks import shodan_search, devices_nearby, twitter_nearby_task, flickr, shodan_scan_task, \
-    binary_edge_scan, whoisxml, check_credits, send_to_field_agent_task
+    binary_edge_scan, whoisxml, check_credits, send_to_field_agent_task, nmap_scan, validate_nmap, validate_maxmind
 
 
 # Create your views here.
@@ -108,9 +109,35 @@ def search_main(request):
 
             return HttpResponseRedirect('index')
 
+        try:
+            myfile = request.FILES['myfile']
+        except:
+            form = forms.CountryForm()
+            return render(request, 'search_main.html', {'form': form})
 
+        if request.method == 'POST' and request.FILES['myfile']:
+            myfile = request.FILES['myfile']
+            try:
+                fs = FileSystemStorage()
+                filename = fs.save(myfile.name, myfile)
+                uploaded_file_url = fs.url(filename)
+                print(uploaded_file_url)
+                validate_nmap(uploaded_file_url)
+                validate_maxmind()
+                search = Search(country="NMAP Scan", ics=myfile.name,nmap=True)
+                search.save()
+                nmap_task = nmap_scan.delay(uploaded_file_url ,fk=search.id)
+
+                request.session['task_id'] = nmap_task.task_id
+                print('session')
+            except Exception as e:
+                print(e)
+                return JsonResponse({'message':str(e)}, status=500)
+
+            return HttpResponseRedirect('index')
 
         else:
+
             form = forms.CountryForm()
             return render(request, 'search_main.html', {'form': form})
 
@@ -191,7 +218,6 @@ def devices(request):
     context = {"devices": all_devices}
 
     return render(request, "devices.html", context=context)
-
 
 def map(request):
     all_devices = Device.objects.all()
