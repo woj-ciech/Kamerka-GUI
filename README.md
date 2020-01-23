@@ -27,6 +27,7 @@ https://medium.com/@woj_ciech/hack-like-its-2077-presenting-%EA%93%98amerka-mobi
 
 ## Update 23-01.2020 - NMAP scan upload update
 To make this work you need to download database "GeoLite2-City.mmdb" (binary format) from MaxMind https://dev.maxmind.com/geoip/geoip2/geolite2/ and put it in root directory of project
+https://twitter.com/the_wojciech/status/1220436310302887938
 
 ## Requirements
 - beautiful soup
