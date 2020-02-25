@@ -12,3 +12,4 @@ python_twitter==3.5
 bs4
 pynmea2
 maxminddb
+xmltodict

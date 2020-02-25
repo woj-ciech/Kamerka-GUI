@@ -100,37 +100,53 @@
                                         <thead>
                                             <tr>
                                                 <th>IP</th>
-                                                <th>Type</th>
-                                                <th>Product</th>
-                                                <th>Country</th>
-                                                <th>Latitude</th>
-                                                <th>Longitude</th>
-                                                <th>CVE</th>
-                                                <th>Indicators</th>
+                                                    <th>Type</th>
+                                                    <th>{% if device.nmap %} Ports {% else %} Product {% endif %}</th>
+                                                    <th>Port</th>
+                                                    <th>City</th>
+                                                    <th>Latitude</th>
+                                                    <th>Longitude</th>
+                                                    <th>CVE</th>
+                                                    <th>Indicator</th>
+                                                <th>Located</th>
 
                                             </tr>
                                         </thead>
                                         <tbody>
 
                                             {% for device in devices %}
-                                            <tr>
+                                            {% if device.located %}
+                                                <tr style="background:#1caf9a">
+                                                    {% else %}
+                                                    <tr>
+                                                {% endif %}
 
-                                                <td>                                            <a href="{% url 'device' id=device.search_id ip=device.ip device_id=device.id %}">
-                                                    {{ device.ip }}</a></td>
-                                                <td>{{ device.type }}</td>
-                                                <td>{{ device.product }}</td>
-                                                <td>{{ device.country_code }}</td>
-                                                <td>{{ device.lat }}</td>
-                                                <td>{{ device.lon }}</td>
-                                                                                                <td>{{ device.vulns }}</td>
-                                                                                                <td>{% for a in device.indicator %}{{ a }} {% endfor %}</td>
-
+                                                <td>                                     <a href="{% url 'device' id=device.search_id ip=device.ip device_id=device.id %}">
+                                                        {{ device.ip }}</a></td>
+                                                    <td>{{ device.type }}</td>
+                                                    <td>{%if device.type == "NMAP" %} {{device.port}} {% else %} {{ device.product }}{% endif %}</td>
+                                                    <td>{{ device.port }}</td>
+                                                    <td>{{ device.city }}</td>
+                                                    <td>{{ device.lat }}</td>
+                                                    <td>{{ device.lon }}</td>
+                                                    <td>{{ device.vulns }}</td>
+                                                    <td>{% for a in device.indicator %}{{ a }} {% endfor %}</td>
+                                                    <td>{{ device.located }}</td>
                                             </tr>
 
 
                                         {% endfor %}
 
                                         </tbody>
+
+
+
+
+
+
+
+
+
                                     </table>
 </div>
 

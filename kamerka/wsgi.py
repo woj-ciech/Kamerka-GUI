@@ -16,3 +16,5 @@ from app_kamerka.models import Device, Search, DeviceNearby
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'kamerka.settings')
 
 application = get_wsgi_application()
+
+

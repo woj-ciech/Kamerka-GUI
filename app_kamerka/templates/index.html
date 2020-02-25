@@ -217,7 +217,7 @@
                                             <tbody>
                                                 <tr>{% for object in search %}
 
-                                                        <td><strong><a href="{% url 'results' id=object.id %}">{{object.country}} {{object.coordinates }} - {% if object.country == "NMAP Scan" %} {{object.ics}} {% else %} {% for a in object.ics %} {{ a }} {% endfor %} {% for b in object.coordinates_search %} {{ b}} {% endfor %}{% endif %}</strong></td>
+                                                        <td><strong><a href="{% url 'results' id=object.id %}">{{object.country}} {{object.coordinates }}  {% if object.country == "NMAP Scan" %} {{object.ics}} {% endif %}</strong></td>
                                                 </a>
                                                 </tr>
 
@@ -303,7 +303,7 @@
 
         <script type="text/javascript" src="{% static 'js/index_charts.js' %}"></script>
         <script src="{% static 'celery_progress/celery_progress.js' %}"></script>
-        <script>drawcharts({{ ics.count }}, {{ coordinates.count }}, {{ports|safe}}, {{ countries|safe }});</script>
+        <script>drawcharts({{ ics.count }}, {{ coordinates.count }}, {{ healthcare.count }}, {{ports|safe}}, {{ countries|safe }});</script>
         <script>
         {% if task_id %}
 

@@ -87,3 +87,9 @@ class Whois(models.Model):
     admin_email = models.CharField(max_length=100)
     admin_phone = models.CharField(max_length=100)
     email = models.CharField(max_length=100)
+
+class Bosch(models.Model):
+    device = models.ForeignKey(Device, on_delete=models.CASCADE)
+    username = models.CharField(max_length=100)
+    password = models.CharField(max_length=100)
+

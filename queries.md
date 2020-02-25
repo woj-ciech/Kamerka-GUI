@@ -102,6 +102,7 @@
 "simplex_grinnell":"http.html:SimplexGrinnell title:login",
 "bosch_security":"http.html:'Bosch Security'",
 
+"other_hmi":"html:hmiBody",
 "fronius":"title:fronius",
 "webview":"http.favicon.hash:207964650",
 "Siemens Sm@rtClient":"title:'Siemens Sm@rtClient'",

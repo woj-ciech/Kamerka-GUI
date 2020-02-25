@@ -209,7 +209,7 @@
                                         {{ device.product }}<br>
                                         {{ device.type }}<br>
                                         {{ device.org }}<br>
-                                        {{ device.vulns }}<br>
+                                        {{ device.vulns|slice:"1:-1" }}<br>
                                             {{ device.city }}</b><br><br>
                                         {{ device.data }}<br>
                                                                                     <td>{{ device.category }}</td><br>
@@ -295,8 +295,33 @@
 
                                     </div>
                                         <div class="tab-pane" id="tab10">
-                                            Exploit
+
+
+
+<div class="col-md-4">
+
+                            <!-- START USERS ACTIVITY BLOCK -->
+    {% if device.type == "bosch_security" %}
+                            <div class="panel panel-default">
+                                <div class="panel-heading ui-draggable-handle">
+                                    <div class="panel-title-box">
+                                        <h3>Get Usernames</h3>
                                     </div>
+
+                                </div>
+                                <div class="panel-body padding-0">
+                                    <button type="button" id="bosch_get_usernames" class="btn btn-info active">Get usernames</button>
+                                                                        <button type="button" id="bosch_show" class="btn btn-info    active">Show</button>
+                                    <div id="bosch_results" class="contact-info" style="display: none;"></div>
+                                    <progress id="progress-bar7" value="0" max="100" style="display:none; margin-bottom: 1em;"></progress>
+
+                                </div>
+                            </div>
+    {% endif %}
+                            <!-- END USERS ACTIVITY BLOCK -->
+
+                        </div>                                    </div>
+
                                 </div>
                             </div>
                             <!-- END JUSTIFIED TABS -->
@@ -588,6 +613,28 @@ $('#whois_scan').on('click', function(){
         return false;
     });
 
+
+$('#bosch_get_usernames').on('click', function(){
+       $.ajax({
+        type: "GET",
+        url: "/get_bosch_usernames/{{device.id}}",
+        success: function (data) {
+
+                noty({text: data.Success , layout: 'topRight', type: 'success', timeout: 10000});
+                if (data.task_id != null) {
+                    get_task_info(data.task_id,pgrbar7);
+                }
+                else if (data.Error){
+                noty({text: data.Error , layout: 'topRight', type: 'error', timeout: 10000});
+                }
+            },
+            error: function (data) {
+                console.log("Something went wrong!");
+            }
+        });
+        return false;
+    });
+
 $('#btn_send_all').on('click', function(){
     var bla = $('#notes').val();
 
@@ -659,26 +706,27 @@ $('#binaryedge_show').on('click', function() {
                     type: "get",
                     success: function(response) {
                         $.each(response, function(key, val) {
+                        console.log(response);
                             $("#binaryedge_results").append("<p><b>" + "Score" + ' </b><br> ' + val.fields.score + " </p>");
 
                             $.each(val.fields, function(fieldname, field) {
                                 if (fieldname == "device") {
                                     {}
                                 } else if (fieldname == 'grades') {
-                                    var grades = JSON.parse(field);
+                                    var grades = field;
                                     for (var key in grades) {
                                         // check if the property/key is defined in the object itself, not in parent
-                                        if (grades.hasOwnProperty(key)) {
+
                             $("#binaryedge_results").append("<p><b>" + key + ' </b><br> ' + grades[key] + " </p>");
 }
-                                    }
+
                                 } else if (fieldname == "cve") {
-                                var cve = JSON.parse(field);
+                                var cve = field;
 
                                     for (var key in cve) {
 
                                         // check if the property/key is defined in the object itself, not in parent
-                                        if (cve.hasOwnProperty(key)) {
+
                                             $("#binaryedge_results").append("<p><b><h3>" + key + '</h3> </b> </p>')
                                             for (var cc in cve[key]){
                                              if (cve[key].hasOwnProperty(cc)) {
@@ -687,7 +735,7 @@ $('#binaryedge_show').on('click', function() {
 }
                                         }
                                         }
-                                    }
+
 
 
                                 })
@@ -781,6 +829,33 @@ if (x.style.display === "none") {
   });
 
 
+$('#bosch_show').on('click', function(){
+var x = document.getElementById("bosch_results");
+if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  } if(x.innerHTML == ""){
+        $.ajax({
+            url: "/show_bosch_usernames/{{device.id}}",
+            type: "get",
+            success: function(response) {
+            $.each(response, function(key, val) {
+              $.each(val.fields, function(fieldname, field) {
+                 // response is form in html format
+                 if (fieldname=="device"){ {} }
+                 else {
+                 $("#bosch_results").append("<p><b>" + fieldname + ' </b><br> ' + field + " </p>");
+}
+            }  );$("#bosch_results").append('------------------');
+
+              }
+              )
+            }
+        })
+        }
+  });
+
 $('#flickr_show').on('click', function(){
 var x = document.getElementById("results");
 if (x.style.display === "none") {
@@ -849,12 +924,19 @@ if (x.style.display === "none") {
             url: "/get_shodan_scan_results/{{device.id}}",
             type: "get",
             success: function(response) {
-            console.log(response);
 <!--            console.log(fields.ports);-->
+console.log(response);
             $.each(response, function(key, val) {
-                 // response is form in html format
-             $("#shodan_results").append("<p><b>" + val.fields.ports + ' </b><br> ' + val.fields.products + " </p>"+' ' + val.fields.module +"</p>" + val.fields.vulns + " </p>"+' ' + val.fields.tags);
+            var ports = val.fields.ports.substring(1, val.fields.ports.length-1)
+            var products = val.fields.products.substring(1, val.fields.products.length-1)
+                        var modules = val.fields.module.substring(1, val.fields.module.length-1)
 
+            var vulns = val.fields.vulns.substring(1, val.fields.vulns.length-1)
+
+            var tags = val.fields.tags.substring(1, val.fields.tags.length-1)
+
+                 // response is form in html format
+             $("#shodan_results").append("<p><b>Ports</b><br>" + ports + ' </p><br><p><b>Products</b><br>' + products + " </p><br><b>Module</b><br>"+' ' + val.fields.module +"</p><br><b>Vulnerabilities</b><br>" + vulns + " </p><br><b>Tags</b><br>"+' ' + tags + "<br>");
 
               }
               )

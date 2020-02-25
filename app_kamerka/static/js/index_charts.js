@@ -1,4 +1,4 @@
-function drawcharts(ics_len,coordinates_search_len, ports, countries){
+function drawcharts(ics_len,coordinates_search_len, healthcare_len, ports, countries){
 //console.log(ports)
     /* reportrange */
     if($("#reportrange").length > 0){   
@@ -72,6 +72,7 @@ function drawcharts(ics_len,coordinates_search_len, ports, countries){
         data: [
             {label: "ICS", value: ics_len},
             {label: "Coordinates", value: coordinates_search_len},
+            {label: "Healthcare", value: healthcare_len},
         ],
         colors: ['#33414E', '#1caf9a', '#FEA223'],
         resize: true

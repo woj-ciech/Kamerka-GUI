@@ -36,11 +36,12 @@ To make this work you need to download database "GeoLite2-City.mmdb" (binary for
 - celery
 - redis
 - Shodan paid account
-- BinaryEdge
-- WHOISXMLAPI
-- Flickr
+- BinaryEdge (Optional)
+- WHOISXMLAPI (Optional)
+- Flickr (Optional)
 - Google Maps API
-- Pastebin PRO
+- Pastebin PRO (Optional)
+- xmltodict
 
 ```pip3 install -r requirements.txt```
 

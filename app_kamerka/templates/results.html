@@ -113,7 +113,7 @@
                                     <div class="tab-pane active" id="tab8">
  <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    <h3 class="panel-title">Google World Map </h3>
+                                    <h3 class="panel-title">Google World Map</h3>
                                 </div>
                                 <div class="panel-body panel-body-map">
                                     <div id="google_world_map" style="width: 100%; height: 700px;"></div>
@@ -132,51 +132,53 @@
 
                                 </div>
                                 <div class="panel-body">
-                                    <table id="customers2" class="table datatable">
-                                        <thead>
-                                        <tr>
-                                                <th>IP</th>
-                                                <th>Type</th>
-                                                <th>{% if device.nmap %} Product {% else %} Ports {% endif %}</th>
-                                                <th>Country</th>
-                                                <th>Latitude</th>
-                                                <th>Longitude</th>
-                                                <th>CVE</th>
-                                                <th>Indicator</th>
-                                            <th>Located</th>
+                                        <table id="customers2" class="table datatable">
+                                            <thead>
+                                            <tr>
+                                                    <th>IP</th>
+                                                    <th>Type</th>
+                                                    <th>{% if device.nmap %} Ports {% else %} Product {% endif %}</th>
+                                                    <th>Port</th>
+                                                    <th>City</th>
+                                                    <th>Latitude</th>
+                                                    <th>Longitude</th>
+                                                    <th>CVE</th>
+                                                    <th>Indicator</th>
+                                                <th>Located</th>
 
 
-                                            </tr>
-                                        </thead>
-                                        <tbody>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
 
-                                            {% for device in search %}
-                                            {% if device.located %}
-                                            <tr style="background:#1caf9a">
-                                                {% else %}
-                                                <tr>
-                                            {% endif %}
+                                                {% for device in search %}
+                                                {% if device.located %}
+                                                <tr style="background:#1caf9a">
+                                                    {% else %}
+                                                    <tr>
+                                                {% endif %}
 
-                                                <td>                                     <a href="{% url 'device' id=device.search_id ip=device.ip device_id=device.id %}">
-                                                    {{ device.ip }}</a></td>
-                                                <td>{{ device.type }}</td>
-                                                <td>{%if device.type == "NMAP" %} {{device.port}} {% else %} {{ device.product }}{% endif %}</td>
-                                                <td>{{ device.country_code }}</td>
-                                                <td>{{ device.lat }}</td>
-                                                <td>{{ device.lon }}</td>
-                                                <td>{{ device.vulns }}</td>
-                                                <td>{% for a in device.indicator %}{{ a }} {% endfor %}</td>
-                                                <td>{{ device.located }}</td>
-
-
-
-                                            </tr>
+                                                    <td>                                     <a href="{% url 'device' id=device.search_id ip=device.ip device_id=device.id %}">
+                                                        {{ device.ip }}</a></td>
+                                                    <td>{{ device.type }}</td>
+                                                    <td>{%if device.type == "NMAP" %} {{device.port}} {% else %} {{ device.product }}{% endif %}</td>
+                                                    <td>{{ device.port }}</td>
+                                                    <td>{{ device.city }}</td>
+                                                    <td>{{ device.lat }}</td>
+                                                    <td>{{ device.lon }}</td>
+                                                    <td>{{ device.vulns|slice:"1:-1" }}</td>
+                                                    <td>{% for a in device.indicator %}{{ a }} {% endfor %}</td>
+                                                    <td>{{ device.located }}</td>
 
 
-                                        {% endfor %}
 
-                                        </tbody>
-                                    </table>
+                                                </tr>
+
+
+                                            {% endfor %}
+
+                                            </tbody>
+                                        </table>
 </div>
 
 
@@ -557,7 +559,7 @@ function initialize() {
      d3v3.wordcloud()
         .size([400, 200])
         .selector('#wordcloud')
-        .words([{% for vuln in device.vulns %} {text: "{{  vuln }}", size: "55"}, {% endfor %}])
+        .words([{% for vuln, link in vulns %} {text: "{{  vuln }}", size: "15"}, {% endfor %}])
         .start();
     </script>
 

@@ -14,8 +14,8 @@ from django.shortcuts import render
 
 from app_kamerka import forms
 from app_kamerka.models import Search, Device, DeviceNearby, FlickrNearby, ShodanScan, BinaryEdgeScore, Whois, \
-    TwitterNearby
-from kamerka.tasks import shodan_search, devices_nearby, twitter_nearby_task, flickr, shodan_scan_task, \
+    TwitterNearby, Bosch
+from kamerka.tasks import bosch_usernames,shodan_search, devices_nearby, twitter_nearby_task, flickr, shodan_scan_task, \
     binary_edge_scan, whoisxml, check_credits, send_to_field_agent_task, nmap_scan, validate_nmap, validate_maxmind
 
 
@@ -145,13 +145,12 @@ def search_main(request):
         form = forms.CountryForm()
         return render(request, 'search_main.html', {'form': form})
 
-
-
 def index(request):
     all_devices = Device.objects.all()
     last_5_searches = Search.objects.filter().order_by('-id')[:5]
     ics_len = Device.objects.filter(category="ics")
     coordinates_search_len = Device.objects.filter(category="coordinates")
+    healthcare_len = Device.objects.filter(category="healthcare")
     search_all = Search.objects.all()
     task = request.session.get('task_id')
     ports = Device.objects.values('port').annotate(c=Count('port')).order_by('-c')[:7]
@@ -197,6 +196,7 @@ def index(request):
                "search": last_5_searches,
                "ics": ics_len,
                "coordinates": coordinates_search_len,
+               "healthcare":healthcare_len,
                "ports": ports_list,
                "countries": countries,
                'vulns': sort,
@@ -447,6 +447,33 @@ def get_nearby_devices(request, id):
 
         return HttpResponse(response_data, content_type="application/json")
 
+def get_bosch_usernames(request,id):
+    if request.is_ajax() and request.method == 'GET':
+        bosch_device = Bosch.objects.filter(device_id=id)
+
+        if bosch_device:
+            print('already')
+            return HttpResponse(json.dumps({'Error': "Already in database"}), content_type='application/json')
+        else:
+            get_usernames = bosch_usernames(id=id)
+
+
+        if not get_usernames:
+            print(get_usernames)
+            return HttpResponse(json.dumps({'Error': "Connection Error"}), content_type='application/json')
+        else:
+            print(get_usernames)
+            return HttpResponse(json.dumps({'Success': "Success"}), content_type='application/json')
+
+
+
+def show_bosch_usernames(request,id):
+    if request.is_ajax() and request.method == 'GET':
+        bosch_device = Bosch.objects.filter(device_id=id)
+
+        response_data = serializers.serialize('json', bosch_device)
+
+        return HttpResponse(response_data, content_type="application/json")
 
 def get_flickr_results(request, id):
     if request.is_ajax() and request.method == 'GET':
