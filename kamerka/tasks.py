@@ -1036,7 +1036,6 @@ def bosch_usernames(id):
                         print(decoded_username)
                         bosch_model = Bosch(device=device1, username=decoded_username.decode("utf-8") , password=decoded_pwd.decode("utf-8") )
                         bosch_model.save()
-                        return True
                 except Exception as e:
                     print(str(e))
                     return False
