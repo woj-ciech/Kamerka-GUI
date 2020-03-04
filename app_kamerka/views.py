@@ -452,18 +452,15 @@ def get_bosch_usernames(request,id):
         bosch_device = Bosch.objects.filter(device_id=id)
 
         if bosch_device:
-            print('already')
             return HttpResponse(json.dumps({'Error': "Already in database"}), content_type='application/json')
         else:
             get_usernames = bosch_usernames(id=id)
-
-
-        if not get_usernames:
             print(get_usernames)
-            return HttpResponse(json.dumps({'Error': "Connection Error"}), content_type='application/json')
-        else:
-            print(get_usernames)
+
+        if get_usernames:
             return HttpResponse(json.dumps({'Success': "Success"}), content_type='application/json')
+        else:
+            return HttpResponse(json.dumps({'Error': "Connection Error"}), content_type='application/json')
 
 
 
@@ -472,6 +469,8 @@ def show_bosch_usernames(request,id):
         bosch_device = Bosch.objects.filter(device_id=id)
 
         response_data = serializers.serialize('json', bosch_device)
+
+        print(response_data)
 
         return HttpResponse(response_data, content_type="application/json")
 

@@ -310,6 +310,7 @@
 
                                 </div>
                                 <div class="panel-body padding-0">
+                                    <br>
                                     <button type="button" id="bosch_get_usernames" class="btn btn-info active">Get usernames</button>
                                                                         <button type="button" id="bosch_show" class="btn btn-info    active">Show</button>
                                     <div id="bosch_results" class="contact-info" style="display: none;"></div>
@@ -620,11 +621,10 @@ $('#bosch_get_usernames').on('click', function(){
         url: "/get_bosch_usernames/{{device.id}}",
         success: function (data) {
 
+        if (data.Success){
                 noty({text: data.Success , layout: 'topRight', type: 'success', timeout: 10000});
-                if (data.task_id != null) {
-                    get_task_info(data.task_id,pgrbar7);
-                }
-                else if (data.Error){
+}
+                if (data.Error){
                 noty({text: data.Error , layout: 'topRight', type: 'error', timeout: 10000});
                 }
             },

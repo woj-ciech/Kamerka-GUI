@@ -1032,17 +1032,21 @@ def bosch_usernames(id):
                     if username:
                         decoded_username = base64.b64decode(username)
                         decoded_pwd = base64.b64decode(pwd)
-                        print(decoded_pwd)
-                        print(decoded_username)
-                        bosch_model = Bosch(device=device1, username=decoded_username.decode("utf-8") , password=decoded_pwd.decode("utf-8") )
+                        utf_username = decoded_username.decode("utf-8")
+                        utf_password = decoded_pwd.decode("utf-8")
+                        bosch_model = Bosch(device=device1, username=utf_username , password=utf_password )
                         bosch_model.save()
+                        print(decoded_username)
                 except Exception as e:
                     print(str(e))
-                    return False
+                    print(e)
+                    return True
 
     except Exception as e:
         print(str(e.args))
+        print(e)
         return False
+
 
 @shared_task(bind=False)
 def whoisxml(id):
