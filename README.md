@@ -43,6 +43,7 @@ https://twitter.com/the_wojciech/status/1220436310302887938
 - Google Maps API
 - Pastebin PRO (Optional)
 - xmltodict
+- python-libnmap
 
 ```pip3 install -r requirements.txt```
 
