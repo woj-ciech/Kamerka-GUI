@@ -4,7 +4,11 @@
 
 ### Powered by Shodan - Supported by Binary Edge & WhoisXMLAPI
 
-writeup - https://medium.com/@woj_ciech/hack-the-planet-with-%EA%93%98amerka-gui-ultimate-internet-of-things-industrial-control-systems-5ff7d9686b29   
+writeup -https://www.offensiveosint.io/hack-the-planet-with-amerka-gui-ultimate-internet-of-things-industrial-control-systems-reconnaissance-tool/
+
+https://www.offensiveosint.io/hack-like-its-2077-presenting-amerka-mobile/
+
+
 Demo - https://woj-ciech.github.io/kamerka-demo/kamerka.html
 
 ## Update 15-11.2019 - Maritime support
