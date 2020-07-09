@@ -8,7 +8,7 @@ django_jsonfield==1.3.1
 pybinaryedge==0.5
 pycountry==19.8.18
 shodan==1.19.0
-python_twitter==3.5
+python-twitter
 bs4
 pynmea2
 maxminddb
