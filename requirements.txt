@@ -14,3 +14,4 @@ pynmea2
 maxminddb
 xmltodict
 python-libnmap
+lxml

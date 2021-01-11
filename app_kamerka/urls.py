@@ -34,7 +34,7 @@ urlpatterns = [
     path('get_binaryedge_score_results/<id>', views.get_binaryedge_score_results, name="get_binaryedge_score_results"),
     path('whois/<id>', views.whois, name="whois"),
     path('get_whois/<id>', views.get_whois, name="get_whois"),
-    path('get_bosch_usernames/<id>', views.get_bosch_usernames, name="get_bosch_usernames"),
-    path('show_bosch_usernames/<id>', views.show_bosch_usernames, name="show_bosch_usernames"),
-
+    path('scan/<id>', views.scan_dev, name="scan"),
+    path('exploit/<id>', views.exploit_dev, name="exploit"),
+    # path('show_bosch_usernames/<id>', views.show_bosch_usernames, name="show_bosch_usernames"),
 ]

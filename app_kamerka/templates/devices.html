@@ -33,7 +33,7 @@
                             <div class="profile-image">
                             </div>
                             <div class="profile-data">
-                                                              <p><h3 style="color:white;">Wojciech <br><a href="https://github.com/woj-ciech">Github</a> <br> <a href="https://twitter.com/@the_wojciech">Twitter</a></h3> </p>
+                                  <img width=200px height=200px src="https://www.offensiveosint.io/content/images/2020/07/OffensiveOsint-logo-RGB-2.png">
 
                             </div>
 
@@ -109,6 +109,7 @@
                                                     <th>CVE</th>
                                                     <th>Indicator</th>
                                                 <th>Located</th>
+                                                <th>Exploited</th>
 
                                             </tr>
                                         </thead>
@@ -132,6 +133,11 @@
                                                     <td>{{ device.vulns }}</td>
                                                     <td>{% for a in device.indicator %}{{ a }} {% endfor %}</td>
                                                     <td>{{ device.located }}</td>
+                                                   {% if device.exploited_scanned %}
+                                                <td> True </td>
+                                                    {% else %}
+                                                <td> False </td>
+                                                {% endif %}
                                             </tr>
 
 

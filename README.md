@@ -33,6 +33,11 @@ https://medium.com/@woj_ciech/hack-like-its-2077-presenting-%EA%93%98amerka-mobi
 To make this work you need to download database "GeoLite2-City.mmdb" (binary format) from MaxMind https://dev.maxmind.com/geoip/geoip2/geolite2/ and put it in root directory of project
 https://twitter.com/the_wojciech/status/1220436310302887938
 
+## Update 11.01.2021 - Added Scan & Exploit & Information & Default passwords
+Added possibility to scan all devices with NMAP and NSE for ICS devices.
+Added exploits for IoT and ICS devices.
+Added information about devices and default credentials.
+
 ## Requirements
 - beautiful soup
 - python3
@@ -61,6 +66,9 @@ python3 manage.py runserver
 ```
 In a new window (in main directory) run celery worker
 ```celery worker -A kamerka --loglevel=info```
+
+For new version of Celery
+```celery --app kamerka worker```
 
 In a new window fire up redis
 ```apt-get install redis```
@@ -94,6 +102,15 @@ Type your coordinates in format "lat,lon", hardcoded radius is 20km.
 # Device map & details
 ![](https://i.imgur.com/M7V4IAq.jpg)
 
+# Intel
+![](https://www.offensiveosint.io/content/images/2021/01/csu-1.png)
+
+# Scan & Exploit & Information
+![](https://www.offensiveosint.io/content/images/2021/01/s7.png)
+
+![](https://www.offensiveosint.io/content/images/2021/01/bosz3.png)
+
+
 ## Full list of supported devices with corresponding queries
 https://github.com/woj-ciech/Kamerka-GUI/blob/master/queries.md
 
@@ -108,9 +125,10 @@ https://github.com/woj-ciech/Kamerka-GUI/blob/master/queries.md
 - Multiselect - https://github.com/varundewan/multiselect/
 - Arsen Zbidniakov Flat UI Checkbox https://codepen.io/ARS/pen/aeDHE/
 - icon from icons8.com and icon-icons.com
+- Nmap Scripts from NMAP Script Engine and Digital Bond repository
+- Exploits from exploit-db and routersploit
 
 # Known bugs:
-- It's version 1.0 so please raise an issue if you think you found any bug or have an idea to make it better.
 - Sometimes search page keeps the last values, so please use ctrl+shift+R to refresh the main search page
 - Debug info is left on purpose for raising an issues
 - still some problems with getting cves from shodan search results
@@ -122,7 +140,7 @@ It's also possible to upload and host the tool online, if you want to help, dm m
 
 # TODO
 - Live monitoring
-- Offensive capabilities
+- Offensive capabilities 
 - More devices 
 - More sources (Instagram?, Youtube?)
 - Integration with Nmap and plcscan

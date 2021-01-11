@@ -35,7 +35,7 @@
                             <div class="profile-image">
                             </div>
                             <div class="profile-data">
-                                                                <p><h3 style="color:white;">Wojciech <br><a href="https://github.com/woj-ciech">Github</a> <br> <a href="https://twitter.com/@the_wojciech">Twitter</a></h3> </p>
+                                  <img width=200px height=200px src="https://www.offensiveosint.io/content/images/2020/07/OffensiveOsint-logo-RGB-2.png">
 
                             </div>
 
@@ -145,6 +145,7 @@
                                                     <th>CVE</th>
                                                     <th>Indicator</th>
                                                 <th>Located</th>
+                                                    <th>Exploited</th>
 
 
                                                 </tr>
@@ -152,7 +153,7 @@
                                             <tbody>
 
                                                 {% for device in search %}
-                                                {% if device.located %}
+                                                {% if device.located or device.exploited_scanned %}
                                                 <tr style="background:#1caf9a">
                                                     {% else %}
                                                     <tr>
@@ -169,6 +170,8 @@
                                                     <td>{{ device.vulns|slice:"1:-1" }}</td>
                                                     <td>{% for a in device.indicator %}{{ a }} {% endfor %}</td>
                                                     <td>{{ device.located }}</td>
+                                                   <td>{{ device.exploited_scanned }}</td>
+
 
 
 
@@ -384,6 +387,8 @@ function initialize() {
             {% elif device.type == "axc" %}
             icon: "{% static 'images/axc.png' %}",
             {% elif device.type == "modicon" %}
+            icon: "{% static 'images/modicon.png' %}",
+            {% elif device.type == "ab_ethernet" %}
             icon: "{% static 'images/modicon.png' %}",
             {% elif device.type == "xp277" %}
             icon: "{% static 'images/xp277.png' %}",

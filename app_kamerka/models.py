@@ -4,7 +4,6 @@ from jsonfield import JSONField
 
 # Create your models here.
 
-
 class Search(models.Model):
     coordinates = models.CharField(max_length=100)
     country = models.CharField(max_length=100)
@@ -32,7 +31,9 @@ class Device(models.Model):
     screenshot = models.CharField(max_length=100000, default="")
     located = models.BooleanField(default=False, null=True)
     notes = models.CharField(max_length=1000, default="")
-
+    scan = models.CharField(max_length=100000, default="")
+    exploit = models.CharField(max_length=10000, default="")
+    exploited_scanned = models.BooleanField(default=False)
 
 class DeviceNearby(models.Model):
     device = models.ForeignKey(Device, on_delete=models.CASCADE)
@@ -92,4 +93,10 @@ class Bosch(models.Model):
     device = models.ForeignKey(Device, on_delete=models.CASCADE)
     username = models.CharField(max_length=100)
     password = models.CharField(max_length=100)
+
+class Dnp3(models.Model):
+    device = models.ForeignKey(Device, on_delete=models.CASCADE)
+    source = models.CharField(max_length=100)
+    destination = models.CharField(max_length=100)
+    control = models.CharField(max_length=100)
 

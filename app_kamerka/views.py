@@ -15,11 +15,63 @@ from django.shortcuts import render
 from app_kamerka import forms
 from app_kamerka.models import Search, Device, DeviceNearby, FlickrNearby, ShodanScan, BinaryEdgeScore, Whois, \
     TwitterNearby, Bosch
-from kamerka.tasks import bosch_usernames,shodan_search, devices_nearby, twitter_nearby_task, flickr, shodan_scan_task, \
-    binary_edge_scan, whoisxml, check_credits, send_to_field_agent_task, nmap_scan, validate_nmap, validate_maxmind
+from kamerka.tasks import shodan_search, devices_nearby, twitter_nearby_task, flickr, shodan_scan_task, \
+    binary_edge_scan, whoisxml, check_credits, send_to_field_agent_task, nmap_scan, validate_nmap, validate_maxmind, scan, \
+    exploit
 
 
 # Create your views here.
+
+passwds = {"bosch_security":"""The Bosch Video Recorder 630/650 Series is an 8/16 
+          channel digital recorder that uses the latest H.264 
+          compression technology. With the supplied PC
+          software and built-in web server, the 630/650 Series is
+          a fully integrated, stand-alone video management
+          solution that's ready to go, straight out of the box.
+          Available with a variety of storage capacities, the
+          630/650 Series features a highly reliable embedded
+          design that minimizes maintenance and reduces
+          operational costs. The recorder is also available with a
+          built-in DVD writer <br>
+          https://www.exploit-db.com/exploits/34956 """,
+           "niagara":"Tridium is the developer of Niagara Framework® — a comprehensive software platform for the development and deployment of connected products and device-to-enterprise applications. Niagara provides the critical device connectivity, cyber security, control, data management, device management and user presentation capabilities needed to extract value and insight from real-time operational data <br> Default credentials: <br>tridium:niagara",
+           "siemens":"S7 (S7 Communication) is a Siemens proprietary protocol that runs between programmable logic controllers (PLCs) of the Siemens S7 family. <br>Default credentials: <br> Hardcoded password: Basisk:Basisk <br> admin:blank",
+           "bacnet":"BACnet is a communications protocol for building automation and control networks. It was designed to allow communication of building automation and control systems for applications such as heating, air-conditioning, lighting, and fire detection systems.",
+           "modbus":"Modbus is a popular protocol for industrial control systems (ICS). It provides easy, raw access to the control system without requiring any authentication.",
+           "dnp3":"DNP3 (Distributed Network Protocol) is a set of communications protocols used between components in process automation systems. Its main use is in utilities such as electric and water companies.",
+           "plantivosr":"PlantVisor Enhanced is monitoring and telemaintenance software for refrigeration and air-conditioning systems controlled by CAREL instruments. PlantVisor, thanks to the embedded Web Server, can be used on a series of PCs connected to a TCP/IP network. In this way, the information can be shared by a number of users at the same time. <br> Default credentials: <br> admin:admin",
+           "iologik":"The ioLogik E1200 Series supports the most often-used protocols for retrieving I/O data, making it capable of handling a wide variety of applications. Most IT engineers use SNMP or RESTful API protocols, but OT engineers are more familiar with OT-based protocols, such as Modbus and EtherNet/IP. <br>Default credentials: <br> administrator:blank",
+           "akcp":"The AKCP sensorProbe+ series of base units are our flagship Remote Environmental Sensor Monitoring Device. Our sensor monitoring systems are deployed in a wide variety of industries including Data Center Environmental Monitoring, Warehouse Temperature Monitoring, Cold Storage Temperature Monitoring, Fuel / Generator Monitoring, and other Remote Site Monitoring applications.<br>Default credentials: <br> administrator:public <br> admin:public",
+           "vtscada":"https://www.vtscada.com/wp-content/uploads/2016/09/VTScada11-2-AdminGuide.pdf",
+           "sailor":"<br>Default credentials: <br> admin:1234 <br> https://www.livewire-connections.com/sites/default/files/files/documents/Sailor%20900%20Ka%20Installation%20Manual.pdf",
+           "digi":"Digi TransPort WR21 is a full-featured cellular router offering the flexibility to scale from basic connectivity applications to enterprise class routing and security solutions. With its high-performance architecture, Digi TransPort WR21 provides primary and backup WWAN connectivity over 3G/4G/LTE. The platform includes software selectable multi-carrier and regional LTE variants. <br>Default credentials:<br>username:password",
+           "ilon":"The i.LON® SmartServer is a low-cost, high-performance controller, network manager, router, remote network interface, and Web server that you can use to connect LONWORKS®, Modbus, and M-Bus devices to corporate IP networks or the Internet.  <br>Default credentials: <br> for ftp and lns servers:, ilon:ilon <br> ",
+           "eig":"<br>Default credentials: <br> anonymous:anonymous <br> eignet:inp100",
+            "mitsubishi":"<br>Default credentials: <br> MELSEC:MELSEC <br> QNUDECPU:QNUDECPU <br> MELSEC-Q Series use a proprietary network protocol for communication. The devices are used by equipment and manufacturing facilities to provide high-speed, large volume data processing and machine control.",
+           "moxahttp": "NPort® 5100 device servers are designed to make serial devices network-ready in an instant. The small size of the servers makes them ideal for connecting devices such as card readers and payment terminals to an IP-based Ethernet LAN. Use the NPort 5100 device servers to give your PC software direct access to serial devices from anywhere on the network. <br>Default credentials: <br> admmin:moxa",
+           "omron":"FINS, Factory Interface Network Service, is a network protocol used by Omron PLCs, over different physical networks like Ethernet, Controller Link, DeviceNet and RS-232C. <br>Default credentials: <br> for http: ETHERNET, for ftp: CONFIDENTIAL <br> default:default",
+            "power_logic":"https://www.se.com/ww/en/product-range/62252-powerlogic-pm8000-series/?selected-node-id=12146165208#tabs-top <br>Default credentials: <br> 0000 <br> 0 <br> Administrator:Gateway <br> Administrator:admin, User 1:master, User 2:engineer, User 3:operator",
+            "scalance":"SCALANCE network components form the basis of communication networks in manufacturing and process automation. Make your industrial networks fit for the future! SCALANCE products have been specially designed for use in industrial applications. As a result, they fulfill all requirements for ultra-efficient industrial networks and bus systems. Whether switching, routing, security applications, remote access or Industrial Wireless LAN – SCALANCE is the solution!  <br>Default credentials: <br> admin:admin (HTTP), user:user (HTTP), siemens:siemens (FTP)",
+            "stulz_klimatechnik":"he WIB (Web Interface Board) is an interface between STULZ air conditioning units and the intranet or inter-net via an ethernet connection. This connection allows monitoring and control of  A/C units. On the operators’s side the appropriate hardware (PC or server) and the appropriate software (SNMP client and/or web browser) are necessary. <br>Default credentials: <br> Administrator, highest authorization:, ganymed, Medium authorization:, kallisto, Lowest authorization:, europa ",
+           "wago":"<br>Default credentials: <br> admin:wago, user:user, guest:guest <br> http, ftp:, user:user00 , administrator:, su:ko2003wa <br> root:wago , admin:wago, user:user , guest:guest ",
+           "axis":"<br>Default credentials: <br> root:pass",
+           "intellislot":"Provides Web access, environmental sensor data, and third-party customer protocols for Vertiv™ equipment. The cards employ Ethernet and RS-485 networks to monitor and manage a wide range of operating parameters, alarms and notifications. Provides a communication interface to Trellis™, LIFE™ Services, Liebert® Nform, and third-party building and network management applications. <br>Default credentials: <br> Liebert:Liebert, User:User",
+           "iqinvision":"<br>Default credentials: <br> root:system",
+           "lantronix":"Lantronix EDS-MD is specifically designed for the medical industry, allowing for remote access and management of electronic and medical devices. <br>Default credentials: <br> admin:PASS ",
+           "loytec":"https://www.loytec.com/support/download/lvis-3me7-g2 <br>Default credentials: <br> admin:loytec4u",
+           "videoiq" : "VideoIQ develops intelligent video surveillance cameras using edge video IP security cameras paired with video analytics. <br> VideoIQ is vulnerable to remote file disclosure which allows to any unauthenticated user read any file system including file configurations.<br>Default credentials"
+                       "<br>supervisor:supervisor <br> https://www.exploit-db.com/exploits/40284",
+           "webcamxp":"""webcamXP is the most popular webcam and network camera software for Windows.It allows you to monitor your belongings from any location with access to Internet by turning your computer into a security system.
+            Connect remotely by using other computers or your mobile phone. Broadcast live video to your website. Schedule automatic captures or recordings. Trig specific actions using the motion detector. You can easily use those features among others with webcamXP.<br>Default credentials:<br>admin:<blank>""",
+           "vivotek":"Default credentials:<br>root:<blank>",
+           "mobotix":"https://www.mobotix.com/en/products/outdoor-cameras<br>Default credentials:<br>admin:meinsm",
+           "grandstream":"Create and customize a security environment with Grandstream’s range of Full HD IP cameras. Easy to setup, deploy and manage, these cameras offer a proactive security system to keep a user’s facility secured and protected. The GSC3600 series of HD IP cameras feature full HD resolution and include weatherproof casing designed for increased security and facility management in any indoor or outdoor area for wide-angle monitoring of nearby subjects.<br>Default credentials:<br>admin:meinsm<br>https://www.exploit-db.com/exploits/48247",
+           "contec":"http://www.contec-touch.com/wireless-smart-home/ <br> https://www.exploit-db.com/exploits/44295",
+           "netwave":"https://www.exploit-db.com/exploits/41236",
+           "CirCarLife":"CirCarlife Scada represents an integral software solution that focuses on the control and parameterisation of smart electric vehicle charging points and units. It gives centralised control of the whole installation for management and maintenance purposes.<br>https://www.exploit-db.com/exploits/45384",
+           "amcrest":"https://www.exploit-db.com/exploits/47188",
+           "lutron":"Quantum is a lighting control and energy management system that provides total light management by tying the most complete line of lighting controls, motorized window shades, digital ballasts and LED drivers, and sensors together under one software umbrella. Quantum is ideal for new construction or retrofit applications and can easily scale from a single area to a building, or to a campus with many buildings.<br>https://www.exploit-db.com/exploits/44488",
+           }
 
 def get_keys():
     try:
@@ -324,11 +376,17 @@ def device(request, id, device_id, ip):
     except:
         pass
 
+    if all_devices.type in passwds.keys():
+        info = passwds[all_devices.type]
+    else:
+        info = ""
+
     context = {'device': all_devices,
                'nearby': nearby,
                'flickr': flickr,
                "shodan": shodan,
-               'google_maps_key': google_maps_key}
+               'google_maps_key': google_maps_key,
+               "passwd": info}
 
     return render(request, 'device.html', context)
 
@@ -447,32 +505,21 @@ def get_nearby_devices(request, id):
 
         return HttpResponse(response_data, content_type="application/json")
 
-def get_bosch_usernames(request,id):
+def scan_dev(request, id):
     if request.is_ajax() and request.method == 'GET':
-        bosch_device = Bosch.objects.filter(device_id=id)
-
-        if bosch_device:
-            return HttpResponse(json.dumps({'Error': "Already in database"}), content_type='application/json')
-        else:
-            get_usernames = bosch_usernames(id=id)
-            print(get_usernames)
-
-        if get_usernames:
-            return HttpResponse(json.dumps({'Success': "Success"}), content_type='application/json')
+        res = scan(id)
+        if res:
+            return HttpResponse(json.dumps(res), content_type='application/json')
         else:
             return HttpResponse(json.dumps({'Error': "Connection Error"}), content_type='application/json')
 
-
-
-def show_bosch_usernames(request,id):
+def exploit_dev(request, id):
     if request.is_ajax() and request.method == 'GET':
-        bosch_device = Bosch.objects.filter(device_id=id)
-
-        response_data = serializers.serialize('json', bosch_device)
-
-        print(response_data)
-
-        return HttpResponse(response_data, content_type="application/json")
+        res = exploit(id)
+        if res:
+            return HttpResponse(json.dumps(res), content_type='application/json')
+        else:
+            return HttpResponse(json.dumps({'Error': "Connection Error"}), content_type='application/json')
 
 def get_flickr_results(request, id):
     if request.is_ajax() and request.method == 'GET':

@@ -15,6 +15,24 @@
         <link rel="stylesheet" type="text/css" id="theme" href="{% static 'css/theme-default.css' %}"/>
         <!-- EOF CSS INCLUDE -->
     </head>
+<style>
+   pre {
+   background-color: ghostwhite;
+   border: 1px solid silver;
+   padding: 10px 20px;
+   margin: 20px;
+   }
+.json-key {
+   color: brown;
+   }
+.json-value {
+   color: navy;
+   }
+.json-string {
+   color: olive;
+   }
+
+</style>
     <body>
         <!-- START PAGE CONTAINER -->
         <div class="page-container">
@@ -33,7 +51,7 @@
                             <div class="profile-image">
                             </div>
                             <div class="profile-data">
-                                                               <p><h3 style="color:white;">Wojciech <br><a href="https://github.com/woj-ciech">Github</a> <br> <a href="https://twitter.com/@the_wojciech">Twitter</a></h3> </p>
+                                  <img width=200px height=200px src="https://www.offensiveosint.io/content/images/2020/07/OffensiveOsint-logo-RGB-2.png">
 
                             </div>
 
@@ -211,7 +229,7 @@
                                         {{ device.org }}<br>
                                         {{ device.vulns|slice:"1:-1" }}<br>
                                             {{ device.city }}</b><br><br>
-                                        {{ device.data }}<br>
+                                     {{ device.data }}<br>
                                                                                     <td>{{ device.category }}</td><br>
 
                                     {% if device.screenshot %}
@@ -298,30 +316,79 @@
 
 
 
-<div class="col-md-4">
 
                             <!-- START USERS ACTIVITY BLOCK -->
-    {% if device.type == "bosch_security" %}
+<div class="row">
+                        <div class="col-md-6">
+
+                            <!-- START USERS ACTIVITY BLOCK -->
                             <div class="panel panel-default">
                                 <div class="panel-heading ui-draggable-handle">
                                     <div class="panel-title-box">
-                                        <h3>Get Usernames</h3>
+                                        <h3>NMAP Scan</h3>
                                     </div>
 
                                 </div>
-                                <div class="panel-body padding-0">
+                                <div class="panel-body padding-2">
                                     <br>
-                                    <button type="button" id="bosch_get_usernames" class="btn btn-info active">Get usernames</button>
-                                                                        <button type="button" id="bosch_show" class="btn btn-info    active">Show</button>
-                                    <div id="bosch_results" class="contact-info" style="display: none;"></div>
+                                    <center><button type="button" id="scan" class="btn btn-primary active">Scan {{ device.type }} </button></center>
+                                    <pre><code id=scan_results></code></pre>
+
                                     <progress id="progress-bar7" value="0" max="100" style="display:none; margin-bottom: 1em;"></progress>
 
                                 </div>
                             </div>
-    {% endif %}
                             <!-- END USERS ACTIVITY BLOCK -->
 
-                        </div>                                    </div>
+                        </div>
+
+    <div class="col-md-6">
+
+                            <!-- START USERS ACTIVITY BLOCK -->
+                            <div class="panel panel-default">
+                                <div class="panel-heading ui-draggable-handle">
+                                    <div class="panel-title-box">
+                                        <h3>Exploit</h3>
+                                    </div>
+
+                                </div>
+                                    <div class="panel-body padding-2">
+                                    <br>
+                                    <center><button type="button" id="exploit" class="btn btn-danger active"> Exploit </button></center>
+                                    <pre><code id=exploit_results></code></pre>
+
+                                    <progress id="progress-bar8" value="0" max="100" style="display:none; margin-bottom: 1em;"></progress>
+
+                                </div>
+                            </div>
+                            <!-- END USERS ACTIVITY BLOCK -->
+
+                        </div>
+</div>
+                            <!-- END USERS ACTIVITY BLOCK -->
+<div class="row">
+
+                                            <div class="col-md-6">
+
+                            <!-- START USERS ACTIVITY BLOCK -->
+                            <div class="panel panel-default">
+                                <div class="panel-heading ui-draggable-handle">
+                                    <div class="panel-title-box">
+                                        <h3>Information</h3>
+                                    </div>
+
+                                </div>
+                                    <div class="panel-body padding-2">
+                                    <br>
+                                    {{ passwd | safe }}<br>
+                                </div>
+                            </div>
+                            <!-- END USERS ACTIVITY BLOCK -->
+
+                        </div>
+                                        </div>
+                                                          </div>
+
 
                                 </div>
                             </div>
@@ -430,7 +497,40 @@ var marker = new google.maps.Marker({
 
 <script src="{% static 'js/markerclusterer.js' %}"></script>
 
+<script>
+if (!library)
+  var library = {};
 
+library.json = {
+  replacer: function(match, pIndent, pKey, pVal, pEnd) {
+    var key = '<span class=json-key>';
+    var val = '<span class=json-value>';
+    var str = '<span class=json-string>';
+    var r = pIndent || '';
+    if (pKey)
+      r = r + key + pKey.replace(/[": ]/g, '') + '</span>: ';
+    if (pVal)
+      r = r + (pVal[0] == '"' ? str : val) + pVal + '</span>';
+    return r + (pEnd || '');
+  },
+  prettyPrint: function(obj) {
+    var jsonLine = /^( *)("[\w]+": )?("[^"]*"|[\w.+-]*)?([,[{])?$/mg;
+    return JSON.stringify(obj, null, 3)
+      .replace(/&/g, '&amp;').replace(/\\"/g, '&quot;')
+      .replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(jsonLine, library.json.replacer);
+  }
+};
+
+
+
+</script>
+            <script>
+            $('#scan_results').html(library.json.prettyPrint({{ device.scan|safe }}));
+</script>
+            <script>
+            $('#exploit_results').html(library.json.prettyPrint({{ device.exploit|safe }}));
+</script>
                 <script type="text/javascript">
 
 
@@ -530,6 +630,8 @@ marker.addListener('click', function() {
   });
         </script>
 <script>
+
+
     var pgrbar4 = $('#progress-bar4');
 
     $('#nearby_twitter').on('click', function(){
@@ -615,14 +717,42 @@ $('#whois_scan').on('click', function(){
     });
 
 
-$('#bosch_get_usernames').on('click', function(){
+$('#scan').on('click', function(){
        $.ajax({
         type: "GET",
-        url: "/get_bosch_usernames/{{device.id}}",
+        url: "/scan/{{device.id}}",
         success: function (data) {
+           console.log(data);
+           $('#scan_results').html(library.json.prettyPrint(data));
 
         if (data.Success){
+                console.log(data);
                 noty({text: data.Success , layout: 'topRight', type: 'success', timeout: 10000});
+
+}
+                if (data.Error){
+                noty({text: data.Error , layout: 'topRight', type: 'error', timeout: 10000});
+                }
+            },
+            error: function (data) {
+                console.log("Something went wrong!");
+            }
+        });
+        return false;
+    });
+
+$('#exploit').on('click', function(){
+       $.ajax({
+        type: "GET",
+        url: "/exploit/{{device.id}}",
+        success: function (data) {
+           console.log(data);
+           $('#exploit_results').html(library.json.prettyPrint(data));
+
+        if (data.Success){
+                console.log(data);
+                noty({text: data.Success , layout: 'topRight', type: 'success', timeout: 10000});
+
 }
                 if (data.Error){
                 noty({text: data.Error , layout: 'topRight', type: 'error', timeout: 10000});
