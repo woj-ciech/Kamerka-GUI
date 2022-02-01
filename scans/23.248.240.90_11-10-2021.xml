@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/local/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.92SVN scan initiated Mon Oct 11 07:46:18 2021 as: nmap -Pn -T4 -&#45;open -sT -sU -p T:80,23,443,21,22,25,3389,110,445,139,143,53,135,3306,8080,1723,111,995,5900,U:631,161,137,123,138,1434,445,135,67,53,139,500,68,520,1900,4500,514,49152,162,69 -T4 -A -v -&#45;reason -oX /home/mrgfy/Results/23.248.240.90_11-10-2021.xml 23.248.240.90 -->
+<nmaprun scanner="nmap" args="nmap -Pn -T4 -&#45;open -sT -sU -p T:80,23,443,21,22,25,3389,110,445,139,143,53,135,3306,8080,1723,111,995,5900,U:631,161,137,123,138,1434,445,135,67,53,139,500,68,520,1900,4500,514,49152,162,69 -T4 -A -v -&#45;reason -oX /home/mrgfy/Results/23.248.240.90_11-10-2021.xml 23.248.240.90" start="1633963578" startstr="Mon Oct 11 07:46:18 2021" version="7.92SVN" xmloutputversion="1.05">
+<scaninfo type="connect" protocol="tcp" numservices="19" services="21-23,25,53,80,110-111,135,139,143,443,445,995,1723,3306,3389,5900,8080"/>
+<scaninfo type="udp" protocol="udp" numservices="20" services="53,67-69,123,135,137-139,161-162,445,500,514,520,631,1434,1900,4500,49152"/>
+<verbose level="1"/>
+<debugging level="0"/>
+<taskbegin task="NSE" time="1633963578"/>
+<taskend task="NSE" time="1633963578"/>
+<taskbegin task="NSE" time="1633963578"/>
+<taskend task="NSE" time="1633963578"/>
+<taskbegin task="NSE" time="1633963578"/>
+<taskend task="NSE" time="1633963578"/>
+<taskbegin task="Parallel DNS resolution of 1 host." time="1633963578"/>
+<taskend task="Parallel DNS resolution of 1 host." time="1633963590"/>
+<taskbegin task="UDP Scan" time="1633963590"/>
+<taskend task="UDP Scan" time="1633963592" extrainfo="20 total ports"/>
+<taskbegin task="Connect Scan" time="1633963592"/>
+<taskend task="Connect Scan" time="1633963593" extrainfo="19 total ports"/>
+<taskbegin task="Service scan" time="1633963594"/>
+<taskprogress task="Service scan" time="1633963686" percent="15.38" remaining="506" etc="1633964192"/>
+<taskend task="Service scan" time="1633963696" extrainfo="13 services on 1 host"/>
+<taskbegin task="Traceroute" time="1633963700"/>
+<taskend task="Traceroute" time="1633963703"/>
+<taskbegin task="Parallel DNS resolution of 12 hosts." time="1633963703"/>
+<taskend task="Parallel DNS resolution of 12 hosts." time="1633963713"/>
+<taskbegin task="NSE" time="1633963713"/>
+<taskend task="NSE" time="1633963881"/>
+<taskbegin task="NSE" time="1633963881"/>
+<taskend task="NSE" time="1633963882"/>
+<taskbegin task="NSE" time="1633963882"/>
+<taskend task="NSE" time="1633963882"/>
+<host starttime="1633963590" endtime="1633963882"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="23.248.240.90" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+<ports><extraports state="closed" count="23">
+<extrareasons reason="conn-refused" count="15" proto="tcp" ports="21-23,25,53,110-111,143,443,995,1723,3306,3389,5900,8080"/>
+<extrareasons reason="port-unreach" count="8" proto="udp" ports="68-69,123,161,514,520,631,49152"/>
+</extraports>
+<extraports state="filtered" count="3">
+<extrareasons reason="no-response" count="3" proto="tcp" ports="135,139,445"/>
+</extraports>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="nginx" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx</cpe></service><script id="http-favicon" output="DedeCMS"/><script id="http-methods" output="&#xa;  Supported Methods: GET HEAD"><table key="Supported Methods">
+<elem>GET</elem>
+<elem>HEAD</elem>
+</table>
+</script><script id="http-title" output="404 Not Found"><elem key="title">404 Not Found</elem>
+</script></port>
+<port protocol="udp" portid="53"><state state="open|filtered" reason="no-response" reason_ttl="0"/><service name="domain" method="table" conf="3"/></port>
+<port protocol="udp" portid="67"><state state="open|filtered" reason="no-response" reason_ttl="0"/><service name="dhcps" method="table" conf="3"/></port>
+<port protocol="udp" portid="135"><state state="open|filtered" reason="no-response" reason_ttl="0"/><service name="msrpc" method="table" conf="3"/></port>
+<port protocol="udp" portid="137"><state state="open|filtered" reason="no-response" reason_ttl="0"/><service name="netbios-ns" method="table" conf="3"/></port>
+<port protocol="udp" portid="138"><state state="open|filtered" reason="no-response" reason_ttl="0"/><service name="netbios-dgm" method="table" conf="3"/></port>
+<port protocol="udp" portid="139"><state state="open|filtered" reason="no-response" reason_ttl="0"/><service name="netbios-ssn" method="table" conf="3"/></port>
+<port protocol="udp" portid="162"><state state="open|filtered" reason="no-response" reason_ttl="0"/><service name="snmptrap" method="table" conf="3"/></port>
+<port protocol="udp" portid="445"><state state="open|filtered" reason="no-response" reason_ttl="0"/><service name="microsoft-ds" method="table" conf="3"/></port>
+<port protocol="udp" portid="500"><state state="open|filtered" reason="no-response" reason_ttl="0"/><service name="isakmp" method="table" conf="3"/></port>
+<port protocol="udp" portid="1434"><state state="open|filtered" reason="no-response" reason_ttl="0"/><service name="ms-sql-m" method="table" conf="3"/></port>
+<port protocol="udp" portid="1900"><state state="open|filtered" reason="no-response" reason_ttl="0"/><service name="upnp" method="table" conf="3"/></port>
+<port protocol="udp" portid="4500"><state state="open|filtered" reason="no-response" reason_ttl="0"/><service name="nat-t-ike" method="table" conf="3"/></port>
+</ports>
+<os><portused state="open" proto="tcp" portid="80"/>
+<portused state="closed" proto="tcp" portid="21"/>
+<portused state="closed" proto="udp" portid="68"/>
+<osmatch name="Microsoft Windows Server 2012 R2" accuracy="95" line="76037">
+<osclass type="general purpose" vendor="Microsoft" osfamily="Windows" osgen="2012" accuracy="95"><cpe>cpe:/o:microsoft:windows_server_2012:r2</cpe></osclass>
+</osmatch>
+<osmatch name="Microsoft Windows Server 2012 Data Center" accuracy="94" line="75615">
+<osclass type="general purpose" vendor="Microsoft" osfamily="Windows" osgen="2012" accuracy="94"><cpe>cpe:/o:microsoft:windows_server_2012</cpe></osclass>
+</osmatch>
+<osmatch name="Microsoft Windows Server 2008 R2" accuracy="93" line="74660">
+<osclass type="general purpose" vendor="Microsoft" osfamily="Windows" osgen="2008" accuracy="93"><cpe>cpe:/o:microsoft:windows_server_2008:r2</cpe></osclass>
+</osmatch>
+<osmatch name="Microsoft Windows Server 2016" accuracy="92" line="76180">
+<osclass type="general purpose" vendor="Microsoft" osfamily="Windows" osgen="2016" accuracy="92"><cpe>cpe:/o:microsoft:windows_server_2016</cpe></osclass>
+</osmatch>
+<osmatch name="Microsoft Windows 7 SP1 or Windows Server 2008" accuracy="92" line="77658">
+<osclass type="general purpose" vendor="Microsoft" osfamily="Windows" osgen="7" accuracy="92"><cpe>cpe:/o:microsoft:windows_7</cpe></osclass>
+<osclass type="general purpose" vendor="Microsoft" osfamily="Windows" osgen="2008" accuracy="92"><cpe>cpe:/o:microsoft:windows_server_2008</cpe></osclass>
+</osmatch>
+<osmatch name="Microsoft Windows 7 Ultimate" accuracy="92" line="77786">
+<osclass type="general purpose" vendor="Microsoft" osfamily="Windows" osgen="7" accuracy="92"><cpe>cpe:/o:microsoft:windows_7:::ultimate</cpe></osclass>
+</osmatch>
+<osmatch name="Microsoft Windows 8.1" accuracy="92" line="78094">
+<osclass type="general purpose" vendor="Microsoft" osfamily="Windows" osgen="8.1" accuracy="92"><cpe>cpe:/o:microsoft:windows_8.1</cpe></osclass>
+</osmatch>
+<osmatch name="Microsoft Windows 7 SP1 or Windows Server 2008 SP2" accuracy="91" line="77725">
+<osclass type="general purpose" vendor="Microsoft" osfamily="Windows" osgen="7" accuracy="91"><cpe>cpe:/o:microsoft:windows_7::sp1</cpe></osclass>
+<osclass type="general purpose" vendor="Microsoft" osfamily="Windows" osgen="2008" accuracy="91"><cpe>cpe:/o:microsoft:windows_server_2008::sp2</cpe></osclass>
+</osmatch>
+<osmatch name="Microsoft Windows Windows 7 SP1" accuracy="91" line="77907">
+<osclass type="general purpose" vendor="Microsoft" osfamily="Windows" osgen="7" accuracy="91"><cpe>cpe:/o:microsoft:windows_7::sp1</cpe></osclass>
+</osmatch>
+<osmatch name="Microsoft Windows Vista Home Premium SP1, Windows 7, or Windows Server 2008" accuracy="91" line="79920">
+<osclass type="general purpose" vendor="Microsoft" osfamily="Windows" osgen="Vista" accuracy="91"><cpe>cpe:/o:microsoft:windows_vista::sp1:home_premium</cpe></osclass>
+<osclass type="general purpose" vendor="Microsoft" osfamily="Windows" osgen="7" accuracy="91"><cpe>cpe:/o:microsoft:windows_7</cpe></osclass>
+<osclass type="general purpose" vendor="Microsoft" osfamily="Windows" osgen="2008" accuracy="91"><cpe>cpe:/o:microsoft:windows_server_2008</cpe></osclass>
+</osmatch>
+</os>
+<uptime seconds="2275540" lastboot="Tue Sep 14 23:45:42 2021"/>
+<distance value="13"/>
+<tcpsequence index="256" difficulty="Good luck!" values="CDF82F8B,F8370923,FA195278,CFD98FC4,957168D3,51B6C46D"/>
+<ipidsequence class="Incremental" values="395F,3960,3961,3962,3963,3964"/>
+<tcptssequence class="100HZ" values="D8FEB8F,D8FEB98,D8FEBA2,D8FEBAD,D8FEBB6,D8FEBC1"/>
+<trace proto="icmp">
+<hop ttl="1" ipaddr="192.168.0.1" rtt="0.26"/>
+<hop ttl="2" ipaddr="100.64.64.1" rtt="1.57"/>
+<hop ttl="3" ipaddr="162.248.144.201" rtt="2.23" host="mtga-stjrb.stjohncable.com"/>
+<hop ttl="4" ipaddr="205.174.153.4" rtt="5.71"/>
+<hop ttl="5" ipaddr="107.191.236.52" rtt="11.67" host="cr2-sttlwawb-a-be15.bb.as20055.net"/>
+<hop ttl="6" ipaddr="137.83.80.1" rtt="11.53" host="cr2-sttlwawb-c-be10.bb.as20055.net"/>
+<hop ttl="7" ipaddr="137.83.80.101" rtt="11.48" host="pr1-sttlwawb-c-be10.bb.as20055.net"/>
+<hop ttl="8" ipaddr="206.81.80.40" rtt="10.99" host="100ge14-2.core1.sea1.he.net"/>
+<hop ttl="9" ipaddr="184.105.213.118" rtt="92.40" host="100ge11-2.core1.tyo1.he.net"/>
+<hop ttl="10" ipaddr="184.105.64.129" rtt="140.61" host="100ge10-2.core1.hkg1.he.net"/>
+<hop ttl="11" ipaddr="184.104.212.138" rtt="141.74" host="icidc-limited.e0-21.switch1.hkg1.he.net"/>
+<hop ttl="13" ipaddr="23.248.240.90" rtt="141.23"/>
+</trace>
+<times srtt="141027" rttvar="2973" to="152919"/>
+</host>
+<taskbegin task="NSE" time="1633963882"/>
+<taskend task="NSE" time="1633963882"/>
+<taskbegin task="NSE" time="1633963882"/>
+<taskend task="NSE" time="1633963882"/>
+<taskbegin task="NSE" time="1633963882"/>
+<taskend task="NSE" time="1633963882"/>
+<runstats><finished time="1633963882" timestr="Mon Oct 11 07:51:22 2021" summary="Nmap done at Mon Oct 11 07:51:22 2021; 1 IP address (1 host up) scanned in 304.77 seconds" elapsed="304.77" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

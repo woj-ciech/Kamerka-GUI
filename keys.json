@@ -1,17 +1,17 @@
 {
   "keys": {
-    "shodan": "SHODAN_KEY",
-    "binaryedge": "BINARYEDGE_KEY",
+    "shodan": "Ybm1jbPcafiEQsOJUWbNKt911XH9v4qx",
+    "binaryedge": "ef8d12fa-490e-4a3d-b195-52b4181f7ff3",
     "google_maps": "GOOGLE_MAPS_KEY",
-    "whoisxmlapi": "WHOISXMLAPI_KEY",
-    "flickr_api_key": "FLICKR_KEY",
-    "flickr_secret_api_key": "FLICKR_KEY",
-    "twitter_access_token": "TWITTER_KEY",
-    "twitter_access_token_secret": "TWITTER_KEY",
-    "twitter_consumer_key": "TWITTER_KEY",
-    "twitter_consumer_secret": "TWITTER_KEY",
-    "pastebin_user": "PASTEBIN_USER",
-    "pastebin_password": "PASTEBIN_PASSWORD",
-    "pastebin_dev_key": "PASTEBIN_DEVELOPER_KEY"
+    "whoisxmlapi": "at_ylgqi6jcTnYp9Rdkh66jStKljQccj",
+    "flickr_api_key": "110b86431d570fbb0ca02ecb9b2c9d4c",
+    "flickr_secret_api_key": "50c40d216f4a07aa",
+    "twitter_access_token": "1299096430569615361-KN9DpfVsQAJoRpC6FWNYNKfEfWxOUT",
+    "twitter_access_token_secret": "Mx0YnfzoKS7ncsolNXAeMWqDx2BUgcNQXbwY6z2Lfm7mv",
+    "twitter_consumer_key": "J2e3VKSKaxYL1ookhDytjDzj8",
+    "twitter_consumer_secret": "J2e3VKSKaxYL1ookhDytjDzj8",
+    "pastebin_user": "g33kz4su",
+    "pastebin_password": "b00bsb00bs@$$@$$@$$B00BS",
+    "pastebin_dev_key": "4-dqFJ4U6FhCy8YuVZKfmerIIZxtuwRX"
   }
 }
