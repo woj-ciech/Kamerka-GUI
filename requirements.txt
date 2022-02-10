@@ -1,5 +1,5 @@
 requests==2.22.0
-Django==2.2.7
+Django==2.2.27
 celery_progress
 celery
 redis
