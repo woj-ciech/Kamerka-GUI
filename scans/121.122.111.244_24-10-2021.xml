@@ -1,0 +1,667 @@
+# Nmap 7.92SVN scan initiated Sun Oct 24 06:13:03 2021 as: nmap -Pn -T4 --traceroute -v --reason --append-output -oN /home/mrgfy/Results/121.122.111.244_24-10-2021.xml 121.122.111.244
+Nmap scan report for 121.122.111.244
+Host is up, received user-set (0.21s latency).
+All 1000 scanned ports on 121.122.111.244 are in ignored states.
+Not shown: 1000 filtered tcp ports (no-response)
+
+TRACEROUTE (using proto 1/icmp)
+HOP RTT       ADDRESS
+1   0.69 ms   192.168.0.1
+2   2.23 ms   100.64.64.1
+3   2.87 ms   mtga-stjrb.stjohncable.com (162.248.144.201)
+4   5.70 ms   205.174.153.4
+5   11.40 ms  cr2-sttlwawb-a-be15.bb.as20055.net (107.191.236.52)
+6   11.48 ms  cr2-sttlwawb-c-be10.bb.as20055.net (137.83.80.1)
+7   11.15 ms  pr1-sttlwawb-b-be11.bb.as20055.net (137.83.80.108)
+8   10.86 ms  209.133.4.9
+9   10.82 ms  ae1.cs1.sea1.us.eth.zayo.com (64.125.28.132)
+10  10.71 ms  ae27.mpr1.sea1.us.zip.zayo.com (64.125.29.1)
+11  11.09 ms  zayo-ntt.sea1.us.zip.zayo.com (64.125.13.106)
+12  16.10 ms  ae-2.r24.sttlwa01.us.bb.gin.ntt.net (129.250.2.72)
+13  121.96 ms ae-13.r30.tokyjp05.jp.bb.gin.ntt.net (129.250.4.143)
+14  123.31 ms ae-0.r31.tokyjp05.jp.bb.gin.ntt.net (129.250.5.22)
+15  190.65 ms ae-4.r23.sngpsi07.sg.bb.gin.ntt.net (129.250.2.242)
+16  196.54 ms ae-7.r23.kslrml02.my.bb.gin.ntt.net (129.250.2.169)
+17  201.79 ms ae-0.r20.kslrml02.my.bb.gin.ntt.net (129.250.3.79)
+18  328.24 ms ae-0.maxis.kslrml02.my.bb.gin.ntt.net (203.78.193.238)
+19  ... 21
+22  209.97 ms 58.71.241.106
+23  ...
+24  204.11 ms 58.71.243.53
+25  ...
+26  205.48 ms 121.122.111.244
+
+Read data files from: /usr/local/bin/../share/nmap
+# Nmap done at Sun Oct 24 06:14:50 2021 -- 1 IP address (1 host up) scanned in 107.92 seconds
+Host 244.111.122.121.in-addr.arpa. not found: 3(NXDOMAIN)
+Host 244.111.122.121.in-addr.arpa. not found: 3(NXDOMAIN)
+Host 244.111.122.121.in-addr.arpa. not found: 3(NXDOMAIN)
+Host 244.111.122.121.in-addr.arpa. not found: 3(NXDOMAIN)
+Host 244.111.122.121.in-addr.arpa. not found: 3(NXDOMAIN)
+
+#
+# ARIN WHOIS data and services are subject to the Terms of Use
+# available at: https://www.arin.net/resources/registry/whois/tou/
+#
+# If you see inaccuracies in the results, please report at
+# https://www.arin.net/resources/registry/whois/inaccuracy_reporting/
+#
+# Copyright 1997-2021, American Registry for Internet Numbers, Ltd.
+#
+
+
+NetRange:       121.0.0.0 - 121.255.255.255
+CIDR:           121.0.0.0/8
+NetName:        APNIC-121
+NetHandle:      NET-121-0-0-0-1
+Parent:          ()
+NetType:        Allocated to APNIC
+OriginAS:       
+Organization:   Asia Pacific Network Information Centre (APNIC)
+RegDate:        2006-01-06
+Updated:        2010-07-30
+Comment:        This IP address range is not registered in the ARIN database.
+Comment:        For details, refer to the APNIC Whois Database via
+Comment:        WHOIS.APNIC.NET or http://wq.apnic.net/apnic-bin/whois.pl
+Comment:        ** IMPORTANT NOTE: APNIC is the Regional Internet Registry
+Comment:        for the Asia Pacific region. APNIC does not operate networks
+Comment:        using this IP address range and is not able to investigate
+Comment:        spam or abuse reports relating to these addresses. For more
+Comment:        help, refer to http://www.apnic.net/apnic-info/whois_search2/abuse-and-spamming
+Ref:            https://rdap.arin.net/registry/ip/121.0.0.0
+
+ResourceLink:  http://wq.apnic.net/whois-search/static/search.html
+ResourceLink:  whois.apnic.net
+
+
+OrgName:        Asia Pacific Network Information Centre
+OrgId:          APNIC
+Address:        PO Box 3646
+City:           South Brisbane
+StateProv:      QLD
+PostalCode:     4101
+Country:        AU
+RegDate:        
+Updated:        2012-01-24
+Ref:            https://rdap.arin.net/registry/entity/APNIC
+
+ReferralServer:  whois://whois.apnic.net
+ResourceLink:  http://wq.apnic.net/whois-search/static/search.html
+
+OrgAbuseHandle: AWC12-ARIN
+OrgAbuseName:   APNIC Whois Contact
+OrgAbusePhone:  +61 7 3858 3188 
+OrgAbuseEmail:  search-apnic-not-arin@apnic.net
+OrgAbuseRef:    https://rdap.arin.net/registry/entity/AWC12-ARIN
+
+OrgTechHandle: AWC12-ARIN
+OrgTechName:   APNIC Whois Contact
+OrgTechPhone:  +61 7 3858 3188 
+OrgTechEmail:  search-apnic-not-arin@apnic.net
+OrgTechRef:    https://rdap.arin.net/registry/entity/AWC12-ARIN
+
+
+#
+# ARIN WHOIS data and services are subject to the Terms of Use
+# available at: https://www.arin.net/resources/registry/whois/tou/
+#
+# If you see inaccuracies in the results, please report at
+# https://www.arin.net/resources/registry/whois/inaccuracy_reporting/
+#
+# Copyright 1997-2021, American Registry for Internet Numbers, Ltd.
+#
+
+
+
+Found a referral to whois.apnic.net.
+
+% [whois.apnic.net]
+% Whois data copyright terms    http://www.apnic.net/db/dbcopyright.html
+
+% Information related to '121.122.0.0 - 121.122.127.255'
+
+% Abuse contact for '121.122.0.0 - 121.122.127.255' is 'abuse@maxis.com.my'
+
+inetnum:        121.122.0.0 - 121.122.127.255
+netname:        MAXISNET-3G
+descr:          Maxis Broadband Sdn Bhd
+country:        MY
+admin-c:        MO113-AP
+tech-c:         MO113-AP
+status:         ASSIGNED NON-PORTABLE
+mnt-by:         MAINT-MY-MAXIS
+last-modified:  2009-05-08T03:39:26Z
+source:         APNIC
+
+person:         Maxis Network and Security Operations
+nic-hdl:        MO113-AP
+remarks:        Please send spam report, virus alert or any others
+remarks:        abuse report trouble to abuse@maxis.com.my
+e-mail:         abuse@maxis.com.my
+address:        Level 19, Menara Maxis,
+address:        KLCC, 50088 Kuala Lumpur
+address:        Malaysia
+phone:          +603-2330-7500
+fax-no:         +603-2330-0587
+country:        MY
+mnt-by:         MAINT-MY-MAXIS
+last-modified:  2008-11-07T08:55:51Z
+source:         APNIC
+
+% Information related to '121.122.0.0/17AS9534'
+
+route:          121.122.0.0/17
+origin:         AS9534
+descr:          Maxis Broadband Sdn.Bhd
+                Level 14, Menara Maxis,
+                Kuala Lumpur City Centre,
+                Off Jalan Ampang
+mnt-by:         MAINT-MY-MAXIS
+last-modified:  2020-08-11T04:06:26Z
+source:         APNIC
+
+% This query was served by the APNIC Whois Service version 1.88.15-SNAPSHOT (WHOIS-US4)
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/local/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.92SVN scan initiated Sun Oct 24 06:14:55 2021 as: nmap -sT -sV -Pn -vv -p-100,8880- -&#45;script-args=unsafe=1 -&#45;script=http-adobe-coldfusion-apsa1301,http-apache-negotiation,http-apache-server-status,http-aspnet-debug,http-auth-finder,http-axis2-dir-traversal,http-bigip-cookie,http-cakephp-version,http-coldfusion-subzero,http-comments-displayer,http-cookie-flags,http-cors,http-cross-domain-policy,http-errors,http-favicon,http-generator,http-git,http-iis-webdav-vuln,http-mcmp,http-methods,http-method-tamper,http-mobileversion-checker,http-ntlm-info,http-passwd,http-phpmyadmin-dir-traversal,http-phpself-xss,http-php-version,http-put,http-robots.txt,http-security-headers,http-server-header,http-shellshock,http-svn-enum,http-svn-info,http-title,http-trace,http-vuln*,http-webdav-scan,weblogic-t3-info -&#45;script-args &quot;http.useragent=Mozilla/5.0 (Windows NT 6.1; WOW64; rv:64.0) Gecko/20100101 Firefox/64.0&quot; -&#45;stats-every 10s -d -&#45;append-output -oX /home/mrgfy/Results/121.122.111.244_24-10-2021.xml 121.122.111.244 -->
+<nmaprun scanner="nmap" args="nmap -sT -sV -Pn -vv -p-100,8880- -&#45;script-args=unsafe=1 -&#45;script=http-adobe-coldfusion-apsa1301,http-apache-negotiation,http-apache-server-status,http-aspnet-debug,http-auth-finder,http-axis2-dir-traversal,http-bigip-cookie,http-cakephp-version,http-coldfusion-subzero,http-comments-displayer,http-cookie-flags,http-cors,http-cross-domain-policy,http-errors,http-favicon,http-generator,http-git,http-iis-webdav-vuln,http-mcmp,http-methods,http-method-tamper,http-mobileversion-checker,http-ntlm-info,http-passwd,http-phpmyadmin-dir-traversal,http-phpself-xss,http-php-version,http-put,http-robots.txt,http-security-headers,http-server-header,http-shellshock,http-svn-enum,http-svn-info,http-title,http-trace,http-vuln*,http-webdav-scan,weblogic-t3-info -&#45;script-args &quot;http.useragent=Mozilla/5.0 (Windows NT 6.1; WOW64; rv:64.0) Gecko/20100101 Firefox/64.0&quot; -&#45;stats-every 10s -d -&#45;append-output -oX /home/mrgfy/Results/121.122.111.244_24-10-2021.xml 121.122.111.244" start="1635081295" startstr="Sun Oct 24 06:14:55 2021" version="7.92SVN" xmloutputversion="1.05">
+<scaninfo type="connect" protocol="tcp" numservices="56756" services="1-100,8880-65535"/>
+<verbose level="3"/>
+<debugging level="1"/>
+<taskbegin task="NSE" time="1635081296"/>
+<taskend task="NSE" time="1635081296"/>
+<taskbegin task="NSE" time="1635081296"/>
+<taskend task="NSE" time="1635081296"/>
+<taskbegin task="Parallel DNS resolution of 1 host." time="1635081296"/>
+<taskend task="Parallel DNS resolution of 1 host." time="1635081301"/>
+<taskbegin task="Connect Scan" time="1635081301"/>
+<taskprogress task="Connect Scan" time="1635081306" percent="0.04"/>
+<taskprogress task="Connect Scan" time="1635081316" percent="0.12"/>
+<taskprogress task="Connect Scan" time="1635081326" percent="0.21"/>
+<taskprogress task="Connect Scan" time="1635081336" percent="0.30"/>
+<taskprogress task="Connect Scan" time="1635081346" percent="0.39"/>
+<taskprogress task="Connect Scan" time="1635081356" percent="0.48"/>
+<taskprogress task="Connect Scan" time="1635081366" percent="0.56"/>
+<taskprogress task="Connect Scan" time="1635081376" percent="0.65"/>
+<taskprogress task="Connect Scan" time="1635081386" percent="0.74"/>
+<taskprogress task="Connect Scan" time="1635081396" percent="0.83"/>
+<taskprogress task="Connect Scan" time="1635081406" percent="0.92"/>
+<taskprogress task="Connect Scan" time="1635081416" percent="1.00" remaining="11336" etc="1635092752"/>
+<taskprogress task="Connect Scan" time="1635081425" percent="1.08" remaining="11320" etc="1635092744"/>
+<taskprogress task="Connect Scan" time="1635081435" percent="1.17" remaining="11303" etc="1635092738"/>
+<taskprogress task="Connect Scan" time="1635081445" percent="1.26" remaining="11287" etc="1635092732"/>
+<taskprogress task="Connect Scan" time="1635081455" percent="1.35" remaining="11272" etc="1635092726"/>
+<taskprogress task="Connect Scan" time="1635081465" percent="1.44" remaining="11257" etc="1635092722"/>
+<taskprogress task="Connect Scan" time="1635081475" percent="1.52" remaining="11243" etc="1635092718"/>
+<taskprogress task="Connect Scan" time="1635081485" percent="1.61" remaining="11230" etc="1635092714"/>
+<taskprogress task="Connect Scan" time="1635081495" percent="1.70" remaining="11217" etc="1635092711"/>
+<taskprogress task="Connect Scan" time="1635081505" percent="1.79" remaining="11204" etc="1635092708"/>
+<taskprogress task="Connect Scan" time="1635081515" percent="1.88" remaining="11191" etc="1635092705"/>
+<taskprogress task="Connect Scan" time="1635081525" percent="1.96" remaining="11179" etc="1635092703"/>
+<taskprogress task="Connect Scan" time="1635081535" percent="2.05" remaining="11166" etc="1635092701"/>
+<taskprogress task="Connect Scan" time="1635081536" percent="2.06" remaining="11165" etc="1635092701"/>
+<taskprogress task="Connect Scan" time="1635081537" percent="2.07" remaining="11164" etc="1635092701"/>
+<taskprogress task="Connect Scan" time="1635081540" percent="2.10" remaining="11160" etc="1635092700"/>
+<taskprogress task="Connect Scan" time="1635081541" percent="2.11" remaining="11159" etc="1635092700"/>
+<taskprogress task="Connect Scan" time="1635081542" percent="2.11" remaining="11158" etc="1635092699"/>
+# Nmap 7.92SVN scan initiated Sun Oct 24 06:19:34 2021 as: nmap -Pn -T4 --traceroute -v --reason --append-output -oN /home/mrgfy/Results/121.122.111.244_24-10-2021.xml 121.122.111.244
+Nmap scan report for 121.122.111.244
+Host is up, received user-set (0.20s latency).
+All 1000 scanned ports on 121.122.111.244 are in ignored states.
+Not shown: 1000 filtered tcp ports (no-response)
+
+TRACEROUTE (using proto 1/icmp)
+HOP RTT       ADDRESS
+1   0.72 ms   192.168.0.1
+2   2.16 ms   100.64.64.1
+3   2.68 ms   mtga-stjrb.stjohncable.com (162.248.144.201)
+4   5.41 ms   205.174.153.4
+5   11.48 ms  cr2-sttlwawb-a-be15.bb.as20055.net (107.191.236.52)
+6   11.53 ms  cr2-sttlwawb-c-be10.bb.as20055.net (137.83.80.1)
+7   11.58 ms  pr1-sttlwawb-b-be11.bb.as20055.net (137.83.80.108)
+8   10.73 ms  209.133.4.9
+9   10.70 ms  ae1.cs1.sea1.us.eth.zayo.com (64.125.28.132)
+10  10.67 ms  ae27.mpr1.sea1.us.zip.zayo.com (64.125.29.1)
+11  11.18 ms  zayo-ntt.sea1.us.zip.zayo.com (64.125.13.106)
+12  26.03 ms  ae-2.r24.sttlwa01.us.bb.gin.ntt.net (129.250.2.72)
+13  120.83 ms ae-13.r30.tokyjp05.jp.bb.gin.ntt.net (129.250.4.143)
+14  124.27 ms ae-0.r31.tokyjp05.jp.bb.gin.ntt.net (129.250.5.22)
+15  190.34 ms ae-4.r23.sngpsi07.sg.bb.gin.ntt.net (129.250.2.242)
+16  196.92 ms ae-7.r23.kslrml02.my.bb.gin.ntt.net (129.250.2.169)
+17  214.07 ms ae-0.r20.kslrml02.my.bb.gin.ntt.net (129.250.3.79)
+18  217.20 ms ae-0.maxis.kslrml02.my.bb.gin.ntt.net (203.78.193.238)
+19  ... 21
+22  211.12 ms 58.71.241.106
+23  ...
+24  203.57 ms 58.71.243.53
+25  ...
+26  204.77 ms 121.122.111.244
+
+Read data files from: /usr/local/bin/../share/nmap
+# Nmap done at Sun Oct 24 06:21:20 2021 -- 1 IP address (1 host up) scanned in 106.70 seconds
+Host 244.111.122.121.in-addr.arpa. not found: 3(NXDOMAIN)
+Host 244.111.122.121.in-addr.arpa. not found: 3(NXDOMAIN)
+Host 244.111.122.121.in-addr.arpa. not found: 3(NXDOMAIN)
+Host 244.111.122.121.in-addr.arpa. not found: 3(NXDOMAIN)
+Host 244.111.122.121.in-addr.arpa. not found: 3(NXDOMAIN)
+
+#
+# ARIN WHOIS data and services are subject to the Terms of Use
+# available at: https://www.arin.net/resources/registry/whois/tou/
+#
+# If you see inaccuracies in the results, please report at
+# https://www.arin.net/resources/registry/whois/inaccuracy_reporting/
+#
+# Copyright 1997-2021, American Registry for Internet Numbers, Ltd.
+#
+
+
+NetRange:       121.0.0.0 - 121.255.255.255
+CIDR:           121.0.0.0/8
+NetName:        APNIC-121
+NetHandle:      NET-121-0-0-0-1
+Parent:          ()
+NetType:        Allocated to APNIC
+OriginAS:       
+Organization:   Asia Pacific Network Information Centre (APNIC)
+RegDate:        2006-01-06
+Updated:        2010-07-30
+Comment:        This IP address range is not registered in the ARIN database.
+Comment:        For details, refer to the APNIC Whois Database via
+Comment:        WHOIS.APNIC.NET or http://wq.apnic.net/apnic-bin/whois.pl
+Comment:        ** IMPORTANT NOTE: APNIC is the Regional Internet Registry
+Comment:        for the Asia Pacific region. APNIC does not operate networks
+Comment:        using this IP address range and is not able to investigate
+Comment:        spam or abuse reports relating to these addresses. For more
+Comment:        help, refer to http://www.apnic.net/apnic-info/whois_search2/abuse-and-spamming
+Ref:            https://rdap.arin.net/registry/ip/121.0.0.0
+
+ResourceLink:  http://wq.apnic.net/whois-search/static/search.html
+ResourceLink:  whois.apnic.net
+
+
+OrgName:        Asia Pacific Network Information Centre
+OrgId:          APNIC
+Address:        PO Box 3646
+City:           South Brisbane
+StateProv:      QLD
+PostalCode:     4101
+Country:        AU
+RegDate:        
+Updated:        2012-01-24
+Ref:            https://rdap.arin.net/registry/entity/APNIC
+
+ReferralServer:  whois://whois.apnic.net
+ResourceLink:  http://wq.apnic.net/whois-search/static/search.html
+
+OrgAbuseHandle: AWC12-ARIN
+OrgAbuseName:   APNIC Whois Contact
+OrgAbusePhone:  +61 7 3858 3188 
+OrgAbuseEmail:  search-apnic-not-arin@apnic.net
+OrgAbuseRef:    https://rdap.arin.net/registry/entity/AWC12-ARIN
+
+OrgTechHandle: AWC12-ARIN
+OrgTechName:   APNIC Whois Contact
+OrgTechPhone:  +61 7 3858 3188 
+OrgTechEmail:  search-apnic-not-arin@apnic.net
+OrgTechRef:    https://rdap.arin.net/registry/entity/AWC12-ARIN
+
+
+#
+# ARIN WHOIS data and services are subject to the Terms of Use
+# available at: https://www.arin.net/resources/registry/whois/tou/
+#
+# If you see inaccuracies in the results, please report at
+# https://www.arin.net/resources/registry/whois/inaccuracy_reporting/
+#
+# Copyright 1997-2021, American Registry for Internet Numbers, Ltd.
+#
+
+
+
+Found a referral to whois.apnic.net.
+
+% [whois.apnic.net]
+% Whois data copyright terms    http://www.apnic.net/db/dbcopyright.html
+
+% Information related to '121.122.0.0 - 121.122.127.255'
+
+% Abuse contact for '121.122.0.0 - 121.122.127.255' is 'abuse@maxis.com.my'
+
+inetnum:        121.122.0.0 - 121.122.127.255
+netname:        MAXISNET-3G
+descr:          Maxis Broadband Sdn Bhd
+country:        MY
+admin-c:        MO113-AP
+tech-c:         MO113-AP
+status:         ASSIGNED NON-PORTABLE
+mnt-by:         MAINT-MY-MAXIS
+last-modified:  2009-05-08T03:39:26Z
+source:         APNIC
+
+person:         Maxis Network and Security Operations
+nic-hdl:        MO113-AP
+remarks:        Please send spam report, virus alert or any others
+remarks:        abuse report trouble to abuse@maxis.com.my
+e-mail:         abuse@maxis.com.my
+address:        Level 19, Menara Maxis,
+address:        KLCC, 50088 Kuala Lumpur
+address:        Malaysia
+phone:          +603-2330-7500
+fax-no:         +603-2330-0587
+country:        MY
+mnt-by:         MAINT-MY-MAXIS
+last-modified:  2008-11-07T08:55:51Z
+source:         APNIC
+
+% Information related to '121.122.0.0/17AS9534'
+
+route:          121.122.0.0/17
+origin:         AS9534
+descr:          Maxis Broadband Sdn.Bhd
+                Level 14, Menara Maxis,
+                Kuala Lumpur City Centre,
+                Off Jalan Ampang
+mnt-by:         MAINT-MY-MAXIS
+last-modified:  2020-08-11T04:06:26Z
+source:         APNIC
+
+% This query was served by the APNIC Whois Service version 1.88.15-SNAPSHOT (WHOIS-US3)
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/local/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.92SVN scan initiated Sun Oct 24 06:21:25 2021 as: nmap -Pn -vv -p-100,8880- -&#45;script-args=unsafe=1 -&#45;script=http-adobe-coldfusion-apsa1301,http-apache-negotiation,http-apache-server-status,http-aspnet-debug,http-auth-finder,http-axis2-dir-traversal,http-bigip-cookie,http-cakephp-version,http-coldfusion-subzero,http-comments-displayer,http-cookie-flags,http-cors,http-cross-domain-policy,http-errors,http-favicon,http-generator,http-git,http-iis-webdav-vuln,http-mcmp,http-methods,http-method-tamper,http-mobileversion-checker,http-ntlm-info,http-passwd,http-phpmyadmin-dir-traversal,http-phpself-xss,http-php-version,http-put,http-robots.txt,http-security-headers,http-server-header,http-shellshock,http-svn-enum,http-svn-info,http-title,http-trace,http-vuln*,http-webdav-scan,weblogic-t3-info -&#45;script-args &quot;http.useragent=Mozilla/5.0 (Windows NT 6.1; WOW64; rv:64.0) Gecko/20100101 Firefox/64.0&quot; -&#45;stats-every 10s -d -&#45;append-output -oX /home/mrgfy/Results/121.122.111.244_24-10-2021.xml 121.122.111.244 -->
+<nmaprun scanner="nmap" args="nmap -Pn -vv -p-100,8880- -&#45;script-args=unsafe=1 -&#45;script=http-adobe-coldfusion-apsa1301,http-apache-negotiation,http-apache-server-status,http-aspnet-debug,http-auth-finder,http-axis2-dir-traversal,http-bigip-cookie,http-cakephp-version,http-coldfusion-subzero,http-comments-displayer,http-cookie-flags,http-cors,http-cross-domain-policy,http-errors,http-favicon,http-generator,http-git,http-iis-webdav-vuln,http-mcmp,http-methods,http-method-tamper,http-mobileversion-checker,http-ntlm-info,http-passwd,http-phpmyadmin-dir-traversal,http-phpself-xss,http-php-version,http-put,http-robots.txt,http-security-headers,http-server-header,http-shellshock,http-svn-enum,http-svn-info,http-title,http-trace,http-vuln*,http-webdav-scan,weblogic-t3-info -&#45;script-args &quot;http.useragent=Mozilla/5.0 (Windows NT 6.1; WOW64; rv:64.0) Gecko/20100101 Firefox/64.0&quot; -&#45;stats-every 10s -d -&#45;append-output -oX /home/mrgfy/Results/121.122.111.244_24-10-2021.xml 121.122.111.244" start="1635081685" startstr="Sun Oct 24 06:21:25 2021" version="7.92SVN" xmloutputversion="1.05">
+<scaninfo type="syn" protocol="tcp" numservices="56756" services="1-100,8880-65535"/>
+<verbose level="3"/>
+<debugging level="1"/>
+<taskbegin task="NSE" time="1635081685"/>
+<taskend task="NSE" time="1635081685"/>
+<taskbegin task="Parallel DNS resolution of 1 host." time="1635081685"/>
+<taskend task="Parallel DNS resolution of 1 host." time="1635081686"/>
+<taskbegin task="SYN Stealth Scan" time="1635081686"/>
+<taskprogress task="SYN Stealth Scan" time="1635081695" percent="0.07"/>
+<taskprogress task="SYN Stealth Scan" time="1635081705" percent="0.16"/>
+<taskprogress task="SYN Stealth Scan" time="1635081715" percent="0.25"/>
+<taskprogress task="SYN Stealth Scan" time="1635081725" percent="0.33"/>
+<taskprogress task="SYN Stealth Scan" time="1635081735" percent="0.42"/>
+<taskprogress task="SYN Stealth Scan" time="1635081736" percent="0.43"/>
+# Nmap 7.92SVN scan initiated Sun Oct 24 06:22:46 2021 as: nmap -Pn -T4 --traceroute -v --reason --append-output -oN /home/mrgfy/Results/121.122.111.244_24-10-2021.xml 121.122.111.244
+Nmap scan report for 121.122.111.244
+Host is up, received user-set (0.21s latency).
+All 1000 scanned ports on 121.122.111.244 are in ignored states.
+Not shown: 1000 filtered tcp ports (no-response)
+
+TRACEROUTE (using proto 1/icmp)
+HOP RTT       ADDRESS
+1   0.71 ms   192.168.0.1
+2   2.10 ms   100.64.64.1
+3   2.61 ms   mtga-stjrb.stjohncable.com (162.248.144.201)
+4   5.43 ms   205.174.153.4
+5   11.15 ms  cr2-sttlwawb-a-be15.bb.as20055.net (107.191.236.52)
+6   10.99 ms  cr2-sttlwawb-c-be10.bb.as20055.net (137.83.80.1)
+7   10.94 ms  pr1-sttlwawb-b-be11.bb.as20055.net (137.83.80.108)
+8   11.38 ms  209.133.4.9
+9   14.37 ms  ae1.cs1.sea1.us.eth.zayo.com (64.125.28.132)
+10  10.58 ms  ae27.mpr1.sea1.us.zip.zayo.com (64.125.29.1)
+11  11.12 ms  zayo-ntt.sea1.us.zip.zayo.com (64.125.13.106)
+12  17.15 ms  ae-2.r24.sttlwa01.us.bb.gin.ntt.net (129.250.2.72)
+13  121.16 ms ae-13.r30.tokyjp05.jp.bb.gin.ntt.net (129.250.4.143)
+14  122.23 ms ae-0.r31.tokyjp05.jp.bb.gin.ntt.net (129.250.5.22)
+15  190.99 ms ae-4.r23.sngpsi07.sg.bb.gin.ntt.net (129.250.2.242)
+16  197.04 ms ae-7.r23.kslrml02.my.bb.gin.ntt.net (129.250.2.169)
+17  200.63 ms ae-0.r20.kslrml02.my.bb.gin.ntt.net (129.250.3.79)
+18  209.92 ms ae-0.maxis.kslrml02.my.bb.gin.ntt.net (203.78.193.238)
+19  ... 21
+22  209.29 ms 58.71.241.106
+23  203.33 ms 58.71.244.245
+24  207.48 ms 58.71.243.53
+25  ...
+26  207.52 ms 121.122.111.244
+
+Read data files from: /usr/local/bin/../share/nmap
+# Nmap done at Sun Oct 24 06:24:38 2021 -- 1 IP address (1 host up) scanned in 111.70 seconds
+Host 244.111.122.121.in-addr.arpa. not found: 3(NXDOMAIN)
+Host 244.111.122.121.in-addr.arpa. not found: 3(NXDOMAIN)
+Host 244.111.122.121.in-addr.arpa. not found: 3(NXDOMAIN)
+Host 244.111.122.121.in-addr.arpa. not found: 3(NXDOMAIN)
+Host 244.111.122.121.in-addr.arpa. not found: 3(NXDOMAIN)
+
+#
+# ARIN WHOIS data and services are subject to the Terms of Use
+# available at: https://www.arin.net/resources/registry/whois/tou/
+#
+# If you see inaccuracies in the results, please report at
+# https://www.arin.net/resources/registry/whois/inaccuracy_reporting/
+#
+# Copyright 1997-2021, American Registry for Internet Numbers, Ltd.
+#
+
+
+NetRange:       121.0.0.0 - 121.255.255.255
+CIDR:           121.0.0.0/8
+NetName:        APNIC-121
+NetHandle:      NET-121-0-0-0-1
+Parent:          ()
+NetType:        Allocated to APNIC
+OriginAS:       
+Organization:   Asia Pacific Network Information Centre (APNIC)
+RegDate:        2006-01-06
+Updated:        2010-07-30
+Comment:        This IP address range is not registered in the ARIN database.
+Comment:        For details, refer to the APNIC Whois Database via
+Comment:        WHOIS.APNIC.NET or http://wq.apnic.net/apnic-bin/whois.pl
+Comment:        ** IMPORTANT NOTE: APNIC is the Regional Internet Registry
+Comment:        for the Asia Pacific region. APNIC does not operate networks
+Comment:        using this IP address range and is not able to investigate
+Comment:        spam or abuse reports relating to these addresses. For more
+Comment:        help, refer to http://www.apnic.net/apnic-info/whois_search2/abuse-and-spamming
+Ref:            https://rdap.arin.net/registry/ip/121.0.0.0
+
+ResourceLink:  http://wq.apnic.net/whois-search/static/search.html
+ResourceLink:  whois.apnic.net
+
+
+OrgName:        Asia Pacific Network Information Centre
+OrgId:          APNIC
+Address:        PO Box 3646
+City:           South Brisbane
+StateProv:      QLD
+PostalCode:     4101
+Country:        AU
+RegDate:        
+Updated:        2012-01-24
+Ref:            https://rdap.arin.net/registry/entity/APNIC
+
+ReferralServer:  whois://whois.apnic.net
+ResourceLink:  http://wq.apnic.net/whois-search/static/search.html
+
+OrgAbuseHandle: AWC12-ARIN
+OrgAbuseName:   APNIC Whois Contact
+OrgAbusePhone:  +61 7 3858 3188 
+OrgAbuseEmail:  search-apnic-not-arin@apnic.net
+OrgAbuseRef:    https://rdap.arin.net/registry/entity/AWC12-ARIN
+
+OrgTechHandle: AWC12-ARIN
+OrgTechName:   APNIC Whois Contact
+OrgTechPhone:  +61 7 3858 3188 
+OrgTechEmail:  search-apnic-not-arin@apnic.net
+OrgTechRef:    https://rdap.arin.net/registry/entity/AWC12-ARIN
+
+
+#
+# ARIN WHOIS data and services are subject to the Terms of Use
+# available at: https://www.arin.net/resources/registry/whois/tou/
+#
+# If you see inaccuracies in the results, please report at
+# https://www.arin.net/resources/registry/whois/inaccuracy_reporting/
+#
+# Copyright 1997-2021, American Registry for Internet Numbers, Ltd.
+#
+
+
+
+Found a referral to whois.apnic.net.
+
+% [whois.apnic.net]
+% Whois data copyright terms    http://www.apnic.net/db/dbcopyright.html
+
+% Information related to '121.122.0.0 - 121.122.127.255'
+
+% Abuse contact for '121.122.0.0 - 121.122.127.255' is 'abuse@maxis.com.my'
+
+inetnum:        121.122.0.0 - 121.122.127.255
+netname:        MAXISNET-3G
+descr:          Maxis Broadband Sdn Bhd
+country:        MY
+admin-c:        MO113-AP
+tech-c:         MO113-AP
+status:         ASSIGNED NON-PORTABLE
+mnt-by:         MAINT-MY-MAXIS
+last-modified:  2009-05-08T03:39:26Z
+source:         APNIC
+
+person:         Maxis Network and Security Operations
+nic-hdl:        MO113-AP
+remarks:        Please send spam report, virus alert or any others
+remarks:        abuse report trouble to abuse@maxis.com.my
+e-mail:         abuse@maxis.com.my
+address:        Level 19, Menara Maxis,
+address:        KLCC, 50088 Kuala Lumpur
+address:        Malaysia
+phone:          +603-2330-7500
+fax-no:         +603-2330-0587
+country:        MY
+mnt-by:         MAINT-MY-MAXIS
+last-modified:  2008-11-07T08:55:51Z
+source:         APNIC
+
+% Information related to '121.122.0.0/17AS9534'
+
+route:          121.122.0.0/17
+origin:         AS9534
+descr:          Maxis Broadband Sdn.Bhd
+                Level 14, Menara Maxis,
+                Kuala Lumpur City Centre,
+                Off Jalan Ampang
+mnt-by:         MAINT-MY-MAXIS
+last-modified:  2020-08-11T04:06:26Z
+source:         APNIC
+
+% This query was served by the APNIC Whois Service version 1.88.15-SNAPSHOT (WHOIS-US3)
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/local/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.92SVN scan initiated Sun Oct 24 06:24:43 2021 as: nmap -Pn -T4 -vv -p-100,8880- -&#45;script-args=unsafe=1 -&#45;script=http-adobe-coldfusion-apsa1301,http-apache-negotiation,http-apache-server-status,http-aspnet-debug,http-auth-finder,http-axis2-dir-traversal,http-bigip-cookie,http-cakephp-version,http-coldfusion-subzero,http-comments-displayer,http-cookie-flags,http-cors,http-cross-domain-policy,http-errors,http-favicon,http-generator,http-git,http-iis-webdav-vuln,http-mcmp,http-methods,http-method-tamper,http-mobileversion-checker,http-ntlm-info,http-passwd,http-phpmyadmin-dir-traversal,http-phpself-xss,http-php-version,http-put,http-robots.txt,http-security-headers,http-server-header,http-shellshock,http-svn-enum,http-svn-info,http-title,http-trace,http-vuln*,http-webdav-scan,weblogic-t3-info -&#45;script-args &quot;http.useragent=Mozilla/5.0 (Windows NT 6.1; WOW64; rv:64.0) Gecko/20100101 Firefox/64.0&quot; -&#45;stats-every 10s -d -&#45;append-output -oX /home/mrgfy/Results/121.122.111.244_24-10-2021.xml 121.122.111.244 -->
+<nmaprun scanner="nmap" args="nmap -Pn -T4 -vv -p-100,8880- -&#45;script-args=unsafe=1 -&#45;script=http-adobe-coldfusion-apsa1301,http-apache-negotiation,http-apache-server-status,http-aspnet-debug,http-auth-finder,http-axis2-dir-traversal,http-bigip-cookie,http-cakephp-version,http-coldfusion-subzero,http-comments-displayer,http-cookie-flags,http-cors,http-cross-domain-policy,http-errors,http-favicon,http-generator,http-git,http-iis-webdav-vuln,http-mcmp,http-methods,http-method-tamper,http-mobileversion-checker,http-ntlm-info,http-passwd,http-phpmyadmin-dir-traversal,http-phpself-xss,http-php-version,http-put,http-robots.txt,http-security-headers,http-server-header,http-shellshock,http-svn-enum,http-svn-info,http-title,http-trace,http-vuln*,http-webdav-scan,weblogic-t3-info -&#45;script-args &quot;http.useragent=Mozilla/5.0 (Windows NT 6.1; WOW64; rv:64.0) Gecko/20100101 Firefox/64.0&quot; -&#45;stats-every 10s -d -&#45;append-output -oX /home/mrgfy/Results/121.122.111.244_24-10-2021.xml 121.122.111.244" start="1635081883" startstr="Sun Oct 24 06:24:43 2021" version="7.92SVN" xmloutputversion="1.05">
+<scaninfo type="syn" protocol="tcp" numservices="56756" services="1-100,8880-65535"/>
+<verbose level="3"/>
+<debugging level="1"/>
+<taskbegin task="NSE" time="1635081883"/>
+<taskend task="NSE" time="1635081883"/>
+<taskbegin task="Parallel DNS resolution of 1 host." time="1635081884"/>
+<taskend task="Parallel DNS resolution of 1 host." time="1635081884"/>
+<taskbegin task="SYN Stealth Scan" time="1635081884"/>
+<taskprogress task="SYN Stealth Scan" time="1635081893" percent="0.14"/>
+<taskprogress task="SYN Stealth Scan" time="1635081903" percent="0.32"/>
+<taskprogress task="SYN Stealth Scan" time="1635081913" percent="0.49"/>
+<taskprogress task="SYN Stealth Scan" time="1635081924" percent="0.67"/>
+<taskprogress task="SYN Stealth Scan" time="1635081934" percent="0.85"/>
+<taskprogress task="SYN Stealth Scan" time="1635081944" percent="1.02" remaining="5812" etc="1635087755"/>
+<taskprogress task="SYN Stealth Scan" time="1635081954" percent="1.20" remaining="5773" etc="1635087727"/>
+<taskprogress task="SYN Stealth Scan" time="1635081964" percent="1.37" remaining="5742" etc="1635087705"/>
+<taskprogress task="SYN Stealth Scan" time="1635081974" percent="1.55" remaining="5715" etc="1635087689"/>
+<taskprogress task="SYN Stealth Scan" time="1635081984" percent="1.73" remaining="5692" etc="1635087675"/>
+<taskprogress task="SYN Stealth Scan" time="1635081994" percent="1.90" remaining="5671" etc="1635087665"/>
+<taskprogress task="SYN Stealth Scan" time="1635082004" percent="2.08" remaining="5652" etc="1635087656"/>
+<taskprogress task="SYN Stealth Scan" time="1635082014" percent="2.26" remaining="5635" etc="1635087648"/>
+<taskprogress task="SYN Stealth Scan" time="1635082024" percent="2.43" remaining="5618" etc="1635087642"/>
+<taskprogress task="SYN Stealth Scan" time="1635082034" percent="2.61" remaining="5603" etc="1635087636"/>
+<taskprogress task="SYN Stealth Scan" time="1635082044" percent="2.78" remaining="5588" etc="1635087631"/>
+<taskprogress task="SYN Stealth Scan" time="1635082054" percent="2.96" remaining="5574" etc="1635087627"/>
+<taskprogress task="SYN Stealth Scan" time="1635082064" percent="3.14" remaining="5560" etc="1635087623"/>
+<taskprogress task="SYN Stealth Scan" time="1635082074" percent="3.31" remaining="5546" etc="1635087620"/>
+<taskprogress task="SYN Stealth Scan" time="1635082084" percent="3.49" remaining="5533" etc="1635087617"/>
+<taskprogress task="SYN Stealth Scan" time="1635082093" percent="3.66" remaining="5508" etc="1635087601"/>
+<taskprogress task="SYN Stealth Scan" time="1635082103" percent="3.83" remaining="5496" etc="1635087599"/>
+<taskprogress task="SYN Stealth Scan" time="1635082113" percent="4.01" remaining="5485" etc="1635087597"/>
+<taskprogress task="SYN Stealth Scan" time="1635082123" percent="4.18" remaining="5473" etc="1635087595"/>
+<taskprogress task="SYN Stealth Scan" time="1635082133" percent="4.36" remaining="5461" etc="1635087594"/>
+<taskprogress task="SYN Stealth Scan" time="1635082143" percent="4.54" remaining="5450" etc="1635087593"/>
+<taskprogress task="SYN Stealth Scan" time="1635082153" percent="4.71" remaining="5439" etc="1635087591"/>
+<taskprogress task="SYN Stealth Scan" time="1635082163" percent="4.89" remaining="5428" etc="1635087590"/>
+<taskprogress task="SYN Stealth Scan" time="1635082173" percent="5.07" remaining="5417" etc="1635087589"/>
+<taskprogress task="SYN Stealth Scan" time="1635082183" percent="5.24" remaining="5406" etc="1635087588"/>
+<taskprogress task="SYN Stealth Scan" time="1635082193" percent="5.42" remaining="5395" etc="1635087587"/>
+<taskprogress task="SYN Stealth Scan" time="1635082203" percent="5.59" remaining="5384" etc="1635087586"/>
+<taskprogress task="SYN Stealth Scan" time="1635082213" percent="5.77" remaining="5373" etc="1635087586"/>
+<taskprogress task="SYN Stealth Scan" time="1635082223" percent="5.95" remaining="5362" etc="1635087585"/>
+<taskprogress task="SYN Stealth Scan" time="1635082233" percent="6.12" remaining="5352" etc="1635087584"/>
+<taskprogress task="SYN Stealth Scan" time="1635082243" percent="6.30" remaining="5341" etc="1635087583"/>
+<taskprogress task="SYN Stealth Scan" time="1635082253" percent="6.48" remaining="5330" etc="1635087583"/>
+<taskprogress task="SYN Stealth Scan" time="1635082263" percent="6.65" remaining="5320" etc="1635087582"/>
+<taskprogress task="SYN Stealth Scan" time="1635082273" percent="6.83" remaining="5309" etc="1635087582"/>
+<taskprogress task="SYN Stealth Scan" time="1635082283" percent="7.00" remaining="5299" etc="1635087581"/>
+<taskprogress task="SYN Stealth Scan" time="1635082293" percent="7.18" remaining="5288" etc="1635087580"/>
+<taskprogress task="SYN Stealth Scan" time="1635082303" percent="7.36" remaining="5277" etc="1635087580"/>
+<taskprogress task="SYN Stealth Scan" time="1635082313" percent="7.53" remaining="5267" etc="1635087580"/>
+<taskprogress task="SYN Stealth Scan" time="1635082323" percent="7.71" remaining="5257" etc="1635087579"/>
+<taskprogress task="SYN Stealth Scan" time="1635082333" percent="7.88" remaining="5246" etc="1635087579"/>
+<taskprogress task="SYN Stealth Scan" time="1635082343" percent="8.06" remaining="5236" etc="1635087578"/>
+<taskprogress task="SYN Stealth Scan" time="1635082353" percent="8.24" remaining="5225" etc="1635087578"/>
+<taskprogress task="SYN Stealth Scan" time="1635082363" percent="8.41" remaining="5215" etc="1635087577"/>
+<taskprogress task="SYN Stealth Scan" time="1635082373" percent="8.59" remaining="5205" etc="1635087577"/>
+<taskprogress task="SYN Stealth Scan" time="1635082383" percent="8.94" remaining="5081" etc="1635087463"/>
+<taskprogress task="SYN Stealth Scan" time="1635082393" percent="10.76" remaining="4223" etc="1635086615"/>
+<taskprogress task="SYN Stealth Scan" time="1635082403" percent="14.20" remaining="3137" etc="1635085539"/>
+<taskprogress task="SYN Stealth Scan" time="1635082413" percent="18.84" remaining="2279" etc="1635084691"/>
+<taskprogress task="SYN Stealth Scan" time="1635082423" percent="23.69" remaining="1737" etc="1635084159"/>
+<taskprogress task="SYN Stealth Scan" time="1635082433" percent="27.87" remaining="1421" etc="1635083854"/>
+<taskprogress task="SYN Stealth Scan" time="1635082443" percent="31.12" remaining="1238" etc="1635083680"/>
+<taskprogress task="SYN Stealth Scan" time="1635082453" percent="35.58" remaining="1031" etc="1635083483"/>
+<taskprogress task="SYN Stealth Scan" time="1635082463" percent="39.45" remaining="889" etc="1635083352"/>
+<taskprogress task="SYN Stealth Scan" time="1635082473" percent="42.65" remaining="792" etc="1635083265"/>
+<taskprogress task="SYN Stealth Scan" time="1635082483" percent="45.99" remaining="704" etc="1635083186"/>
+<taskprogress task="SYN Stealth Scan" time="1635082493" percent="50.30" remaining="602" etc="1635083095"/>
+<taskprogress task="SYN Stealth Scan" time="1635082503" percent="53.88" remaining="530" etc="1635083033"/>
+<taskprogress task="SYN Stealth Scan" time="1635082513" percent="58.02" remaining="456" etc="1635082968"/>
+<taskprogress task="SYN Stealth Scan" time="1635082523" percent="60.71" remaining="414" etc="1635082937"/>
+<taskprogress task="SYN Stealth Scan" time="1635082533" percent="63.92" remaining="367" etc="1635082899"/>
+<taskprogress task="SYN Stealth Scan" time="1635082543" percent="67.63" remaining="316" etc="1635082858"/>
+<taskprogress task="SYN Stealth Scan" time="1635082553" percent="71.80" remaining="263" etc="1635082816"/>
+<taskprogress task="SYN Stealth Scan" time="1635082563" percent="74.74" remaining="230" etc="1635082792"/>
+<taskprogress task="SYN Stealth Scan" time="1635082573" percent="78.72" remaining="187" etc="1635082759"/>
+<taskprogress task="SYN Stealth Scan" time="1635082583" percent="81.88" remaining="155" etc="1635082738"/>
+<taskprogress task="SYN Stealth Scan" time="1635082593" percent="85.73" remaining="119" etc="1635082711"/>
+<taskprogress task="SYN Stealth Scan" time="1635082603" percent="88.72" remaining="92" etc="1635082694"/>
+<taskprogress task="SYN Stealth Scan" time="1635082613" percent="92.21" remaining="62" etc="1635082675"/>
+<taskprogress task="SYN Stealth Scan" time="1635082623" percent="96.51" remaining="27" etc="1635082650"/>
+<taskend task="SYN Stealth Scan" time="1635082632" extrainfo="56756 total ports"/>
+<taskbegin task="NSE" time="1635082632"/>
+<taskprogress task="NSE" time="1635082633" percent="93.55" remaining="1" etc="1635082633"/>
+<taskprogress task="NSE" time="1635082643" percent="93.55" remaining="1" etc="1635082644"/>
+<taskend task="NSE" time="1635082646"/>
+<host starttime="1635081884" endtime="1635082646"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="121.122.111.244" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+<ports><extraports state="filtered" count="56754">
+<extrareasons reason="no-response" count="56754" proto="tcp" ports="1-100,8880-39425,39427-42257,42259-65535"/>
+</extraports>
+<port protocol="tcp" portid="39426"><state state="closed" reason="reset" reason_ttl="41"/></port>
+<port protocol="tcp" portid="42258"><state state="open" reason="syn-ack" reason_ttl="41"/></port>
+</ports>
+<times srtt="211716" rttvar="17744" to="282692"/>
+</host>
+<taskbegin task="NSE" time="1635082646"/>
+<taskend task="NSE" time="1635082646"/>
+<runstats><finished time="1635082646" timestr="Sun Oct 24 06:37:26 2021" summary="Nmap done at Sun Oct 24 06:37:26 2021; 1 IP address (1 host up) scanned in 762.97 seconds" elapsed="762.97" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>
