@@ -19,7 +19,7 @@ strategy:
   maxParallel: 3
 
 steps:
-- task: UsePythonVersion@3.10
+- task: UsePythonVersion@0
   inputs:
     versionSpec: '$(PYTHON_VERSION)'
     architecture: 'x64'
