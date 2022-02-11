@@ -1,0 +1,38 @@
+# Login to Azure subscription
+name: 'Azure Login'
+description: 'Authenticate to Azure and run your Az CLI or Az PowerShell based Actions or scripts. github.com/Azure/Actions'
+inputs: 
+  creds:
+    description: 'Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS'
+    required: false
+  client-id:
+    description: 'ClientId of the Azure Service principal created.'
+    required: false
+  tenant-id:
+    description: 'TenantId of the Azure Service principal created.'
+    required: false
+  subscription-id:
+    description: 'Azure subscriptionId'
+    required: false
+  enable-AzPSSession: 
+    description: 'Set this value to true to enable Azure PowerShell Login in addition to Az CLI login'
+    required: false
+    default: false
+  environment:
+    description: 'Name of the environment. Supported values are azurecloud, azurestack, azureusgovernment, azurechinacloud, azuregermancloud. Default being azurecloud'
+    required: false
+    default: azurecloud
+  allow-no-subscriptions:
+    description: 'Set this value to true to enable support for accessing tenants without subscriptions'
+    required: false
+    default: false
+  audience:
+    description: 'Provide audience field for access-token. Default value is api://AzureADTokenExchange' 
+    required: false
+    default: 'api://AzureADTokenExchange'
+branding:
+  icon: 'login.svg'
+  color: 'blue'
+runs:
+  using: 'node12'
+  main: 'lib/main.js'

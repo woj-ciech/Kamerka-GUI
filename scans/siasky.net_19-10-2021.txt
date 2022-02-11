@@ -1,0 +1,122 @@
+# Nmap 7.92SVN scan initiated Tue Oct 19 09:18:40 2021 as: nmap -Pn -T4 --traceroute -v --reason --append-output -oN /home/mrgfy/Results/siasky.net_19-10-2021.txt siasky.net
+Nmap scan report for siasky.net (103.214.108.162)
+Host is up, received user-set (0.040s latency).
+Not shown: 998 filtered tcp ports (no-response)
+PORT    STATE SERVICE REASON
+80/tcp  open  http    syn-ack ttl 51
+443/tcp open  https   syn-ack ttl 51
+
+TRACEROUTE (using port 443/tcp)
+HOP RTT      ADDRESS
+1   1.66 ms  192.168.0.1
+2   2.45 ms  100.64.64.1
+3   3.10 ms  mtga-stjrb.stjohncable.com (162.248.144.201)
+4   12.10 ms 205.174.153.4
+5   19.34 ms cr2-sttlwawb-a-be15.bb.as20055.net (107.191.236.52)
+6   19.39 ms cr2-sttlwawb-c-be10.bb.as20055.net (137.83.80.1)
+7   12.28 ms pr1-sttlwawb-c-be10.bb.as20055.net (137.83.80.101)
+8   13.06 ms 100ge14-2.core1.sea1.he.net (206.81.80.40)
+9   19.45 ms 100ge15-1.core1.pdx1.he.net (184.105.64.138)
+10  35.71 ms 100ge5-1.core1.lax2.he.net (184.104.193.141)
+11  39.54 ms la2.gslnetworks.com (103.137.13.168)
+12  40.26 ms lax.scrub.gslnetworks.com (103.137.13.205)
+13  39.68 ms 63018.gslnetworks.com (103.137.13.185)
+14  52.85 ms core.lax.dedicated.com (167.160.91.2)
+15  39.86 ms 103.214.108.162
+
+Read data files from: /usr/local/bin/../share/nmap
+# Nmap done at Tue Oct 19 09:18:49 2021 -- 1 IP address (1 host up) scanned in 8.33 seconds
+siasky.net name server ns-1834.awsdns-37.co.uk.
+siasky.net name server ns-429.awsdns-53.com.
+siasky.net name server ns-872.awsdns-45.net.
+siasky.net name server ns-1086.awsdns-07.org.
+siasky.net has address 51.81.245.119
+siasky.net has no AAAA record
+siasky.net mail is handled by 10 alt3.aspmx.l.google.com.
+siasky.net mail is handled by 10 alt4.aspmx.l.google.com.
+siasky.net mail is handled by 5 alt1.aspmx.l.google.com.
+siasky.net mail is handled by 5 alt2.aspmx.l.google.com.
+siasky.net mail is handled by 1 aspmx.l.google.com.
+siasky.net has SOA record ns-1834.awsdns-37.co.uk. awsdns-hostmaster.amazon.com. 1 7200 900 1209600 86400
+
+#
+# ARIN WHOIS data and services are subject to the Terms of Use
+# available at: https://www.arin.net/resources/registry/whois/tou/
+#
+# If you see inaccuracies in the results, please report at
+# https://www.arin.net/resources/registry/whois/inaccuracy_reporting/
+#
+# Copyright 1997-2021, American Registry for Internet Numbers, Ltd.
+#
+
+
+#
+# This query looks like a domain name.  Please consult DNS to resolve it to
+# an IP address, or use the Whois server for the appropriate domain registry.
+# 
+#
+
+No match found for siasky.net.
+
+
+#
+# ARIN WHOIS data and services are subject to the Terms of Use
+# available at: https://www.arin.net/resources/registry/whois/tou/
+#
+# If you see inaccuracies in the results, please report at
+# https://www.arin.net/resources/registry/whois/inaccuracy_reporting/
+#
+# Copyright 1997-2021, American Registry for Internet Numbers, Ltd.
+#
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/local/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.92SVN scan initiated Tue Oct 19 09:18:53 2021 as: nmap -sT -sV -Pn -vv -p-100,60000- -&#45;script-args=unsafe=1 -&#45;script=http-adobe-coldfusion-apsa1301,http-apache-negotiation,http-apache-server-status,http-aspnet-debug,http-auth-finder,http-axis2-dir-traversal,http-bigip-cookie,http-cakephp-version,http-coldfusion-subzero,http-comments-displayer,http-cookie-flags,http-cors,http-cross-domain-policy,http-errors,http-favicon,http-generator,http-git,http-iis-webdav-vuln,http-mcmp,http-methods,http-method-tamper,http-mobileversion-checker,http-ntlm-info,http-passwd,http-phpmyadmin-dir-traversal,http-phpself-xss,http-php-version,http-put,http-robots.txt,http-security-headers,http-server-header,http-shellshock,http-svn-enum,http-svn-info,http-title,http-trace,http-vuln*,http-webdav-scan,weblogic-t3-info -&#45;script-args &quot;http.useragent=Mozilla/5.0 (Windows NT 6.1; WOW64; rv:64.0) Gecko/20100101 Firefox/64.0&quot; -&#45;stats-every 10s -d -&#45;append-output -oX /home/mrgfy/Results/siasky.net_19-10-2021.txt siasky.net -->
+<nmaprun scanner="nmap" args="nmap -sT -sV -Pn -vv -p-100,60000- -&#45;script-args=unsafe=1 -&#45;script=http-adobe-coldfusion-apsa1301,http-apache-negotiation,http-apache-server-status,http-aspnet-debug,http-auth-finder,http-axis2-dir-traversal,http-bigip-cookie,http-cakephp-version,http-coldfusion-subzero,http-comments-displayer,http-cookie-flags,http-cors,http-cross-domain-policy,http-errors,http-favicon,http-generator,http-git,http-iis-webdav-vuln,http-mcmp,http-methods,http-method-tamper,http-mobileversion-checker,http-ntlm-info,http-passwd,http-phpmyadmin-dir-traversal,http-phpself-xss,http-php-version,http-put,http-robots.txt,http-security-headers,http-server-header,http-shellshock,http-svn-enum,http-svn-info,http-title,http-trace,http-vuln*,http-webdav-scan,weblogic-t3-info -&#45;script-args &quot;http.useragent=Mozilla/5.0 (Windows NT 6.1; WOW64; rv:64.0) Gecko/20100101 Firefox/64.0&quot; -&#45;stats-every 10s -d -&#45;append-output -oX /home/mrgfy/Results/siasky.net_19-10-2021.txt siasky.net" start="1634660333" startstr="Tue Oct 19 09:18:53 2021" version="7.92SVN" xmloutputversion="1.05">
+<scaninfo type="connect" protocol="tcp" numservices="5636" services="1-100,60000-65535"/>
+<verbose level="3"/>
+<debugging level="1"/>
+<taskbegin task="NSE" time="1634660334"/>
+<taskend task="NSE" time="1634660334"/>
+<taskbegin task="NSE" time="1634660334"/>
+<taskend task="NSE" time="1634660334"/>
+<taskbegin task="Parallel DNS resolution of 1 host." time="1634660334"/>
+<taskend task="Parallel DNS resolution of 1 host." time="1634660334"/>
+<taskbegin task="Connect Scan" time="1634660334"/>
+<taskprogress task="Connect Scan" time="1634660343" percent="48.02" remaining="10" etc="1634660353"/>
+<taskend task="Connect Scan" time="1634660350" extrainfo="5636 total ports"/>
+<taskbegin task="Service scan" time="1634660350"/>
+<taskprogress task="Service scan" time="1634660356" percent="0.00"/>
+<taskend task="Service scan" time="1634660356" extrainfo="1 service on 1 host"/>
+<taskbegin task="NSE" time="1634660356"/>
+<taskend task="NSE" time="1634660361"/>
+<taskbegin task="NSE" time="1634660361"/>
+<taskend task="NSE" time="1634660361"/>
+<host starttime="1634660334" endtime="1634660361"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="103.214.108.162" addrtype="ipv4"/>
+<hostnames>
+<hostname name="siasky.net" type="user"/>
+</hostnames>
+<ports><extraports state="filtered" count="5635">
+<extrareasons reason="no-response" count="5635" proto="tcp" ports="1-79,81-100,60000-65535"/>
+</extraports>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="OpenResty web app server" version="1.19.9.1" method="probed" conf="10"><cpe>cpe:/a:openresty:ngx_openresty:1.19.9.1</cpe></service><script id="http-server-header" output="openresty/1.19.9.1"><elem>openresty/1.19.9.1</elem>
+</script><script id="http-mobileversion-checker" output="No mobile version detected."/><script id="http-title" output="Did not follow redirect to https://siasky.net/"><elem key="redirect_url">https://siasky.net/</elem>
+</script><script id="http-methods" output="&#xa;  Supported Methods: POST"><table key="Supported Methods">
+<elem>POST</elem>
+</table>
+</script><script id="http-comments-displayer" output="Couldn&apos;t find any comments."/><script id="http-security-headers" output="&#xa;  Cache_Control: &#xa;    Header: Cache-Control: public, max-age=0"><table key="Cache_Control">
+<elem>Header: Cache-Control: public, max-age=0</elem>
+</table>
+</script><script id="http-iis-webdav-vuln" output="&#xa;  ERROR: This web server is not supported.&#xa;"/><script id="http-errors" output="Couldn&apos;t find any error pages."/></port>
+</ports>
+<times srtt="40399" rttvar="2053" to="100000"/>
+</host>
+<taskbegin task="NSE" time="1634660361"/>
+<taskend task="NSE" time="1634660361"/>
+<taskbegin task="NSE" time="1634660361"/>
+<taskend task="NSE" time="1634660361"/>
+<runstats><finished time="1634660361" timestr="Tue Oct 19 09:19:21 2021" summary="Nmap done at Tue Oct 19 09:19:21 2021; 1 IP address (1 host up) scanned in 28.06 seconds" elapsed="28.06" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>
