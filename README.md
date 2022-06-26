@@ -2,6 +2,8 @@
 
 ## Ultimate Internet of Things/Industrial Control Systems reconnaissance tool.
 
+<p align="center"><img src="https://www.offensiveosint.io/content/images/2020/07/OffensiveOsint-logo-RGB-2.png" alt="logo" width="200"/></p>
+
 ### Powered by Shodan - Supported by Binary Edge & WhoisXMLAPI
 
 ## NSA and CISA Recommend Immediate Actions to Reduce Exposure Across Operational Technologies and Control Systems
