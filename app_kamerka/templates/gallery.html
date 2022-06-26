@@ -4,7 +4,7 @@
 {% block page_content %}
     <head>
         <!-- META SECTION -->
-        <title>History - ꓘamerka</title>
+        <title>Gallery - ꓘamerka</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -15,6 +15,19 @@
         <link rel="stylesheet" type="text/css" id="theme" href="{% static 'css/theme-default.css' %}"/>
         <!-- EOF CSS INCLUDE -->
     </head>
+
+
+
+<style>
+
+.screenshot {
+
+    max-width: 100%;
+    max-height: 100%;
+    display: block
+
+}
+</style>
     <body>
         <!-- START PAGE CONTAINER -->
         <div class="page-container">
@@ -94,34 +107,40 @@
                                 <div class="panel-body tab-content">
                                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    <h3 class="panel-title">Search history</h3>
+                                    <h3 class="panel-title">Gallery</h3>
 
 
                                 </div>
                                 <div class="panel-body">
-                                    <table id="customers2" class="table datatable">
-                                        <thead>
-                                            <tr>
-                                                <th>Country/Coordinates</th>
-                                                <th>Devices</th>
+                                                {% for device in devices %}
+
+<div class="col-md-4">
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="panel-title-box">
+                                        <h3><a href="{% url 'device' id=device.search_id ip=device.ip device_id=device.id %}"> {{ device.ip }}</a></h3>
+                                    </div>
+
+                                </div>
+                                <div class="panel-body padding-0" style="background-color:#0a141d">
+
+                                    <a href="{% url 'device' id=device.search_id ip=device.ip device_id=device.id %}"><img src="data:image/jpeg;base64,{{ device.screenshot }}" class="screenshot"></a>
 
 
-                                            </tr>
-                                        </thead>
-                                        <tbody>
+                                </div>
+                            </div>
 
-                                            {% for search in history %}
+                        </div>
+                                                                                {% endfor %}
 
-                                            <tr>
-                                                <td><a href="{% url 'results' id=search.id %}">{{ search.country }} {{ search.coordinates }}</a>
-</td>
-                                                <td>{% for i in search.ics %} {{ i }} {% endfor %} {% for i in search.coordinates_search %} {{ i }} {% endfor %}</td>
-                                            </tr>
 
-                                        {% endfor %}
+                        </div>
 
-                                        </tbody>
-                                    </table>
+
+
+
+
 </div>
 
 

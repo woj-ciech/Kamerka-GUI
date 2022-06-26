@@ -53,6 +53,9 @@
                     <li class="">
                         <a href="devices"><span class="fa fa-search"></span> <span class="xn-text">Search</span></a>
                     </li>
+                    <li class="">
+                        <a href="gallery"><span class="fa fa-camera"></span> <span class="xn-text">Gallery</span></a>
+                    </li>
 
                     <li class="xn-title">Other</li>
 
@@ -71,7 +74,7 @@
                 
                 <!-- START X-NAVIGATION VERTICAL -->
                 <ul class="x-navigation x-navigation-horizontal x-navigation-panel">
-
+<center><h1 style="color:#ff00cd; text-align:center">Industrial Control Systems & Internet of Things reconnaissance</h1></center>
                 </ul>
                 <!-- END X-NAVIGATION VERTICAL -->                     
 
@@ -79,9 +82,9 @@
                 <ul class="breadcrumb">
 
                            <div class='progress-wrapper'>
-                <div id='progress-bar' class='progress-bar' style="background-color: #68a9ef; width: 0%;">&nbsp;</div>
+                <div id='progress-bar' class='progress-bar' style="background-color: #0064d7; width: 0%;">&nbsp;</div>
                 </div>
-                <div id="progress-bar-message">Starting...</div>
+                <div id="progress-bar-message" style="color:#ff00cd">Starting...</div>
                 </ul>
                 <!-- END BREADCRUMB -->                       
                 
@@ -105,7 +108,6 @@
                                     </div>
                                 </div>
                                 <div class="widget-controls">
-                                    <a href="#" class="widget-control-right widget-remove" data-toggle="tooltip" data-placement="top" title="Remove Widget"><span class="fa fa-times"></span></a>
                                 </div>
                             </div>
                             <!-- END WIDGET SLIDER -->
@@ -123,7 +125,6 @@
                                     <div class="widget-title">Devices</div>
                                 </div>
                                 <div class="widget-controls">
-                                    <a href="#" class="widget-control-right widget-remove" data-toggle="tooltip" data-placement="top" title="Remove Widget"><span class="fa fa-times"></span></a>
                                 </div>
                             </div>
                             <!-- END WIDGET MESSAGES -->
@@ -140,7 +141,6 @@
                                     <div class="widget-title">Searches</div>
                                 </div>
                                 <div class="widget-controls">
-                                    <a href="#" class="widget-control-right widget-remove" data-toggle="tooltip" data-placement="top" title="Remove Widget"><span class="fa fa-times"></span></a>
                                 </div>
                             </div>
 
@@ -153,7 +153,6 @@
                                 <div class="widget-big-int plugin-clock">00:00</div>
                                 <div class="widget-subtitle plugin-date">Loading...</div>
                                 <div class="widget-controls">
-                                    <a href="#" class="widget-control-right widget-remove" data-toggle="tooltip" data-placement="left" title="Remove Widget"><span class="fa fa-times"></span></a>
                                 </div>
 
                             </div>
@@ -173,7 +172,7 @@
 
                                     </div>
                                     <div class="panel-body padding-0" >
-                                        <div class="chart-holder" id="dashboard-bar-1" style="height: 200px;"></div>
+                                        <div class="chart-holder" id="dashboard-bar-1" style="height: 200px;background-color:#0a141d"></div>
 
                                 </div>
 
@@ -192,7 +191,7 @@
 
                                 </div>
                                 <div class="panel-body padding-0">
-                                    <div class="chart-holder" id="dashboard-donut-1" style="height: 200px;"></div>
+                                    <div class="chart-holder" id="dashboard-donut-1" style="height: 200px; background-color:#0a141d"></div>
                                 </div>
                             </div>
 
@@ -205,11 +204,10 @@
                                 <div class="panel-heading">
                                     <div class="panel-title-box">
                                         <h3>Searches</h3>
-                                        <span>5 last searches</span>
                                     </div>
 
                                 </div>
-                                <div class="panel-body panel-body-table">
+                                <div class="panel-body panel-body-table" style="background-color:#0a141d">
 
                                     <div class="table-responsive">
                                         <table class="table">
@@ -245,9 +243,9 @@
 
 
                                 </div>
-                                <div class="panel-body">
+                                <div class="panel-body" style="background-color:#0a141d">
 
-                                            <div id="dashboard-map-seles" style="width: 100%; height: 200px"></div>
+                                            <div id="dashboard-map-seles" style="width: 100%; height: 200px;"></div>
                                 </div>
                             </div>
 
@@ -264,18 +262,13 @@
 
                                 </div>
                                 <div class="panel-body padding-0">
-                                    <div id="wordcloud" class="chart-holder" id="dashboard-line-1" style="height:200px;overflow:hidden"></div>
+                                    <div id="wordcloud" class="chart-holder" id="dashboard-line-1" style="height:200px;overflow:hidden; background-color:#0a141d"></div>
                                 </div>
                             </div>
 
                         </div>
                     </div>
 
-                    <!-- START DASHBOARD CHART -->
-					<div class="block-full-width">
-
-                    </div>
-                    <!-- END DASHBOARD CHART -->
 
                 </div>
                 <!-- END PAGE CONTENT WRAPPER -->
@@ -295,6 +288,7 @@
 
         <script type="text/javascript" src="{% static 'js/plugins/morris/raphael-min.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/plugins/morris/morris.min.js' %}"></script>
+
         <script type='text/javascript' src="{% static 'js/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js' %}"></script>
         <script type='text/javascript' src="{% static 'js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/plugins/owl/owl.carousel.min.js' %}"></script>

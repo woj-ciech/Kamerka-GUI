@@ -134,13 +134,13 @@
 					this.$bar.css({backgroundColor: '#FEA223', borderColor: '#FEA223', color: '#FFF', opacity: 1});
 					this.$buttons.css({borderTop: '1px solid #FEA223'}); break;
 				case 'error':
-					this.$bar.css({backgroundColor: '#B64645', borderColor: '#B64645', color: '#FFF', opacity: 1});					
+					this.$bar.css({backgroundColor: '#ff00cd', borderColor: '#ff00cd', color: '#0a141d', opacity: 1});
 					this.$buttons.css({borderTop: '1px solid #B64645'}); break;
 				case 'information':
 					this.$bar.css({backgroundColor: '#3FBAE4', borderColor: '#3FBAE4', color: '#FFF', opacity: 1});
 					this.$buttons.css({borderTop: '1px solid #3FBAE4'}); break;
 				case 'success':
-					this.$bar.css({backgroundColor: '#95B75D', borderColor: '#95B75D', color: '#FFF', opacity: 1});
+					this.$bar.css({backgroundColor: '#00E1FF', borderColor: '#00E1FF', color: '#0a141d', opacity: 1});
 					this.$buttons.css({borderTop: '1px solid #95B75D'});break;
 				default:
 					this.$bar.css({backgroundColor: '#333', borderColor: '#333', color: '#FFF', opacity: 1}); break;

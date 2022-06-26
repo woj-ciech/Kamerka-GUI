@@ -89,14 +89,14 @@ min-height: 58px;
 
 .image-upload-wrap {
   margin-top: 20px;
-  border: 4px dashed #1caf9a;
+  border: 4px dashed  #ff00cd;
   position: relative;
 }
 
 .image-dropping,
 .image-upload-wrap:hover {
-  background-color: #1caf9a;
-  border: 4px dashed #ffffff;
+  background-color: #00E1FF;
+  border: 4px dashed #ff00cd;
 }
 
 .image-title-wrap {
@@ -110,7 +110,7 @@ min-height: 58px;
 
 .drag-text h3 {
   text-transform: uppercase;
-  color: white;
+  color: #0064d7;
   padding: 60px 0;
   font-family: "Poppins", "Arial", "Helvetica Neue", sans-serif;
 font-weight: 500;
@@ -158,14 +158,14 @@ font-size: 22px;
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="tab1">
-                                                                           <h3><center style="color: white;">Country</center></h3>
+                                                                           <h3><center style="color: #00E1FF;">Country</center></h3>
                             <form method="POST" action="">
 
 	 <select class="selectpicker countrypicker" name='country' id='country' data-default="CA" data-flag="true" ></select>
 
 <br>
                                 <br>
-                                                <h3><center style="color: white;">Device</center></h3>
+                                                <h3><center style="color: #00E1FF;">Device</center></h3>
 
                                                 <select id="ics_country" multiple name="ics_country">
                                                     <option value="gestrip">General Electric</option>
@@ -308,12 +308,12 @@ font-size: 22px;
 
 
                                                         <form method="POST" action="">
-                                                           <h3><center style="color:white;">Coordinates</center></h3>
+                                                           <h3><center style="color:#00E1FF;">Coordinates</center></h3>
 
                                                             <section class="webdesigntuts-workshop">
 		<input type="search" name="coordinates" id="coordinates" placeholder="Search...">
 </section>
-                          <br>    <br><br><h3><center style="color:white;">Camera</center></h3>
+                          <br>    <br><br><h3><center style="color:#00E1FF;">Camera</center></h3>
 
                                                            <select multiple name="coordinates_search" id="cam" >
                                                       													 <option value="webcam">Webcam</option>
@@ -349,7 +349,7 @@ font-size: 22px;
                                                 </select>
 
                                         <br>
-                                                                                   <h3><center style="color:white;">Other</center></h3>
+                                                                                   <h3><center style="color:#00E1FF;">Other</center></h3>
 
                                 <select name="coordinates_search" id='other' multiple>
                                                      <option value="mqtt">MQTT</option>
@@ -364,7 +364,7 @@ font-size: 22px;
 
                                                 </select>
                                <br>
-                                   <h3><center style="color: white;">ICS</center></h3>
+                                   <h3><center style="color: #00E1FF;">ICS</center></h3>
                                                 <select name="coordinates_search" multiple id="icsiot">
                                                      <option value="niagara">Niagara</option>
   													<option value="modbus">Modbus</option>
@@ -503,14 +503,14 @@ font-size: 22px;
 
                         </div>
                          <div class="tab-pane" id="tab3">
-                                                                           <h3><center style="color: white;">Country</center></h3>
+                                                                           <h3><center style="color: #00E1FF;">Country</center></h3>
                             <form method="POST" action="">
 
 	 <select class="selectpicker countrypicker" name='country_healthcare' id='country_healthcare' data-default="CA" data-flag="true" ></select>
 
 <br>
                                 <br>
-                                                <h3><center style="color: white;">Device</center></h3>
+                                                <h3><center style="color: #00E1FF;">Device</center></h3>
 
                                                 <select id="healthcare" multiple name="healthcare">
                                                     <option value="dicom">Dicom</option>
@@ -691,17 +691,17 @@ font-size: 22px;' class="image-title">
 
     <script>
 function replaceback() {
-a = document.querySelector(".bg-img-1").style.background = 'url({% static 'images/plant.jpg' %}) center center/cover no-repeat';
+a = document.querySelector(".bg-img-1").style.background = 'url({% static 'images/back1.jpg' %}) center center/cover no-repeat';
 }
 
 function replace() {
-a = document.querySelector(".bg-img-1").style.background = 'url({% static 'images/camera3.jpg' %}) center center/cover no-repeat';
+a = document.querySelector(".bg-img-1").style.background = 'url({% static 'images/back2.jpg' %}) center center/cover no-repeat';
 }
 function replace2() {
-a = document.querySelector(".bg-img-1").style.background = 'url({% static 'images/hospital.jpeg' %}) center center/cover no-repeat';
+a = document.querySelector(".bg-img-1").style.background = 'url({% static 'images/back3.jpg' %}) center center/cover no-repeat';
 }
 function replace3() {
-a = document.querySelector(".bg-img-1").style.background = 'url({% static 'images/nmap.jpg' %}) center center/cover no-repeat';
+a = document.querySelector(".bg-img-1").style.background = 'url({% static 'images/back4.jpg' %}) center center/cover no-repeat';
 document.getElementByClassName("rapper wrapper--w900").getElementsByTagName('h1')[0].style.color = "#fff";
 
 }

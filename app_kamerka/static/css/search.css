@@ -28,7 +28,7 @@
 [type="checkbox"]:checked + label:before {
   left: 0; top: 0;
   width: 80px; height: 30px;
-  background: #DDDDDD;
+  background: #0064d7;
   border-radius: 6px;
   transition: background-color .2s;
 }
@@ -46,7 +46,7 @@
   background:#34495E;
 }
 [type="checkbox"]:checked + label:after {
-  background: #39D2B4;
+  background: #ff00cd;
   top: 0; left: 51px;
   border-radius: 0 6px 6px 0;
 }
@@ -73,7 +73,7 @@
 [type="checkbox"]:checked + label .ui:after {
   font-family: 'FontAwesome';
   content: "\f00c";
-  color: #39D2B4;
+  color: #ff00cd;
   margin-top: 3px;
   left: 12px;
 }
@@ -89,7 +89,7 @@ color: white;
 
 }
 
-h1 { color: black; font-family: 'Bitter', serif; font-size: 70px; font-weight: normal; line-height: 54px; margin: 0 0 54px; }
+h1 { color: #ff00cd; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 70px; font-weight: normal; line-height: 54px; margin: 0 0 54px; }
 
 .row {
   display: -webkit-box;
@@ -198,7 +198,7 @@ button {
   outline: none;
   background: none;
   border: none;
-  font-family: inherit;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 /* ==========================================================================
@@ -209,7 +209,7 @@ button {
 }
 
 body {
-  font-family: "Lato", "Arial", "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-weight: 400;
   font-size: 14px;
 }
@@ -230,6 +230,7 @@ h3 {
 
 h4 {
   font-size: 18px;
+  color: #00E1FF;
 }
 
 h5 {
@@ -266,6 +267,11 @@ a:hover {
   text-decoration: none;
 }
 
+
+.dropdown-menu > li > a:hover{
+ background:#0a141d;
+}
+
 a:active {
   text-decoration: none;
 }
@@ -274,10 +280,7 @@ a:active {
    #BACKGROUND
    ========================================================================== */
 .bg-img-1 {
-  background: url("../images/plant.jpg") center center/cover no-repeat;
-}
-.bg-img-2 {
-  background: url("../images/blue.png") center center/cover no-repeat;
+  background: url("../images/back1.jpg") center center/cover no-repeat;
 }
 
 /* ==========================================================================
@@ -377,13 +380,13 @@ a:active {
   display: block;
   width: 100%;
   line-height: 60px;
-  font-family: inherit;
-  background: #1caf9a;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background: #0064d7;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
   text-transform: uppercase;
-  color: #fff;
+  color: #15171A;
   font-size: 18px;
   font-weight: 700;
   -webkit-transition: all 0.4s ease;
@@ -393,7 +396,7 @@ a:active {
 }
 
 .btn-submit:hover {
-  background: #1caf9a;
+  background: #ff00cd;
 }
 
 .m-t-0 {
@@ -1054,7 +1057,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .select2-container--default .select2-results__option--highlighted[aria-selected] {
-  background: #1caf9a;
+  background: #00E1FF;
 }
 
 /* ==========================================================================
@@ -1094,7 +1097,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .tab-list__link:hover {
-  color: #fff;
+  color: #0064d7;
 }
 
 @media (max-width: 767px) {
@@ -1104,7 +1107,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .tab-list .active .tab-list__link {
-  color: #fff;
+  color: #0064d7;
 }
 
 .tab-content > .tab-pane {
@@ -1140,5 +1143,113 @@ input[type=number]::-webkit-outer-spin-button {
    #CARD
    ========================================================================== */
 .card-4 {
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(21, 23, 26, 0.8);
 }
+
+.bootstrap-select.btn-group .dropdown-toggle .filter-option {
+    display: inline-block;
+    overflow: hidden;
+    width: 100%;
+    text-align: left;
+    color: #ff00cd;
+}
+
+.dropdown-toggle.btn-default {
+    position: relative;
+    padding: 0px 20px 5px 5px;
+    border: 4px solid #0064d7;
+    width: 100%;
+    background: #15171A;
+    z-index: 1;
+    margin: 0px;
+        margin-left: 0px;
+    font-size: 16px;
+    min-height: 58px;
+    width: 360%;
+
+}
+
+.btn-default.active.focus, .btn-default.active:focus, .btn-default.active:hover, .btn-default:active.focus, .btn-default:active:focus, .btn-default:active:hover, .open > .dropdown-toggle.btn-default.focus, .open > .dropdown-toggle.btn-default:focus, .open > .dropdown-toggle.btn-default:hover {
+    color: #333;
+    background-color: #0a141d;
+    border-color: #0064d7;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    font-size: 14px;
+    text-align: left;
+    list-style: none;
+    background-color: #15171A;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    }
+
+.btn-default.active, .btn-default:active, .open > .dropdown-toggle.btn-default {
+    color: #333;
+    background-color: #15171A;
+    border-color: #0064d7;
+}
+
+.selectr-placeholder {
+    color: #ff00cd;
+    margin-top: 15px;
+   }
+
+.selectr-selected {
+    position: relative;
+    padding: 0px 20px 5px 5px;
+    border: 4px solid #0064d7;
+    width: 100%;
+    background: #15171A;
+    z-index: 1;
+    margin: 0px;
+    font-size: 16px;
+    min-height: 58px;
+    }
+
+.selectr-container.notice .selectr-options-container, .selectr-container.open .selectr-input-container, .selectr-container.open .selectr-options {
+    display: block;
+    background: #15171A;
+    }
+
+input[type="search"] {
+    -webkit-appearance: none;
+    background: #15171A;
+}
+
+.selectr-option.active {
+    color: #ff00cd;
+    background-color: #0a141d;
+}
+
+.selectr-option.selected {
+    background-color: #00E1FF;
+}
+
+.selectr-tag {
+    background: #0064d7;
+}
+
+.selectr-notice {
+    display: none;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 8px 16px;
+    border-top: 1px solid #999;
+    border-radius: 0 0 3px 3px;
+    background-color: #15171A;
+    }

@@ -13,23 +13,24 @@
         <!-- CSS INCLUDE -->
 
         <link rel="stylesheet" type="text/css" id="theme" href="{% static 'css/theme-default.css' %}"/>
+        <link rel=stylesheet href=https://cdn.jsdelivr.net/npm/pretty-print-json@1.2/dist/pretty-print-json.dark-mode.css>
         <!-- EOF CSS INCLUDE -->
     </head>
 <style>
    pre {
-   background-color: ghostwhite;
-   border: 1px solid silver;
+   background-color: #15171A;
+   border: 1px solid #0064d7;
    padding: 10px 20px;
    margin: 20px;
    }
 .json-key {
-   color: brown;
+   color: #00E1FF;
    }
 .json-value {
-   color: navy;
+   color: #ff00cd;
    }
 .json-string {
-   color: olive;
+   color: #ff00cd;
    }
 
 </style>
@@ -70,6 +71,9 @@
                     <li class="">
                         <a href="/devices"><span class="fa fa-search"></span> <span class="xn-text">Search</span></a>
                     </li>
+                                       <li class="">
+                        <a href="/gallery"><span class="fa fa-camera"></span> <span class="xn-text">Gallery</span></a>
+                    </li>
 
                     <li class="xn-title">Components</li>
 
@@ -84,7 +88,7 @@
             <!-- END PAGE SIDEBAR -->
 
             <!-- PAGE CONTENT -->
-            <div class="page-content">
+            <div class="page-content" style="height: 100%">
 
                 <!-- START X-NAVIGATION VERTICAL -->
                 <ul class="x-navigation x-navigation-horizontal x-navigation-panel">
@@ -109,7 +113,7 @@
                             <div class="panel panel-default tabs">
                                 <ul class="nav nav-tabs nav-justified">
                                        {% if device.located %}
-                                                                    <li class="active"><a href="#tab8" data-toggle="tab" style="background:#1caf9a">Locate</a></li>
+                                                                    <li class="active"><a href="#tab8" data-toggle="tab" style="background:#ff00cd">Locate</a></li>
                                     {% else %}
                                     <li class="active"><a href="#tab8" data-toggle="tab">Locate</a></li>
                                         {% endif %}
@@ -120,7 +124,7 @@
                                     <div class="tab-pane active" id="tab8">
                                         <div class="panel panel-default">
                                             {% if device.located %}
-                                <div class="panel-heading" style="background:#1caf9a">
+                                <div class="panel-heading" style="background:#ff00cd">
                                     {% else %}
                                     <div class="panel-heading">
                                         {% endif %}
@@ -133,22 +137,19 @@
 
                                     <form id="form1" runat="server">
     <div>
-
-        &nbsp; Destination:
+<br>
+        <center>
         <input type="text" id="txtDestination" placeholder="Find device" style="width: 300px" />
-        <input type="button" value="Find route" class="btn btn-success active" onclick="GetRoute()" />
+        <input type="button" value="Find route" class="btn btn-primary active" style="margin-right: 120px;" onclick="GetRoute()" />
 
         <input type="text" id="update_location" placeholder="Update location" style="width: 300px" />
-        <input type="button" id="btn_update_location" value="Update location" class="btn btn-info active"/>
-        <BR>
-        <center>
-            <br>
-            <b>Notes for field agent</b>
-        <input type="text" id="notes" value="" placeholder="Notes for field agent" style="width: 300px" />
-        <input type="button" id="btn_send_all" value="Send all" class="btn btn-danger active"/>
+        <input type="button" id="btn_update_location" class="btn btn-primary active" value="Update location" style="margin-right: 120px;" class="btn btn-info active"/>
+
+
+        <input type="text" id="notes" value=""  placeholder="Notes for field agent" style="width: 300px" />
+        <input type="button" id="btn_send_all"  class="btn btn-primary active" value="Send" class="btn btn-danger active"/>
+
 </center>
-
-
 
 
     </div>                            <!-- END GOOGLE WORLD MAP-->
@@ -164,18 +165,15 @@
                                     <h3 class="panel-title">Shodan scan for nearby devices</h3>
                                 </div>
                                 <div class="panel-body">
-                                    <input type="text" id="nearby_search" placeholder="device:webcam" style="width: 300px" />
-                                    <button type="button" id="nearby" class="btn btn-danger active">Search</button>
+                                    <input type="text" id="nearby_search" placeholder="device:webcam" style="width: 300px" /><br><br>
+                                    <button type="button" id="nearby" class="btn btn-primary active">Search</button>
 
 
 
-                                                                    <button type="button" id="show_nearby_devices" class="btn btn-danger active">Show</button>
+                                                                    <button type="button" id="show_nearby_devices" class="btn btn-primary active">Show</button>
 
 
-                                    <button type="button" id="add_nearby_devices" class="btn btn-danger active">Add</button>
-                                    <progress id="progress-bar3" value="0" max="100" style="display:block; margin-bottom: 1em;"></progress>
-                                    <div id="nearby_devices_result" style="display:none;"></div>
-                                    No. of results: {{ nearby.count }}
+                                    <button type="button" id="add_nearby_devices" class="btn btn-primary active">Add</button>
 
                                 </div>
                             </div>
@@ -185,15 +183,13 @@
                                     <h3 class="panel-title">Tweets</h3>
                                 </div>
                                 <div class="panel-body">
-                                    <button type="button" id="nearby_twitter" class="btn btn-info active" >Scan</button></a>
+                                    <button type="button" id="nearby_twitter" class="btn btn-primary active" >Scan</button></a>
 
-                                    <button type="button" id="twitter_show" class="btn btn-info active">Show</button></a>
+                                    <button type="button" id="twitter_show" class="btn btn-primary active">Show</button></a>
 
-                                                                        <button type="button" id="markers_twitter" class="btn btn-info active">Add</button>
+                                                                        <button type="button" id="markers_twitter" class="btn btn-primary active">Add</button>
 
-<progress id="progress-bar4" value="0" max="100" style="display:block; margin-bottom: 1em;"></progress>
-                                                                                                         No. of results:   {% if twitter %} {{twitter.count}}{% else %}  {% endif %}
-<div id="twitter_results"></div>
+                        <div id="twitter_results"></div>
                                 </div>
                             </div>
                                         <div class="panel panel-default">
@@ -205,9 +201,7 @@
                                                                         <button type="button" id="flickr_show" class="btn btn-primary active">Show</button></a>
 
                                                                         <button type="button" id="markers_flickr" class="btn btn-primary active">Add</button>
-<progress id="progress-bar" value="0" max="100" style="display:block; margin-bottom: 1em;"></progress>
 
-                                    No. of results:   {{ flickr.count }}
                                     <div id="results"></div>
 
 
@@ -251,8 +245,8 @@
 
                                 </div>
                                 <div class="panel-body padding-0">
-                                    <button type="button" id="shodan_scan" class="btn btn-danger active">Scan</button>
-                                                                        <button type="button" id="shodan_show" class="btn btn-danger active">Display</button>
+                                    <button type="button" id="shodan_scan" class="btn btn-primary active">Scan</button>
+                                                                        <button type="button" id="shodan_show" class="btn btn-primary active">Display</button>
 
                                     <progress id="progress-bar2" value="0" max="100" style="display:none; margin-bottom: 1em;"></progress>
                                     <div id="shodan_results" style="display: none;"></div>
@@ -274,8 +268,8 @@
 
                                 </div>
                                 <div class="panel-body padding-0">
-                                    <button type="button" id="binaryedge_scan" class="btn btn-warning active">Scan</button>
-                                                                        <button type="button" id="binaryedge_show" class="btn btn-warning active">Display</button>
+                                    <button type="button" id="binaryedge_scan" class="btn btn-primary active">Scan</button>
+                                                                        <button type="button" id="binaryedge_show" class="btn btn-primary active">Display</button>
                                     <div id="binaryedge_results" class="contact-info" style="display: none;"></div>
                                     <progress id="progress-bar5" value="0" max="100" style="display:none; margin-bottom: 1em;"></progress>
 
@@ -296,8 +290,8 @@
 
                                 </div>
                                 <div class="panel-body padding-0">
-                                    <button type="button" id="whois_scan" class="btn btn-info active">Scan</button>
-                                                                        <button type="button" id="whois_show" class="btn btn-info    active">Display</button>
+                                    <button type="button" id="whois_scan" class="btn btn-primary active">Scan</button>
+                                                                        <button type="button" id="whois_show" class="btn btn-primary active">Display</button>
                                     <div id="whois_results" class="contact-info" style="display: none;"></div>
                                     <progress id="progress-bar6" value="0" max="100" style="display:none; margin-bottom: 1em;"></progress>
 
@@ -354,7 +348,7 @@
                                 </div>
                                     <div class="panel-body padding-2">
                                     <br>
-                                    <center><button type="button" id="exploit" class="btn btn-danger active"> Exploit </button></center>
+                                    <center><button type="button" id="exploit" class="btn btn-primary active"> Exploit </button></center>
                                     <pre><code id=exploit_results></code></pre>
 
                                     <progress id="progress-bar8" value="0" max="100" style="display:none; margin-bottom: 1em;"></progress>
@@ -381,6 +375,31 @@
                                     <div class="panel-body padding-2">
                                     <br>
                                     {{ passwd | safe }}<br>
+                                </div>
+                            </div>
+                            <!-- END USERS ACTIVITY BLOCK -->
+
+                        </div>
+
+
+                                                <div class="col-md-6">
+
+                            <!-- START USERS ACTIVITY BLOCK -->
+                            <div class="panel panel-default">
+                                <div class="panel-heading ui-draggable-handle">
+                                    <div class="panel-title-box">
+                                        <h3>Connect</h3>
+                                    </div>
+
+                                </div>
+                                    <div class="panel-body padding-2">
+                                    <br>
+
+                                        {% if device.port == "443" %}
+                                    <a href="https://{{ device.ip}}:{{ device.port}}">https://{{ device.ip}}:{{ device.port}}</a>
+                                        {% else %}
+                                        <a href="http://{{ device.ip}}:{{ device.port}}">http://{{ device.ip}}:{{ device.port}}</a>
+                                        {% endif %}
                                 </div>
                             </div>
                             <!-- END USERS ACTIVITY BLOCK -->
@@ -440,7 +459,87 @@ var options = { componentRestrictions: { country: '{{ device.country_code}}' } }
     var mapOptions = {
         zoom: 13,
         center: init_marker,
-        durationInTraffic: true
+        durationInTraffic: true,
+        styles: [
+        { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
+        { elementType: "labels.text.stroke", stylers: [{ color: "#242f3e" }] },
+        { elementType: "labels.text.fill", stylers: [{ color: "#746855" }] },
+        {
+          featureType: "administrative.locality",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#d59563" }],
+        },
+        {
+          featureType: "poi",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#d59563" }],
+        },
+        {
+          featureType: "poi.park",
+          elementType: "geometry",
+          stylers: [{ color: "#263c3f" }],
+        },
+        {
+          featureType: "poi.park",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#6b9a76" }],
+        },
+        {
+          featureType: "road",
+          elementType: "geometry",
+          stylers: [{ color: "#38414e" }],
+        },
+        {
+          featureType: "road",
+          elementType: "geometry.stroke",
+          stylers: [{ color: "#212a37" }],
+        },
+        {
+          featureType: "road",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#9ca5b3" }],
+        },
+        {
+          featureType: "road.highway",
+          elementType: "geometry",
+          stylers: [{ color: "#746855" }],
+        },
+        {
+          featureType: "road.highway",
+          elementType: "geometry.stroke",
+          stylers: [{ color: "#1f2835" }],
+        },
+        {
+          featureType: "road.highway",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#f3d19c" }],
+        },
+        {
+          featureType: "transit",
+          elementType: "geometry",
+          stylers: [{ color: "#2f3948" }],
+        },
+        {
+          featureType: "transit.station",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#d59563" }],
+        },
+        {
+          featureType: "water",
+          elementType: "geometry",
+          stylers: [{ color: "#17263c" }],
+        },
+        {
+          featureType: "water",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#515c6d" }],
+        },
+        {
+          featureType: "water",
+          elementType: "labels.text.stroke",
+          stylers: [{ color: "#17263c" }],
+        },
+      ],
     };
     map = new google.maps.Map(document.getElementById('google_world_map'), mapOptions);
 
@@ -662,6 +761,7 @@ marker.addListener('click', function() {
         success: function (data) {
                 if (data.task_id != null) {
                     get_task_info(data.task_id,pgrbar2);
+                noty({text: "Wait couple sec and click Display" , layout: 'topRight', type: 'success', timeout: 4000});
                 }
                 else if (data.Error){
                 noty({text: data.Error , layout: 'topRight', type: 'error', timeout: 1000});
@@ -673,7 +773,6 @@ marker.addListener('click', function() {
         });
         return false;
     });
-    var pgrbar5 = $('#progress-bar5');
 
 $('#binaryedge_scan').on('click', function(){
        $.ajax({

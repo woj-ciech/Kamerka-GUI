@@ -280,6 +280,12 @@ def map(request):
 
     return render(request, "map.html", context=context)
 
+def gallery(request):
+    all_devices = Device.objects.filter(screenshot__gt='',screenshot__isnull=False)
+    context = {"devices": all_devices}
+
+    return render(request, "gallery.html", context=context)
+
 
 def results(request, id):
     all_devices = Device.objects.filter(search_id=id)

@@ -55,6 +55,10 @@
                         <a href="/devices"><span class="fa fa-search"></span> <span class="xn-text">Search</span></a>
                     </li>
 
+                                       <li class="">
+                        <a href="/gallery"><span class="fa fa-camera"></span> <span class="xn-text">Gallery</span></a>
+                    </li>
+
                     <li class="xn-title">Components</li>
 
                     <li>
@@ -68,7 +72,7 @@
             <!-- END PAGE SIDEBAR -->
 
             <!-- PAGE CONTENT -->
-            <div class="page-content">
+            <div class="page-content" style="height: 100%">
 
                 <!-- START X-NAVIGATION VERTICAL -->
                 <ul class="x-navigation x-navigation-horizontal x-navigation-panel">
@@ -150,11 +154,11 @@
 
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody style="color: #0064d7;">
 
                                                 {% for device in search %}
                                                 {% if device.located or device.exploited_scanned %}
-                                                <tr style="background:#1caf9a">
+                                                <tr style="background:#ff00cd">
                                                     {% else %}
                                                     <tr>
                                                 {% endif %}
@@ -189,6 +193,7 @@
 
                                 </div>
                                     </div>
+
                                     <div class="tab-pane" id="tab10">
 
                                     <!-- START DONUT CHART -->
@@ -313,7 +318,7 @@ function initialize() {
             position: new google.maps.LatLng({{device.lat}},{{device.lon}}),
             map: gm_map,
             {% if device.screenshot %}
-            title: "<a href={{device.search_id}}/{{device.id}}/{{device.ip}}> {{device.type}} - {{device.ip}}</a><img src='/static/images/screens/{{ device.ip }}.jpg'><br>",
+            title: "<a href={{device.search_id}}/{{device.id}}/{{device.ip}}> {{device.type}} - {{device.ip}}</a>",
             {% else %}
             title: "<a href={{device.search_id}}/{{device.id}}/{{device.ip}}> {{device.type}} - {{device.ip}}</a>",
             {% endif %}
@@ -490,6 +495,86 @@ function initialize() {
         center: mumbai,
         maxZoom: 17,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
+        styles: [
+        { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
+        { elementType: "labels.text.stroke", stylers: [{ color: "#242f3e" }] },
+        { elementType: "labels.text.fill", stylers: [{ color: "#746855" }] },
+        {
+          featureType: "administrative.locality",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#d59563" }],
+        },
+        {
+          featureType: "poi",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#d59563" }],
+        },
+        {
+          featureType: "poi.park",
+          elementType: "geometry",
+          stylers: [{ color: "#263c3f" }],
+        },
+        {
+          featureType: "poi.park",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#6b9a76" }],
+        },
+        {
+          featureType: "road",
+          elementType: "geometry",
+          stylers: [{ color: "#38414e" }],
+        },
+        {
+          featureType: "road",
+          elementType: "geometry.stroke",
+          stylers: [{ color: "#212a37" }],
+        },
+        {
+          featureType: "road",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#9ca5b3" }],
+        },
+        {
+          featureType: "road.highway",
+          elementType: "geometry",
+          stylers: [{ color: "#746855" }],
+        },
+        {
+          featureType: "road.highway",
+          elementType: "geometry.stroke",
+          stylers: [{ color: "#1f2835" }],
+        },
+        {
+          featureType: "road.highway",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#f3d19c" }],
+        },
+        {
+          featureType: "transit",
+          elementType: "geometry",
+          stylers: [{ color: "#2f3948" }],
+        },
+        {
+          featureType: "transit.station",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#d59563" }],
+        },
+        {
+          featureType: "water",
+          elementType: "geometry",
+          stylers: [{ color: "#17263c" }],
+        },
+        {
+          featureType: "water",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#515c6d" }],
+        },
+        {
+          featureType: "water",
+          elementType: "labels.text.stroke",
+          stylers: [{ color: "#17263c" }],
+        },
+      ],
         streetViewControl: false
     }
 
@@ -562,7 +647,7 @@ function initialize() {
                 <script src="{% static 'js/d3.layout.cloud.js' %}" charset="UTF-8"></script>
 <script type="text/javascript">
      d3v3.wordcloud()
-        .size([400, 200])
+        .size([500, 300])
         .selector('#wordcloud')
         .words([{% for vuln, link in vulns %} {text: "{{  vuln }}", size: "15"}, {% endfor %}])
         .start();

@@ -1,7 +1,7 @@
 var CeleryProgressBar = (function () {
     function onSuccessDefault(progressBarElement, progressBarMessageElement) {
-        progressBarElement.style.backgroundColor = '#1caf9a ';
-        progressBarMessageElement.innerHTML = "Success!";
+        progressBarElement.style.backgroundColor = '#0064d7';
+        progressBarMessageElement.innerHTML = "Success";
     }
 
     function onResultDefault(resultElement, result) {
@@ -11,12 +11,12 @@ var CeleryProgressBar = (function () {
     }
 
     function onErrorDefault(progressBarElement, progressBarMessageElement) {
-        progressBarElement.style.backgroundColor = '#dc4f63';
+        progressBarElement.style.backgroundColor = '#00E1FF';
         progressBarMessageElement.innerHTML = "Uh-Oh, something went wrong!";
     }
 
     function onProgressDefault(progressBarElement, progressBarMessageElement, progress) {
-        progressBarElement.style.backgroundColor = '#68a9ef';
+        progressBarElement.style.backgroundColor = '#0064d7';
         progressBarElement.style.width = progress.percent + "%";
         progressBarMessageElement.innerHTML = progress.current + '/' + progress.total  //aaaaaaaaaaaaaaaaaaaa
     }

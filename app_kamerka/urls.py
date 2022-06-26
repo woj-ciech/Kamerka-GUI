@@ -6,6 +6,8 @@ urlpatterns = [
     path('index', views.index, name='index'),
     path('history', views.history, name='history'),
     path('map', views.map, name='map'),
+    path('gallery', views.gallery, name='gallery'),
+
     path('devices', views.devices, name='devices'),
     path('sources', views.sources, name='sources'),
 
