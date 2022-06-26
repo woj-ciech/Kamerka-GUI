@@ -19,10 +19,10 @@ https://us-cert.cisa.gov/ncas/alerts/aa20-205a
 ## Usage
 
 #### 1. Scan for Internet facing Industrial Control Systems, Medical and Internet of Things devices based on country or coordinates.
-####2. Gather passive intelligence from WHOISXML, BinaryEdge and Shodan or active by scanning target directly.
-####3. Thanks to indicators from devices and google maps, pinpoit device to specific place or facility (hospital, wastewater treatment plant, gas station, university, etc.)
-####(Optional, not recommended) 4. Guess/Bruteforce or use default password to gain access to the device. Some exploits are implemented for couple specific IoTs.
-####5. Report devices in critical infrastructure to your local CERT.
+#### 2. Gather passive intelligence from WHOISXML, BinaryEdge and Shodan or active by scanning target directly.
+#### 3. Thanks to indicators from devices and google maps, pinpoit device to specific place or facility (hospital, wastewater treatment plant, gas station, university, etc.)
+#### 4. (Optional, not recommended) 4. Guess/Bruteforce or use default password to gain access to the device. Some exploits are implemented for couple specific IoTs.
+#### 5. Report devices in critical infrastructure to your local CERT.
 
 ## Features
 - More than 100 ICS devices
@@ -124,6 +124,8 @@ Type your coordinates in format "lat,lon", hardcoded radius is 20km.
 ## Intel
 ![](screens/intel.png)
 
+## Geolocate
+![](screens/map3.png)
 
 ## Scan & Exploit & Information
 ![](screens/exploit.png)
