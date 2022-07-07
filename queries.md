@@ -140,6 +140,39 @@
 "poweragent":"PowerAgent",
 "CS121":"title:'CS121 SNMP/Web Adapter'",
 
+"climatix": "Siemens Building Technologies Climatix",	
+"bas_scada": "BAS SCADA Service",
+"watt_router": "SOLAR controls product server",
+"doors": '"HID VertX" port:4070',
+"saferoads": "Saferoads VMS",
+"xzeres": 'title:"XZERES Wind"',
+"doorbird": "html:DoorBird",
+
+"jeedom": 'title:"Jeedom"',
+"pwrctrl": '"NET-PwrCtrl"',
+"heatmiser_thermostat": 'title:"Heatmiser Wifi Thermostat"',
+"xpanel": "title:xpanel",
+"c4_max": "[1m[35mWelcome on console",
+"universal_devices": "ucos",
+"dasdec": "dasdec",
+"brightsign": 'title:"BrightSign&reg;"',
+"leica": "title:leica title:interface",
+"hughesnet": "html:hughesnet",
+"skyline": "'server: skyline'",
+"beward_door": "'DS06A(P) SIP Door Station'",
+"wallbox": "title:wallbox",
+"acadia": "acadia",
+"walchem": "html:walchem",
+"gnss": "'NTRIP' 'SOURCETABLE'",
+"traccar": "title:traccar",
+"trimble": 'html:"trimble Navigation"',
+"spacelynk": "title:spaceLYnk",
+
+"idss": "Intelligent Digital Security System",
+"webiopi": 'webiopi 200 ok',
+"iobroker": "ioBroker.admin",
+"comelit": "html:comelit",
+
 Medical
 "zoll":"http.favicon.hash:-236942626",
 "perioperative":"HoF Perioperative",
@@ -262,4 +295,19 @@ Nextech
 http.html:'Radiometer Medical '
 HeartStart
 http.favicon.hash:-893361748
+
+title:GenOHM
+title:"jung knx"
+"Election-Id" 
+title:"securityspy"
+"Rudstone Embedded HTTPServer" plate readers
+Server: Viavideo-Web
+html:etrel
+kwh port:"8081"
+GSM HTTP/1.% 200 OK X-Powered-By: PHP/
+"NTRIP" "SOURCETABLE"
+trivum controller
+java pseudohttpd
+modicon port:23
+SYSMAC port:2323 
 ```

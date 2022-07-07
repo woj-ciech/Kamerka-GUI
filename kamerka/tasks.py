@@ -1,5 +1,6 @@
 import json
 import math
+import re
 
 import maxminddb
 from libnmap.parser import NmapParser
@@ -198,7 +199,7 @@ ics_queries = {"niagara": "port:1911,4911 product:Niagara",
                "simplex_grinnell": "http.html:SimplexGrinnell title:login",
                "bosch_security": "http.html:'Bosch Security'",
 
-                "other_hmi":"html:hmiBody",
+               "other_hmi": "html:hmiBody",
                "fronius": "title:fronius",
                "webview": "http.favicon.hash:207964650",
                "Siemens Sm@rtClient": "title:'Siemens Sm@rtClient'",
@@ -235,21 +236,50 @@ ics_queries = {"niagara": "port:1911,4911 product:Niagara",
                "upshttpd": "Server: upshttpd",
                "poweragent": "PowerAgent",
                "CS121": "title:'CS121 SNMP/Web Adapter'",
-               "ab_ethernet":"cspv4",
-}
+               "ab_ethernet": "cspv4",
 
-coordinates_queries = {"videoiq":'title:"VideoIQ Camera Login"',
-                        "webcam": "device:webcam",
+               "climatix": "Siemens Building Technologies Climatix",
+               "bas_scada": "BAS SCADA Service",
+               "watt_router": "SOLAR controls product server",
+               "doors": '"HID VertX" port:4070',
+               "saferoads": "Saferoads VMS",
+               "xzeres": 'title:"XZERES Wind"',
+               "doorbird": "html:DoorBird",
+
+               "jeedom": 'title:"Jeedom"',
+               "pwrctrl": '"NET-PwrCtrl"',
+               "heatmiser_thermostat": 'title:"Heatmiser Wifi Thermostat"',
+               "xpanel": "title:xpanel",
+               "c4_max": "[1m[35mWelcome on console",
+               "universal_devices": "ucos",
+               "dasdec": "dasdec",
+               "brightsign": 'title:"BrightSign&reg;"',
+               "leica": "title:leica title:interface",
+               "hughesnet": "html:hughesnet",
+               "skyline": "'server: skyline'",
+               "beward_door": "'DS06A(P) SIP Door Station'",
+               "wallbox": "title:wallbox",
+               "acadia": "acadia",
+               "walchem": "html:walchem",
+               "gnss": "'NTRIP' 'SOURCETABLE'",
+               "traccar": "title:traccar",
+               "trimble": 'html:"trimble Navigation"',
+               "spacelynk": "title:spaceLYnk",
+
+               }
+
+coordinates_queries = {"videoiq": 'title:"VideoIQ Camera Login"',
+                       "webcam": "device:webcam",
                        "webcamxp": "webcamxp",
                        "vivotek": "vivotek",
-                       "netwave":'product:"Netwave IP camera http config"',
+                       "netwave": 'product:"Netwave IP camera http config"',
                        "techwin": "techwin",
                        "lutron": 'html:<h1>LUTRON</h1>',
                        "mobotix": "mobotix",
                        "iqinvision": "iqinvision",
                        "grandstream": 'ssl:"Grandstream" "Set-Cookie: TRACKID"',
-                       "amcrest":'html:"@WebVersion@" html:amcrest',
-                       "contec":'"content/smarthome.php"',
+                       "amcrest": 'html:"@WebVersion@" html:amcrest',
+                       "contec": '"content/smarthome.php"',
                        'printer': "device:printer",
                        'mqtt': 'product:mqtt',
                        'rtsp': "port:'554'",
@@ -268,6 +298,11 @@ coordinates_queries = {"videoiq":'title:"VideoIQ Camera Login"',
                        "bbvs": "Server: BBVS",
                        "baudisch": "http.favicon.hash:746882768",
                        "loxone_intercom": "title:'Loxone Intercom Video'",
+
+                       "idss": "Intelligent Digital Security System",
+                       "webiopi": 'webiopi 200 ok',
+                       "iobroker": "ioBroker.admin",
+                       "comelit": "html:comelit",
 
                        "niagara": "port:1911,4911 product:Niagara",
                        'bacnet': "port:47808",
@@ -382,7 +417,35 @@ coordinates_queries = {"videoiq":'title:"VideoIQ Camera Login"',
                        "upshttpd": "Server: upshttpd",
                        "poweragent": "PowerAgent",
                        "CS121": "title:'CS121 SNMP/Web Adapter'",
-                        "ab_ethernet":"cspv4"
+                       "ab_ethernet": "cspv4",
+
+                       "climatix": "Siemens Building Technologies Climatix",
+                       "bas_scada": "BAS SCADA Service",
+                       "watt_router": "SOLAR controls product server",
+                       "doors": '"HID VertX" port:4070',
+                       "saferoads": "Saferoads VMS",
+                       "xzeres": 'title:"XZERES Wind"',
+                       "doorbird": "html:DoorBird",
+
+                       "jeedom": 'title:"Jeedom"',
+                       "pwrctrl": "NET-PwrCtrl",
+                       "heatmiser_thermostat": 'title:"Heatmiser Wifi Thermostat"',
+                       "xpanel": "title:xpanel",
+                       "c4_max": "[1m[35mWelcome on console",
+                       "universal_devices": "ucos",
+                       "dasdec": "dasdec",
+                       "brightsign": 'title:"BrightSign&reg;"',
+                       "leica": "title:leica title:interface",
+                       "hughesnet": "html:hughesnet",
+                       "skyline": "server: skyline",
+                       "beward_door": "DS06A(P) SIP Door Station",
+                       "wallbox": "http.title:wallbox",
+                       "acadia": "acadia",
+                       "walchem": "html:walchem",
+                       "GNSS": "NTRIP" "SOURCETABLE",
+                       "traccar": "title:traccar",
+                       "trimble": 'html:"trimble Navigation"',
+                       "spacelynk": "title:spaceLYnk",
                        }
 
 
@@ -570,7 +633,6 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
                 results = False
                 print(e)
 
-
         try:
             total = results['total']
 
@@ -588,8 +650,6 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
             lon = str(result['location']['longitude'])
             city = ""
             indicator = []
-            # print(counter)
-            # time.sleep(20)
 
             try:
                 product = result['product']
@@ -646,6 +706,18 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
                 except:
                     pass
 
+            if "SOURCETABLE" in query:
+                data = result['data'].split(";")
+                try:
+                    if re.match("^((\-?|\+?)?\d+(\.\d+)?)$", data[9]):
+                        indicator.append(data[9] + "," + data[10])
+                        lat = data[9]
+                        lon = data[10]
+                    else:
+                        pass
+                except Exception as e:
+                    pass
+
             # get indicator from niagara fox
             if result['port'] == 1911 or result['port'] == 4911:
                 try:
@@ -658,7 +730,7 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
                     pass
 
             # get indicator from tank
-            if result['port'] == 10001:
+            if result['port'] == 10001 and "Siemens" not in query:
                 try:
                     tank_info = result['data'].split("\r\n\r\n")
                     indicator.append(tank_info[1])
@@ -733,7 +805,8 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
         if not all_results:
             results = False
 
-def nmap_host_worker(host_arg,max_reader, search):
+
+def nmap_host_worker(host_arg, max_reader, search):
     ports_list = []
     hostname = host_arg.hostnames[0]
 
@@ -755,14 +828,17 @@ def nmap_host_worker(host_arg,max_reader, search):
                     vulns="", indicator="", hostnames=hostname, screenshot="")
     device.save()
 
+
 def validate_nmap(file):
     NmapParser.parse_fromfile(os.getcwd() + file)
+
 
 def validate_maxmind():
     maxminddb.open_database('GeoLite2-City.mmdb')
 
+
 @shared_task(bind=True)
-def nmap_scan(self,file, fk):
+def nmap_scan(self, file, fk):
     progress_recorder = ProgressRecorder(self)
     result = 0
     print(os.getcwd() + file)
@@ -775,6 +851,7 @@ def nmap_scan(self,file, fk):
         nmap_host_worker(host_arg=i, max_reader=max_reader, search=search)
         progress_recorder.set_progress(c + 1, total=total)
     return result
+
 
 @shared_task(bind=False)
 def twitter_nearby_task(id, lat, lon):
@@ -1020,13 +1097,13 @@ def binary_edge_scan(id):
     device2 = BinaryEdgeScore(device=device1, grades=results['ip_score_detailed'], cve=cve, score=normalized_ip_score)
     device2.save()
 
-ics_scan = {"dnp3":"--script=nmap_scripts/dnp3-info.nse", "niagara":"--script=nmap_scripts/fox-info.nse",
-            "siemens":"--script=nmap_scripts/s7-info.nse" , "proconos":"--script=nmap_scripts/proconos-info.nse",
-            "pcworx":"--script=nmap_scripts/pcworx-info.nse", "omron":"--script=nmap_scripts/omron-info.nse",
-            "modbus":"--script=nmap_scripts/modbus-discover.nse", "ethernetip":"--script=nmap_scripts/enip-info.nse",
-            "codesys":"--script=nmap_scripts/codesys.nse", "ab_ethernet":"--script=nmap_scripts/cspv4-info.nse",
-            "tank":"--script=nmap_scripts/atg-info.nse", "modicon":"--script=nmap_scripts/modicon-info.nse"}
 
+ics_scan = {"dnp3": "--script=nmap_scripts/dnp3-info.nse", "niagara": "--script=nmap_scripts/fox-info.nse",
+            "siemens": "--script=nmap_scripts/s7-info.nse", "proconos": "--script=nmap_scripts/proconos-info.nse",
+            "pcworx": "--script=nmap_scripts/pcworx-info.nse", "omron": "--script=nmap_scripts/omron-info.nse",
+            "modbus": "--script=nmap_scripts/modbus-discover.nse", "ethernetip": "--script=nmap_scripts/enip-info.nse",
+            "codesys": "--script=nmap_scripts/codesys.nse", "ab_ethernet": "--script=nmap_scripts/cspv4-info.nse",
+            "tank": "--script=nmap_scripts/atg-info.nse", "modicon": "--script=nmap_scripts/modicon-info.nse"}
 
 
 @shared_task(bind=False)
@@ -1095,6 +1172,7 @@ def scan(id):
         except:
             pass
 
+
 @shared_task(bind=False)
 def exploit(id):
     device1 = Device.objects.get(id=id)
@@ -1125,7 +1203,7 @@ def exploit(id):
         return config
 
     else:
-        return {"Reason":"No exploit assigned"}
+        return {"Reason": "No exploit assigned"}
 
 
 @shared_task(bind=False)
