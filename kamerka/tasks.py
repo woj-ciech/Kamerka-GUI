@@ -148,7 +148,7 @@ ics_queries = {"niagara": "port:1911,4911 product:Niagara",
                "vtscada": "Server: VTScada",
                'zworld': "Z-World Rabbit 200 OK",
                "nordex": "Jetty 3.1.8 (Windows 2000 5.0 x86) \"200 OK\" ",
-               "sailor": "http.favicon.hash:-1222972060",
+               "sailor": 'title:Sailor title:VSAT',
                'nmea': "$GPGGA",
 
                "axc": "PLC Type: AXC",
@@ -265,7 +265,6 @@ ics_queries = {"niagara": "port:1911,4911 product:Niagara",
                "traccar": "title:traccar",
                "trimble": 'html:"trimble Navigation"',
                "spacelynk": "title:spaceLYnk",
-
                }
 
 coordinates_queries = {"videoiq": 'title:"VideoIQ Camera Login"',
@@ -448,6 +447,13 @@ coordinates_queries = {"videoiq": 'title:"VideoIQ Camera Login"',
                        "spacelynk": "title:spaceLYnk",
                        }
 
+attackers_infra_queries = {"cobaltstrike": 'product:"Cobalt Strike Beacon"',
+                           "msf": 'ssl:"MetasploitSelfSignedCA"',
+                           "covenant": 'ssl:”Covenant” http.component:”Blazor”',
+                           "mythic": 'ssl:"Mythic" port:7443',
+                           "bruteratel": "http.html_hash:-1957161625",
+                           }
+
 
 def get_keys():
     try:
@@ -506,7 +512,7 @@ def devices_nearby(lat, lon, id, query):
 
 @shared_task(bind=True)
 def shodan_search(self, fk, country=None, coordinates=None, ics=None, healthcare=None, coordinates_search=None,
-                  all_results=False):
+                  all_results=False, infra=None):
     progress_recorder = ProgressRecorder(self)
     result = 0
     if country:
@@ -535,9 +541,18 @@ def shodan_search(self, fk, country=None, coordinates=None, ics=None, healthcare
                     except:
                         pass
 
+                if i in attackers_infra_queries:
+                    try:
+                        result += c
+                        shodan_search_worker(country=country, fk=fk, query=attackers_infra_queries[i], search_type=i,
+                                             category="infra",
+                                             all_results=all_results)
+                        progress_recorder.set_progress(c + 1, total=total)
+                    except Exception as e:
+                        print(e)
+
     if coordinates:
         total = len(coordinates_search)
-        print(total)
         for c, i in enumerate(coordinates_search):
             # print(coordinates_search[i])
             if i in coordinates_queries:
@@ -596,7 +611,9 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
             time.sleep(5)
             if coordinates:
                 results = api.search("geo:" + coordinates + ",20 " + query, page)
-            if country:
+            if country == "XX":
+                results = api.search(query, page)
+            else:
                 results = api.search("country:" + country + " " + query, page)
         except:
             fail = 1
@@ -607,7 +624,9 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
                 time.sleep(10)
                 if coordinates:
                     results = api.search("geo:" + coordinates + ",20 " + query, page)
-                if country:
+                if country == "XX":
+                    results = api.search(query, page)
+                else:
                     results = api.search("country:" + country + " " + query, page)
             except Exception as e:
                 print(e)
@@ -617,7 +636,9 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
                 time.sleep(10)
                 if coordinates:
                     results = api.search("geo:" + coordinates + ",20 " + query, page)
-                if country:
+                if country == "XX":
+                    results = api.search(query, page)
+                else:
                     results = api.search("country:" + country + " " + query, page)
             except Exception as e:
                 print(e)
@@ -627,7 +648,9 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
                 time.sleep(10)
                 if coordinates:
                     results = api.search("geo:" + coordinates + ",20 " + query, page)
-                if country:
+                if country == "XX":
+                    results = api.search(query, page)
+                else:
                     results = api.search("country:" + country + " " + query, page)
             except Exception as e:
                 results = False
@@ -644,7 +667,7 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
             break
 
         pages = math.ceil(total / 100) + 1
-        print(pages)
+        print("Pages: " + str(pages))
         for counter, result in enumerate(results['matches']):
             lat = str(result['location']['latitude'])
             lon = str(result['location']['longitude'])
@@ -762,7 +785,7 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
                             lon = msg.longitude
                             break
                 except Exception as e:
-                    print(e)
+                    pass
 
             if result['port'] == 102:
                 try:

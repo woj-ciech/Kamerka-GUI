@@ -389,6 +389,18 @@ function initialize() {
             {% elif device.type == "screenshot" %}
             icon: "{% static 'images/screen.png' %}",
 
+
+            {% elif device.type == "bruteratel" %}
+            icon: "{% static 'images/bruteratel.png' %}",
+             {% elif device.type == "covenant" %}
+            icon: "{% static 'images/covenant.png' %}",
+             {% elif device.type == "msf" %}
+            icon: "{% static 'images/msf.png' %}",
+             {% elif device.type == "mythic" %}
+            icon: "{% static 'images/mythic.png' %}",
+             {% elif device.type == "cobaltstrike" %}
+            icon: "{% static 'images/cobaltstrike.png' %}",
+
             {% elif device.type == "axc" %}
             icon: "{% static 'images/axc.png' %}",
             {% elif device.type == "modicon" %}

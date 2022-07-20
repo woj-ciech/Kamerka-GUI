@@ -262,6 +262,16 @@ Medical
 "praxis_portal2":"http.html:'Medigration'",
 "xero_viewer":"http.title:'XERO Viewer'"
 
+
+Infra:
+"cobaltstrike": 'product:"Cobalt Strike Beacon"',
+"msf": 'ssl:"MetasploitSelfSignedCA"',
+"covenant": 'ssl:”Covenant” http.component:”Blazor”',
+"mythic": 'ssl:"Mythic" port:7443',
+"bruteratel": "http.html_hash:-1957161625",
+
+
+
 Excluded:
 title:"pacemaker-id"
 html:klinikinew

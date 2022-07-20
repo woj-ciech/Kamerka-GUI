@@ -93,6 +93,7 @@ def search_main(request):
         coordinates_form = forms.CoordinatesForm(request.POST)
         ics_form = forms.CountryForm(request.POST)
         healthcare_form = forms.CountryHealthcareForm(request.POST)
+        infra_form = forms.InfraForm(request.POST)
 
         if ics_form.is_valid():
             code = ics_form.cleaned_data['country']
@@ -157,6 +158,30 @@ def search_main(request):
             shodan_search_task = shodan_search.delay(fk=search.id, coordinates=coordinates,
                                      coordinates_search=request.POST.getlist('coordinates_search'))
 
+            request.session['task_id'] = shodan_search_task.task_id
+
+            return HttpResponseRedirect('index')
+
+        elif infra_form.is_valid():
+
+            code = infra_form.cleaned_data['country_infra']
+
+            infra_country = request.POST.getlist('country_infra')
+
+            if len(infra_country) == 0:
+                form = forms.CountryForm()
+                return render(request, 'search_main.html', {'form': form})
+
+            search = Search(country=code, ics=infra_country)
+            search.save()
+            post = request.POST.getlist('infra')
+
+            if ics_form.cleaned_data['all'] == True:
+                all_results = True
+            else:
+                all_results = False
+
+            shodan_search_task = shodan_search.delay(fk=search.id, country=code, ics=post, all_results=all_results)
             request.session['task_id'] = shodan_search_task.task_id
 
             return HttpResponseRedirect('index')

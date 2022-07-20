@@ -17,6 +17,10 @@ class CountryHealthcareForm(forms.Form):
     all = forms.BooleanField(required=False)
     own_database = forms.BooleanField(required=False)
 
+class InfraForm(forms.Form):
+    country_infra = forms.CharField(max_length=100)
+    all = forms.BooleanField(required=False)
+    own_database = forms.BooleanField(required=False)
 
 class DevicesNearbyForm(forms.Form):
     id = forms.CharField(max_length=100)

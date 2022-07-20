@@ -147,12 +147,16 @@ font-size: 22px;
                         <li class="tab-list__item">
                             <a class="tab-list__link" href="#tab2"  id='tab' onclick="replace()" data-toggle="tab">Internet of Things</a>
                         </li>
+                        <li class="tab-list__item">
+                            <a class="tab-list__link" href="#tab8"  id='tab7' onclick="replace4()" data-toggle="tab">Infrastructure</a>
+                        </li>
                          <li class="tab-list__item">
                             <a class="tab-list__link" href="#tab3"  id='tab4' onclick="replace2()" data-toggle="tab">Healthcare</a>
                         </li>
                         <li class="tab-list__item">
                             <a class="tab-list__link" href="#tab5"  id='tab6' onclick="replace3()" data-toggle="tab">Upload NMAP Scan</a>
                         </li>
+
 
 
                     </ul>
@@ -640,7 +644,7 @@ font-size: 22px;
 <br>
 
 
-<input type="checkbox" id="test7" name="all" /><label for="test7"><span class="ui"></span> <h4>All results </h4></label>
+<input type="checkbox" id="test9" name="all" /><label for="test7"><span class="ui"></span> <h4>All results </h4></label>
 
                                 <input type="checkbox" id="test8" name="own_database"/><label style="float:right" for="test7"><span class="ui"></span> <h4>Own database</h4></label>
 
@@ -686,6 +690,44 @@ font-size: 22px;' class="image-title">
 
 
 
+                        <div class="tab-pane" id="tab8">
+                                                                           <h3><center style="color: #00E1FF;">Country</center></h3>
+                            <form method="POST" action="">
+
+	 <select class="selectpicker countrypicker" name='country_infra' id='country_infra' data-default="CA" data-flag="true" ></select>
+
+<br>
+                                <br>
+                                                <h3><center style="color: #00E1FF;">Device</center></h3>
+
+                                                <select id="infra" multiple name="infra">
+
+                                                    <option value="cobaltstrike">Cobalt Strike</option>
+                                                    <option value="msf">Metasploit</option>
+                                                    <option value="covenant">Covenant</option>
+                                                    <option value="mythic">Mythic</option>
+                                                    <option value="bruteratel">BruteRatel</option>
+
+                                                                                                   </select>
+<br>
+
+
+<input type="checkbox" id="test7" name="all" /><label for="test7"><span class="ui"></span> <h4>All results </h4></label>
+
+                                <input type="checkbox" id="test10" name="own_database"/><label style="float:right" for="test7"><span class="ui"></span> <h4>Own database</h4></label>
+
+
+                                <br>
+                                <br>
+
+<button class="btn-submit m-t-0" type="submit">search</button>
+
+
+                            </form>
+                        </div>
+
+
+
 
 
 
@@ -702,7 +744,7 @@ font-size: 22px;' class="image-title">
      <script src="https://unpkg.com/jquery@3.4.1/dist/jquery.min.js"></script>
   <script src="https://unpkg.com/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
   <script src="https://unpkg.com/bootstrap-select@1.12.4/dist/js/bootstrap-select.min.js"></script>
-  <script src="https://unpkg.com/bootstrap-select-country@4.0.0/dist/js/bootstrap-select-country.min.js"></script>
+  <script src="{% static 'js/bootstrap-select-country.js'  %}"></script>
 <script>
     function readURL(input) {
   if (input.files && input.files[0]) {
@@ -739,13 +781,27 @@ a = document.querySelector(".bg-img-1").style.background = 'url({% static 'image
 }
 function replace3() {
 a = document.querySelector(".bg-img-1").style.background = 'url({% static 'images/back4.jpg' %}) center center/cover no-repeat';
-document.getElementByClassName("rapper wrapper--w900").getElementsByTagName('h1')[0].style.color = "#fff";
+
+}
+function replace4() {
+a = document.querySelector(".bg-img-1").style.background = 'url({% static 'images/back5.jpg' %}) center center/cover no-repeat';
 
 }
 </script>
     <script>
 			$('.country').countrypicker();
 		</script>
+
+
+        <script>
+        a = new Selectr('#infra', {
+	searchable: true,
+	width: 300,
+		multiple: true,
+
+});
+a.selectedValues = [];
+</script>
 
     <script>
         a = new Selectr('#ics_country', {
