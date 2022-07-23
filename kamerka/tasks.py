@@ -611,10 +611,9 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
             time.sleep(5)
             if coordinates:
                 results = api.search("geo:" + coordinates + ",20 " + query, page)
-            if country == "XX":
-                results = api.search(query, page)
+                print("geo:" + coordinates + ",20 " + query)
             else:
-                results = api.search("country:" + country + " " + query, page)
+                results = results = api.search(query, page)
         except:
             fail = 1
             print('fail1, sleeping...')
@@ -624,10 +623,9 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
                 time.sleep(10)
                 if coordinates:
                     results = api.search("geo:" + coordinates + ",20 " + query, page)
-                if country == "XX":
-                    results = api.search(query, page)
+                    print("geo:" + coordinates + ",20 " + query)
                 else:
-                    results = api.search("country:" + country + " " + query, page)
+                    results = results = api.search(query, page)
             except Exception as e:
                 print(e)
 
@@ -636,10 +634,9 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
                 time.sleep(10)
                 if coordinates:
                     results = api.search("geo:" + coordinates + ",20 " + query, page)
-                if country == "XX":
-                    results = api.search(query, page)
+                    print("geo:" + coordinates + ",20 " + query)
                 else:
-                    results = api.search("country:" + country + " " + query, page)
+                    results = results = api.search(query, page)
             except Exception as e:
                 print(e)
 
@@ -648,10 +645,9 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
                 time.sleep(10)
                 if coordinates:
                     results = api.search("geo:" + coordinates + ",20 " + query, page)
-                if country == "XX":
-                    results = api.search(query, page)
+                    print("geo:" + coordinates + ",20 " + query)
                 else:
-                    results = api.search("country:" + country + " " + query, page)
+                    results = results = api.search(query, page)
             except Exception as e:
                 results = False
                 print(e)
