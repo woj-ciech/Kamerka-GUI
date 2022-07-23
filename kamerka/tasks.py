@@ -268,6 +268,7 @@ ics_queries = {"niagara": "port:1911,4911 product:Niagara",
                }
 
 coordinates_queries = {"videoiq": 'title:"VideoIQ Camera Login"',
+                       "hikvision":'product:"Hikvision IP Camera"',
                        "webcam": "device:webcam",
                        "webcamxp": "webcamxp",
                        "vivotek": "vivotek",
@@ -1199,6 +1200,9 @@ def exploit(id):
     if device1.type == "bosch_security":
         usernames = exploits.bosch_usernames(device1)
         return usernames
+    if device1.type == "hikvision":
+        creds = exploits.hikvision(device1)
+        return creds
     if device1.type == "videoiq":
         users = exploits.videoiq(device1)
         return users
