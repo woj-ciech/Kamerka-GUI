@@ -50,6 +50,8 @@ https://www.zdnet.com/article/kamerka-osint-tool-shows-your-countrys-internet-co
 
 https://www.icscybersecurityconference.com/intelligence-gathering-on-u-s-critical-infrastructure/
 
+https://www.vice.com/en/article/59vm4x/tool-exposed-cameras-map-shodan-python-github
+
 ## Installation
 
 ### Requirements
