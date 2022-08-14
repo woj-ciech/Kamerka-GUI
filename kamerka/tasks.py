@@ -122,11 +122,11 @@ healthcare_queries = {"zoll": "http.favicon.hash:-236942626",
                       "xero_viewer": "http.title:'XERO Viewer'"}
 
 ics_queries = {"niagara": "port:1911,4911 product:Niagara",
-               'bacnet': "port:47808",
-               'modbus': "port:502",
+               'bacnet': '"Instance ID:" "Object Name:"',
+               'modbus': "Unit ID: 0",
                'siemens': 'Original Siemens Equipment Basic Firmware:',
                'dnp3': "port:20000 source address",
-               "ethernetip": "port:44818 Product name",
+               "ethernetip": '"Product name:" "Vendor ID:"',
                "gestrip": 'port:18245,18246 product:"general electric"',
                'hart': "port:5094 hart-ip",
                'pcworx': "port:1962 PLC",
@@ -147,7 +147,7 @@ ics_queries = {"niagara": "port:1911,4911 product:Niagara",
                "is2": "IS2 Web Server",
                "vtscada": "Server: VTScada",
                'zworld': "Z-World Rabbit 200 OK",
-               "nordex": "Jetty 3.1.8 (Windows 2000 5.0 x86) \"200 OK\" ",
+               "nordex": "html:nordex",
                "sailor": 'title:Sailor title:VSAT',
                'nmea': "$GPGGA",
 
@@ -305,11 +305,11 @@ coordinates_queries = {"videoiq": 'title:"VideoIQ Camera Login"',
                        "comelit": "html:comelit",
 
                        "niagara": "port:1911,4911 product:Niagara",
-                       'bacnet': "port:47808",
-                       'modbus': "port:502",
+                       'bacnet': '"Instance ID:" "Object Name:"',
+                       'modbus': "Unit ID: 0",
                        'siemens': 'Original Siemens Equipment Basic Firmware:',
                        'dnp3': "port:20000 source address",
-                       "ethernetip": "port:44818",
+                       "ethernetip": '"Product name:" "Vendor ID:"',
                        "gestrip": 'port:18245,18246 product:"general electric"',
                        'hart': "port:5094 hart-ip",
                        'pcworx': "port:1962 PLC",
@@ -330,7 +330,7 @@ coordinates_queries = {"videoiq": 'title:"VideoIQ Camera Login"',
                        "is2": "IS2 Web Server",
                        "vtscada": "Server: VTScada",
                        'zworld': "Z-World Rabbit",
-                       "nordex": "Jetty 3.1.8 (Windows 2000 5.0 x86)",
+                       "nordex": "html:nordex",
 
                        "axc": "PLC Type: AXC",
                        "modicon": "modicon",
@@ -449,7 +449,7 @@ coordinates_queries = {"videoiq": 'title:"VideoIQ Camera Login"',
                        }
 
 attackers_infra_queries = {"cobaltstrike": 'product:"Cobalt Strike Beacon"',
-                           "msf": 'ssl:"MetasploitSelfSignedCA"',
+                           "msf": 'ssl:MetasploitSelfSignedCA',
                            "covenant": 'ssl:”Covenant” http.component:”Blazor”',
                            "mythic": 'ssl:"Mythic" port:7443',
                            "bruteratel": "http.html_hash:-1957161625",
@@ -613,8 +613,10 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
             if coordinates:
                 results = api.search("geo:" + coordinates + ",20 " + query, page)
                 print("geo:" + coordinates + ",20 " + query)
+            if country == "XX":
+                results = api.search(query, page)
             else:
-                results = results = api.search(query, page)
+                results = api.search("country:" + country + " " + query, page)
         except:
             fail = 1
             print('fail1, sleeping...')
@@ -625,8 +627,10 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
                 if coordinates:
                     results = api.search("geo:" + coordinates + ",20 " + query, page)
                     print("geo:" + coordinates + ",20 " + query)
+                if country == "XX":
+                    results = api.search(query, page)
                 else:
-                    results = results = api.search(query, page)
+                    results = api.search("country:" + country + " " + query, page)
             except Exception as e:
                 print(e)
 
@@ -636,8 +640,10 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
                 if coordinates:
                     results = api.search("geo:" + coordinates + ",20 " + query, page)
                     print("geo:" + coordinates + ",20 " + query)
+                if country == "XX":
+                    results = api.search(query, page)
                 else:
-                    results = results = api.search(query, page)
+                    results = api.search("country:" + country + " " + query, page)
             except Exception as e:
                 print(e)
 
@@ -647,8 +653,10 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
                 if coordinates:
                     results = api.search("geo:" + coordinates + ",20 " + query, page)
                     print("geo:" + coordinates + ",20 " + query)
+                if country == "XX":
+                    results = api.search(query, page)
                 else:
-                    results = results = api.search(query, page)
+                    results = api.search("country:" + country + " " + query, page)
             except Exception as e:
                 results = False
                 print(e)
