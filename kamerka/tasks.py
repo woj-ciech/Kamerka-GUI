@@ -597,6 +597,8 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
     pages = 0
     screenshot = ""
     print(query)
+    # print(coordinates)
+    # print(country)
 
     while results:
         if pages == page:
@@ -606,60 +608,25 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
         # Shodan sometimes fails with no reason, sleeping when it happens and it prevents rate limitation
         search = Search.objects.get(id=fk)
         api = Shodan(SHODAN_API_KEY)
-        fail = 0
+        fail = False
 
-        try:
-            time.sleep(5)
-            if coordinates:
-                results = api.search("geo:" + coordinates + ",20 " + query, page)
-                print("geo:" + coordinates + ",20 " + query)
-            if country == "XX":
-                results = api.search(query, page)
-            else:
-                results = api.search("country:" + country + " " + query, page)
-        except:
-            fail = 1
-            print('fail1, sleeping...')
-
-        if fail == 1:
+        while not fail:
             try:
-                time.sleep(10)
+                time.sleep(3)
                 if coordinates:
                     results = api.search("geo:" + coordinates + ",20 " + query, page)
-                    print("geo:" + coordinates + ",20 " + query)
-                if country == "XX":
+                    # print(results)
+                    fail = True
+                    # print("geo:" + coordinates + ",20 " + query)
+                elif country == "XX":
                     results = api.search(query, page)
+                    fail = True
                 else:
                     results = api.search("country:" + country + " " + query, page)
-            except Exception as e:
-                print(e)
-
-        if fail == 1:
-            try:
-                time.sleep(10)
-                if coordinates:
-                    results = api.search("geo:" + coordinates + ",20 " + query, page)
-                    print("geo:" + coordinates + ",20 " + query)
-                if country == "XX":
-                    results = api.search(query, page)
-                else:
-                    results = api.search("country:" + country + " " + query, page)
-            except Exception as e:
-                print(e)
-
-        if fail == 1:
-            try:
-                time.sleep(10)
-                if coordinates:
-                    results = api.search("geo:" + coordinates + ",20 " + query, page)
-                    print("geo:" + coordinates + ",20 " + query)
-                if country == "XX":
-                    results = api.search(query, page)
-                else:
-                    results = api.search("country:" + country + " " + query, page)
-            except Exception as e:
-                results = False
-                print(e)
+                    fail = True
+            except:
+                fail = False
+                print('fail1, sleeping...')
 
         try:
             total = results['total']
@@ -671,6 +638,7 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
             print(e)
             break
 
+        # print(results)
         pages = math.ceil(total / 100) + 1
         print("Pages: " + str(pages))
         for counter, result in enumerate(results['matches']):
