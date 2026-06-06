@@ -91,6 +91,22 @@ def _serialize_whois_record(record):
     }
 
 
+def _country_display_name(value):
+    countries = []
+    for code in _clean_api_list(value):
+        normalized = code.strip().upper()
+        if not normalized:
+            continue
+        if normalized == "XX":
+            countries.append("Global")
+            continue
+
+        country = pycountry.countries.get(alpha_2=normalized)
+        countries.append(country.name if country else code)
+
+    return ", ".join(countries)
+
+
 # Create your views here.
 
 passwds = {"bosch_security":"""The Bosch Video Recorder 630/650 Series is an 8/16 
@@ -483,6 +499,8 @@ def history(request):
     all_searches = Search.objects.all()
 
     for i in all_searches:
+        i.country_display = _country_display_name(i.country)
+
         try:
             i.coordinates_search = ast.literal_eval(i.coordinates_search)
         except Exception as e:

@@ -1313,6 +1313,44 @@ table.dataTable td:hover {
   outline: none;
 }
 
+.history-page .dataTables_wrapper {
+  padding: 16px 18px 0;
+}
+
+.history-page .dataTables_length,
+.history-page .dataTables_filter {
+  margin-bottom: 14px;
+}
+
+.history-page .dataTables_length label,
+.history-page .dataTables_filter label {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  margin: 0;
+}
+
+.history-page .dataTables_filter label {
+  justify-content: flex-end;
+}
+
+.history-page .dataTables_length select {
+  height: 32px;
+  margin: 0 4px;
+  padding: 4px 8px;
+}
+
+.history-page .dataTables_filter input {
+  height: 32px;
+  margin-left: 4px;
+  min-width: 240px;
+  padding: 6px 10px;
+}
+
+.history-page table.dataTable {
+  margin-top: 8px !important;
+}
+
 /* ─── PAGINATION ────────────────────────────────────────── */
 
 .pagination > li > a,
@@ -1619,6 +1657,32 @@ textarea:focus,
   .device-page .locate-map-controls input[type="text"],
   .device-page .locate-map-controls .btn {
     flex: 1 1 100%;
+    width: 100%;
+  }
+
+  .history-page .dataTables_wrapper {
+    padding: 12px;
+  }
+
+  .history-page .dataTables_length,
+  .history-page .dataTables_filter {
+    float: none;
+    text-align: left;
+  }
+
+  .history-page .dataTables_length label,
+  .history-page .dataTables_filter label {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .history-page .dataTables_filter label {
+    justify-content: flex-start;
+  }
+
+  .history-page .dataTables_filter input {
+    margin-left: 0;
+    min-width: 0;
     width: 100%;
   }
 }
