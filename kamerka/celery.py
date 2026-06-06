@@ -7,12 +7,6 @@ from django.conf import settings
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'kamerka.settings')
 app = Celery('kamerka')
 
-# Using a string here means the worker will not have to
-# pickle the object when using Windows.
+# Use a settings module path so Celery workers do not need to pickle settings objects.
 app.config_from_object('django.conf:settings')
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
-
-
-@app.task(bind=True)
-def debug_task(self):
-    print('Request: {0!r}'.format(self.request))

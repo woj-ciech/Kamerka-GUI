@@ -1,9 +1,8 @@
 import ast
 import json
-from collections import Counter
-import requests
+import logging
+
 from django.core.files.storage import FileSystemStorage
-from .forms import UploadFileForm
 import pycountry
 from celery.result import AsyncResult
 from django.core import serializers
@@ -14,17 +13,19 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 
 from app_kamerka import forms
-from app_kamerka.models import Search, Device, DeviceNearby, ShodanScan, Whois, Bosch
+from app_kamerka.models import Search, Device, DeviceNearby, ShodanScan, Whois
 from kamerka.tasks import shodan_search, devices_nearby, shodan_scan_task, \
     whoisxml, check_credits, nmap_scan, validate_nmap, validate_maxmind, scan, \
     exploit
+
+logger = logging.getLogger(__name__)
 
 
 def _clean_api_value(value):
     if value is None:
         return ""
     if isinstance(value, (list, tuple, set)):
-        return ", ".join(_clean_api_value(item) for item in value if _clean_api_value(item))
+        return ", ".join(filter(None, (_clean_api_value(item) for item in value)))
 
     text = str(value).strip()
     if not text:
@@ -36,9 +37,9 @@ def _clean_api_value(value):
         except (ValueError, SyntaxError):
             return text
         if isinstance(parsed, (list, tuple, set)):
-            return ", ".join(_clean_api_value(item) for item in parsed if _clean_api_value(item))
+            return ", ".join(filter(None, (_clean_api_value(item) for item in parsed)))
         if isinstance(parsed, dict):
-            return ", ".join(_clean_api_value(key) for key in parsed.keys() if _clean_api_value(key))
+            return ", ".join(filter(None, (_clean_api_value(key) for key in parsed.keys())))
         return _clean_api_value(parsed)
 
     return text
@@ -48,9 +49,9 @@ def _clean_api_list(value):
     if value is None:
         return []
     if isinstance(value, (list, tuple, set)):
-        return [_clean_api_value(item) for item in value if _clean_api_value(item)]
+        return list(filter(None, (_clean_api_value(item) for item in value)))
     if isinstance(value, dict):
-        return [_clean_api_value(key) for key in value.keys() if _clean_api_value(key)]
+        return list(filter(None, (_clean_api_value(key) for key in value.keys())))
 
     text = str(value).strip()
     if not text:
@@ -179,8 +180,9 @@ def get_keys():
             keys_json = json.load(keys)
 
         return keys_json
-    except Exception as e:
-        print(e)
+    except Exception:
+        logger.exception("Unable to load keys.json")
+        return {}
 
 
 keys = get_keys()
@@ -233,10 +235,7 @@ def search_main(request):
             search.save()
             post = request.POST.getlist('ics_country')
 
-            if ics_form.cleaned_data['all'] == True:
-                all_results = True
-            else:
-                all_results = False
+            all_results = ics_form.cleaned_data['all']
 
             max_pages = _parse_max_pages(request)
             shodan_search_task = shodan_search.delay(fk=search.id, country=code, ics=post, all_results=all_results,
@@ -261,10 +260,7 @@ def search_main(request):
             search.save()
             post = request.POST.getlist('healthcare')
 
-            if healthcare_form.cleaned_data['all'] == True:
-                all_results = True
-            else:
-                all_results = False
+            all_results = healthcare_form.cleaned_data['all']
 
             max_pages = _parse_max_pages(request)
             shodan_search_task = shodan_search.delay(fk=search.id, country=code, ics=post, healthcare=True,
@@ -307,10 +303,7 @@ def search_main(request):
             search.save()
             post = request.POST.getlist('infra')
 
-            if ics_form.cleaned_data['all'] == True:
-                all_results = True
-            else:
-                all_results = False
+            all_results = infra_form.cleaned_data['all']
 
             max_pages = _parse_max_pages(request)
             shodan_search_task = shodan_search.delay(fk=search.id, country=code, ics=post, all_results=all_results,
@@ -331,17 +324,15 @@ def search_main(request):
                 fs = FileSystemStorage()
                 filename = fs.save(myfile.name, myfile)
                 uploaded_file_url = fs.url(filename)
-                print(uploaded_file_url)
                 validate_nmap(uploaded_file_url)
                 validate_maxmind()
-                search = Search(country="NMAP Scan", ics=myfile.name,nmap=True)
+                search = Search(country="NMAP Scan", ics=myfile.name, nmap=True)
                 search.save()
-                nmap_task = nmap_scan.delay(uploaded_file_url ,fk=search.id)
+                nmap_task = nmap_scan.delay(uploaded_file_url, fk=search.id)
 
                 request.session['task_id'] = nmap_task.task_id
-                print('session')
             except Exception as e:
-                print(e)
+                logger.exception("Failed to start NMAP scan")
                 return JsonResponse({'message':str(e)}, status=500)
 
             return HttpResponseRedirect('index')
@@ -374,9 +365,7 @@ def index(request):
     products_list = list(products)
     favorites = Device.objects.filter(favorite=True)
 
-    countries = {}
-    for i in search_all:
-        countries[i.country] = "1"
+    countries = {item.country: "1" for item in search_all}
 
     for j in last_5_searches:
         try:
@@ -515,16 +504,6 @@ def history(request):
         i.country_display = _country_display_name(i.country)
         i.devices_display = _unique_display_list(i.ics, i.coordinates_search)
 
-        try:
-            i.coordinates_search = ast.literal_eval(i.coordinates_search)
-        except Exception as e:
-            print(e)
-
-        try:
-            i.ics = ast.literal_eval(i.ics)
-        except Exception as e:
-            print(e)
-
     context = {'history': all_searches}
     return render(request, 'history.html', context)
 
@@ -608,7 +587,8 @@ def get_task_info(request):
         else:
             return HttpResponse('No job id given.')
     except Exception as e:
-        print(e)
+        logger.exception("Failed to fetch task info for task_id=%s", task_id)
+        return JsonResponse({'error': str(e)}, status=500)
 
 
 def get_shodan_scan_results(request, id):

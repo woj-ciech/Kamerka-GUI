@@ -1,4 +1,5 @@
 import json
+import logging
 import math
 import re
 
@@ -10,20 +11,19 @@ import requests
 from celery import shared_task, current_task
 from celery_progress.backend import ProgressRecorder
 from shodan import Shodan
-import time
 from bs4 import BeautifulSoup
 import pynmea2
 import base64
 import xmltodict
 
 from libnmap.process import NmapProcess
-from libnmap.parser import NmapParser
-import xmltodict
 
 
 from app_kamerka import exploits
 
-from app_kamerka.models import Device, DeviceNearby, Search, ShodanScan, Whois, Bosch
+from app_kamerka.models import Device, DeviceNearby, Search, ShodanScan, Whois
+
+logger = logging.getLogger(__name__)
 
 healthcare_queries = {"zoll": "http.favicon.hash:-236942626",
                       'dicom': "dicom",
@@ -455,8 +455,9 @@ def get_keys():
             keys_json = json.load(keys)
 
         return keys_json
-    except Exception as e:
-        print(e)
+    except Exception:
+        logger.exception("Unable to load keys.json")
+        return {}
 
 
 keys = get_keys()
@@ -474,15 +475,15 @@ def devices_nearby(lat, lon, id, query):
     try:
         # Search Shodan
         results = api.search("geo:" + lat + "," + lon + ",15 " + query)
-    except:
+    except Exception:
         fail = 1
-        print('fail1')
+        logger.warning("Initial nearby Shodan search failed; retrying")
 
     if fail == 1:
         try:
             results = api.search("geo:" + lat + "," + lon + ",15 " + query)
-        except Exception as e:
-            print(e)
+        except Exception:
+            logger.exception("Nearby Shodan retry failed")
 
     try:  # Show the results
         total = len(results['matches'])
@@ -500,8 +501,8 @@ def devices_nearby(lat, lon, id, query):
             device1.save()
 
         return {'current': total, 'total': total, 'percent': 100}
-    except Exception as e:
-        print(e)
+    except Exception:
+        logger.exception("Unable to save nearby Shodan devices")
 
 
 @shared_task(bind=True)
@@ -514,7 +515,6 @@ def shodan_search(self, fk, country=None, coordinates=None, ics=None, healthcare
         for c, i in enumerate(ics):
             if healthcare:
                 if i in healthcare_queries:
-                    print(i)
                     try:
                         result += c
                         shodan_search_worker(country=country, fk=fk, query=healthcare_queries[i], search_type=i,
@@ -531,8 +531,8 @@ def shodan_search(self, fk, country=None, coordinates=None, ics=None, healthcare
                                              category="coordinates",
                                              all_results=all_results, max_pages=max_pages)
                         progress_recorder.set_progress(c + 1, total=total)
-                    except Exception as e:
-                        print(e)
+                    except Exception:
+                        logger.exception("IoT Shodan search failed for query key %s", i)
             else:
 
                 if i in ics_queries:
@@ -552,13 +552,12 @@ def shodan_search(self, fk, country=None, coordinates=None, ics=None, healthcare
                                              category="infra",
                                              all_results=all_results, max_pages=max_pages)
                         progress_recorder.set_progress(c + 1, total=total)
-                    except Exception as e:
-                        print(e)
+                    except Exception:
+                        logger.exception("Infrastructure Shodan search failed for query key %s", i)
 
     if coordinates:
         total = len(coordinates_search)
         for c, i in enumerate(coordinates_search):
-            # print(coordinates_search[i])
             if i in coordinates_queries:
                 try:
                     result += c
@@ -578,8 +577,8 @@ def check_credits():
         api = Shodan(SHODAN_API_KEY)
         a = api.info()
         keys_list.append(a['scan_credits'])
-    except Exception as e:
-        print(e)
+    except Exception:
+        logger.exception("Unable to fetch Shodan credits")
 
     return keys_list
 
@@ -590,9 +589,7 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
     SHODAN_API_KEY = keys['keys']['shodan']
     pages = 0
     screenshot = ""
-    print(query)
-    # print(coordinates)
-    # print(country)
+    logger.debug("Starting Shodan search worker for query=%s country=%s coordinates=%s", query, country, coordinates)
 
     while results:
         if pages == page:
@@ -606,35 +603,32 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
 
         while not fail:
             try:
-                time.sleep(3)
+                sleep(3)
                 if coordinates:
                     results = api.search("geo:" + coordinates + ",50 " + query, page)
-                    # print(results)
                     fail = True
-                    # print("geo:" + coordinates + ",20 " + query)
                 elif country == "XX":
                     results = api.search(query, page)
                     fail = True
                 else:
                     results = api.search("country:" + country + " " + query, page)
                     fail = True
-            except:
+            except Exception:
                 fail = False
-                print('fail1, sleeping...')
+                logger.warning("Shodan search failed; sleeping before retry")
 
         try:
             total = results['total']
 
             if total == 0:
-                print("no results")
+                logger.info("Shodan search returned no results for query=%s", query)
                 break
-        except Exception as e:
-            print(e)
+        except Exception:
+            logger.exception("Invalid Shodan response for query=%s", query)
             break
 
-        # print(results)
         pages = math.ceil(total / 100) + 1
-        print("Pages: " + str(pages))
+        logger.debug("Shodan search query=%s total=%s pages=%s", query, total, pages)
         for counter, result in enumerate(results['matches']):
             lat = str(result['location']['latitude'])
             lon = str(result['location']['longitude'])
@@ -668,7 +662,7 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
             try:
                 if 'SAILOR' in result['http']['title']:
                     html = result['http']['html']
-                    soup = BeautifulSoup(html)
+                    soup = BeautifulSoup(html, "html.parser")
                     for gps in soup.find_all("span", {"id": "gnss_position"}):
                         coordinates = gps.contents[0]
                         space = coordinates.split(' ')
@@ -810,8 +804,12 @@ def nmap_host_worker(host_arg, max_reader, search):
     hostname = host_arg.hostnames[0]
 
     a = max_reader.get(host_arg.address)
-    print(a['location']['latitude'])
-    print(a['location']['longitude'])
+    logger.debug(
+        "Resolved NMAP host %s to %s,%s",
+        host_arg.address,
+        a['location']['latitude'],
+        a['location']['longitude'],
+    )
     for ports in host_arg.services:
         if ports.state == 'open':
             ports_list.append(ports.port)
@@ -839,7 +837,7 @@ def validate_maxmind():
 def nmap_scan(self, file, fk):
     progress_recorder = ProgressRecorder(self)
     result = 0
-    print(os.getcwd() + file)
+    logger.debug("Starting NMAP import from %s", os.getcwd() + file)
     search = Search.objects.get(id=fk)
     max_reader = maxminddb.open_database('GeoLite2-City.mmdb')
     nmap_report = NmapParser.parse_fromfile(os.getcwd() + file)
@@ -889,12 +887,11 @@ def shodan_scan_task(id):
         device1 = ShodanScan(device=device, products=product,
                              ports=ports, tags=tags, module=module, vulns=vulns)
         device1.save()
-        print(results['ports'])
 
         return {'current': total, 'total': total, 'percent': 100}
 
-    except Exception as e:
-        print(e.args)
+    except Exception:
+        logger.exception("Shodan host scan failed for device id=%s", id)
         raise
 
 
@@ -919,17 +916,13 @@ def scan(id):
         nm.run_background()
 
         while nm.is_running():
-            print("Nmap Scan running: ETC: {0} DONE: {1}%".format(nm.etc,
-                                                                  nm.progress))
+            logger.debug("NMAP scan running: ETC=%s progress=%s%%", nm.etc, nm.progress)
             sleep(2)
 
         u = xmltodict.parse(nm.stdout)
-        print(u['nmaprun'])
 
         try:
             for i in u['nmaprun']['host']['ports']['port']['script']:
-                print(i)
-
                 if i == "@output":
                     return_dict["ID"] = u['nmaprun']['host']['ports']['port']['script']["@id"]
                     return_dict["Output"] = u['nmaprun']['host']['ports']['port']['script']["@output"]
@@ -939,9 +932,8 @@ def scan(id):
             device1.save()
             return return_dict
 
-
-        except Exception as e:
-            print(e)
+        except Exception:
+            logger.debug("NMAP script output missing; falling back to port state", exc_info=True)
             return_dict["State"] = u['nmaprun']['host']['ports']['port']['state']["@state"]
             return_dict["Reason"] = u['nmaprun']['host']['ports']['port']['state']["@reason"]
             device1.scan = return_dict
@@ -956,8 +948,7 @@ def scan(id):
         nm.run_background()
 
         while nm.is_running():
-            print("Nmap Scan running: ETC: {0} DONE: {1}%".format(nm.etc,
-                                                                  nm.progress))
+            logger.debug("NMAP scan running: ETC=%s progress=%s%%", nm.etc, nm.progress)
             sleep(2)
 
         u = xmltodict.parse(nm.stdout)
@@ -976,37 +967,21 @@ def scan(id):
 @shared_task(bind=False)
 def exploit(id):
     device1 = Device.objects.get(id=id)
-    print(device1.type)
-    if device1.type == "bosch_security":
-        usernames = exploits.bosch_usernames(device1)
-        return usernames
-    if device1.type == "hikvision":
-        creds = exploits.hikvision(device1)
-        return creds
-    if device1.type == "videoiq":
-        users = exploits.videoiq(device1)
-        return users
-    if device1.type == "contec":
-        usernames = exploits.contec(device1)
-        return usernames
-    if device1.type == "grandstream":
-        check = exploits.grandstream(device1)
-        return check
-    if device1.type == "netwave":
-        status = exploits.netwave(device1)
-        return status
-    if device1.type == "CirCarLife":
-        plc_status = exploits.circarlife(device1)
-        return plc_status
-    if device1.type == "amcrest":
-        videotalk = exploits.amcrest(device1)
-        return videotalk
-    if device1.type == "lutron":
-        config = exploits.lutron(device1)
-        return config
-
-    else:
+    exploit_handlers = {
+        "bosch_security": exploits.bosch_usernames,
+        "hikvision": exploits.hikvision,
+        "videoiq": exploits.videoiq,
+        "contec": exploits.contec,
+        "grandstream": exploits.grandstream,
+        "netwave": exploits.netwave,
+        "CirCarLife": exploits.circarlife,
+        "amcrest": exploits.amcrest,
+        "lutron": exploits.lutron,
+    }
+    handler = exploit_handlers.get(device1.type)
+    if not handler:
         return {"Reason": "No exploit assigned"}
+    return handler(device1)
 
 
 @shared_task(bind=False)
