@@ -1472,7 +1472,8 @@ input[type="search"],
   color: var(--search-text-bright) !important;
   font-family: var(--search-font-mono) !important;
   font-size: 12px !important;
-  min-height: 48px;
+  min-height: 58px !important;
+  height: 58px !important;
   width: 100% !important;
 }
 
@@ -1486,6 +1487,23 @@ input[type="search"],
 
 .bootstrap-select.btn-group .dropdown-toggle {
   width: 100% !important;
+}
+
+#iot-mode-container {
+  display: grid;
+}
+
+.iot-mode-panel {
+  grid-area: 1 / 1;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.iot-mode-panel.is-active {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
 }
 
 .bootstrap-select .dropdown-menu,
@@ -1570,7 +1588,7 @@ input[type="search"]::placeholder,
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.16em;
-  margin: 6px 0 22px auto;
+  margin: 6px 0 8px auto;
   padding: 0;
   text-align: right;
   text-transform: uppercase;

@@ -204,7 +204,7 @@ font-size: 22px;
                                                                            <h3><center style="color: #00E1FF;">Country</center></h3>
                             <form method="POST" action="">
 
-	 <select class="selectpicker countrypicker" name='country' id='country' data-default="CA" data-flag="true" ></select>
+	 <select class="selectpicker countrypicker" name='country' id='country' data-default="CA" data-flag="true" data-live-search="true" ></select>
 
 <br>
                                 <br>
@@ -360,11 +360,8 @@ font-size: 22px;
 
 
                                                                                                    </select>
-<br>
 
-
-<div style="display:flex;align-items:center;justify-content:space-between;margin:14px 0;">
-    <span><input type="checkbox" id="test1" name="all" /><label for="test1"><span class="ui"></span> <h4>All results </h4></label></span>
+<div style="display:flex;justify-content:flex-end;margin:4px 0 0;">
     <span style="text-align:right;">
         <label for="max_pages_ics" style="color:#7F8C9A;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.08em;display:block;margin-bottom:4px;">PAGES TO COLLECT</label>
         <input type="number" name="max_pages" id="max_pages_ics" value="1" min="1" max="100"
@@ -372,10 +369,7 @@ font-size: 22px;
     </span>
 </div>
 
-                                <br>
-                                <br>
-
-<button class="btn-submit m-t-0" type="submit">search</button>
+<button class="btn-submit m-t-0" type="submit" style="margin-top:14px;">search</button>
 
 
 
@@ -397,8 +391,9 @@ font-size: 22px;
                                                                 </button>
                                                             </div>
 
+                                                            <div id="iot-mode-container">
                                                             <!-- Coordinates mode -->
-                                                            <div id="iot-coords-section">
+                                                            <div id="iot-coords-section" class="iot-mode-panel is-active" aria-hidden="false">
                                                                 <h3><center style="color:#00E1FF;">Coordinates</center></h3>
                                                                 <section class="webdesigntuts-workshop">
                                                                     <input type="search" name="coordinates" id="coordinates" placeholder="lat,lon  e.g. 52.229,21.012">
@@ -406,12 +401,13 @@ font-size: 22px;
                                                             </div>
 
                                                             <!-- Country mode -->
-                                                            <div id="iot-country-section" style="display:none;">
+                                                            <div id="iot-country-section" class="iot-mode-panel" aria-hidden="true">
                                                                 <h3><center style="color:#00E1FF;">Country</center></h3>
-                                                                <select class="selectpicker countrypicker" name="iot_country" id="iot_country" data-default="US" data-flag="true"></select>
+                                                                <select class="selectpicker countrypicker" name="iot_country" id="iot_country" data-default="US" data-flag="true" data-live-search="true"></select>
                                                             </div>
+                                                            </div><!-- /iot-mode-container -->
 
-                          <br><br><h3><center style="color:#00E1FF;">Camera</center></h3>
+                          <br><h3 style="margin-top:27px !important;"><center style="color:#00E1FF;">Camera</center></h3>
 
                                                            <select multiple name="coordinates_search" id="cam" >
                                                       													 <option value="webcam">Webcam</option>
@@ -587,12 +583,9 @@ font-size: 22px;
 
 
                                                 </select>
-<br>
-                                                            <div id="iot-all-section" style="display:none;">
-                                                                <input type="checkbox" id="test_iot_all" name="iot_all" /><label for="test_iot_all"><span class="ui"></span> <h4>All results</h4></label>
-                                                            </div>
 
-<div style="display:flex;justify-content:flex-end;margin:14px 0;">
+
+<div style="display:flex;justify-content:flex-end;margin:4px 0 0;">
     <span style="text-align:right;">
         <label for="max_pages_iot" style="color:#7F8C9A;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.08em;display:block;margin-bottom:4px;">PAGES TO COLLECT</label>
         <input type="number" name="max_pages" id="max_pages_iot" value="1" min="1" max="100"
@@ -600,11 +593,7 @@ font-size: 22px;
     </span>
 </div>
 
-                                <br>
-                                <br>
-<button class="btn-submit m-t-0" type="submit">search</button>
-
-
+<button class="btn-submit m-t-0" type="submit" style="margin-top:14px;">search</button>
 
 
 
@@ -618,7 +607,7 @@ font-size: 22px;
                                                                            <h3><center style="color: #00E1FF;">Country</center></h3>
                             <form method="POST" action="">
 
-	 <select class="selectpicker countrypicker" name='country_healthcare' id='country_healthcare' data-default="CA" data-flag="true" ></select>
+	 <select class="selectpicker countrypicker" name='country_healthcare' id='country_healthcare' data-default="CA" data-flag="true" data-live-search="true" ></select>
 
 <br>
                                 <br>
@@ -712,11 +701,8 @@ font-size: 22px;
                                                     <option value="xero_viewer">XERO Viewer</option>
 
                                                                                                    </select>
-<br>
 
-
-<div style="display:flex;align-items:center;justify-content:space-between;margin:14px 0;">
-    <span><input type="checkbox" id="test9" name="all" /><label for="test7"><span class="ui"></span> <h4>All results </h4></label></span>
+<div style="display:flex;justify-content:flex-end;margin:4px 0 0;">
     <span style="text-align:right;">
         <label for="max_pages_health" style="color:#7F8C9A;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.08em;display:block;margin-bottom:4px;">PAGES TO COLLECT</label>
         <input type="number" name="max_pages" id="max_pages_health" value="1" min="1" max="100"
@@ -724,10 +710,8 @@ font-size: 22px;
     </span>
 </div>
 
-                                <br>
-                                <br>
 
-<button class="btn-submit m-t-0" type="submit">search</button>
+<button class="btn-submit m-t-0" type="submit" style="margin-top:14px;">search</button>
 
 
                             </form>
@@ -769,7 +753,7 @@ font-size: 22px;' class="image-title">
                                                                            <h3><center style="color: #00E1FF;">Country</center></h3>
                             <form method="POST" action="">
 
-	 <select class="selectpicker countrypicker" name='country_infra' id='country_infra' data-default="CA" data-flag="true" ></select>
+	 <select class="selectpicker countrypicker" name='country_infra' id='country_infra' data-default="CA" data-flag="true" data-live-search="true" ></select>
 
 <br>
                                 <br>
@@ -784,11 +768,8 @@ font-size: 22px;' class="image-title">
                                                     <option value="bruteratel">BruteRatel</option>
 
                                                                                                    </select>
-<br>
 
-
-<div style="display:flex;align-items:center;justify-content:space-between;margin:14px 0;">
-    <span><input type="checkbox" id="test7" name="all" /><label for="test7"><span class="ui"></span> <h4>All results </h4></label></span>
+<div style="display:flex;justify-content:flex-end;margin:4px 0 0;">
     <span style="text-align:right;">
         <label for="max_pages_infra" style="color:#7F8C9A;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.08em;display:block;margin-bottom:4px;">PAGES TO COLLECT</label>
         <input type="number" name="max_pages" id="max_pages_infra" value="1" min="1" max="100"
@@ -796,10 +777,7 @@ font-size: 22px;' class="image-title">
     </span>
 </div>
 
-                                <br>
-                                <br>
-
-<button class="btn-submit m-t-0" type="submit">search</button>
+<button class="btn-submit m-t-0" type="submit" style="margin-top:14px;">search</button>
 
 
                             </form>
@@ -877,12 +855,20 @@ a = document.querySelector(".bg-img-1").style.background = 'url({% static 'image
     <script>
         function setIoTMode(mode) {
             document.getElementById('iot_search_mode').value = mode;
-            var isCountry = mode === 'country';
-            document.getElementById('iot-coords-section').style.display  = isCountry ? 'none' : '';
-            document.getElementById('iot-country-section').style.display = isCountry ? '' : 'none';
-            document.getElementById('iot-all-section').style.display     = isCountry ? '' : 'none';
-            document.getElementById('btn-iot-coords').classList.toggle('iot-mode-active', !isCountry);
-            document.getElementById('btn-iot-country').classList.toggle('iot-mode-active', isCountry);
+            var isCountry = (mode === 'country');
+            var coordsSection = document.getElementById('iot-coords-section');
+            var countrySection = document.getElementById('iot-country-section');
+            coordsSection.classList.toggle('is-active', !isCountry);
+            countrySection.classList.toggle('is-active', isCountry);
+            coordsSection.setAttribute('aria-hidden', isCountry ? 'true' : 'false');
+            countrySection.setAttribute('aria-hidden', isCountry ? 'false' : 'true');
+            if (isCountry) {
+                document.getElementById('btn-iot-coords').classList.remove('iot-mode-active');
+                document.getElementById('btn-iot-country').classList.add('iot-mode-active');
+            } else {
+                document.getElementById('btn-iot-coords').classList.add('iot-mode-active');
+                document.getElementById('btn-iot-country').classList.remove('iot-mode-active');
+            }
         }
     </script>
 
