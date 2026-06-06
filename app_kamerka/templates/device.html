@@ -21,7 +21,7 @@
     </head>
     <body>
         <!-- START PAGE CONTAINER -->
-        <div class="page-container">
+        <div class="page-container device-page">
 
             <!-- START PAGE SIDEBAR -->
             <div class="page-sidebar">
@@ -120,81 +120,125 @@
                                 </button>
                                 </div>
                                 <div class="panel-body tab-content">
-                                    <div class="tab-pane active" id="tab8">
-                                        <div class="panel panel-default {% if device.located %}device-located-panel{% endif %}">
-                                    <div class="panel-heading">
-                                    <h3 class="panel-title"> {{ device.lat }},{{ device.lon }} - {% for a in device.indicator %}{{ a }} {% endfor %} {% if device.located %} LOCATED {% endif %}
-
-</h3>
-                                </div>
-                                <div class="panel-body panel-body-map">
-                                    <div id="google_world_map" style="width: 100%; height: 400px;"></div>
-
-                                    <form id="form1" runat="server">
-    <div>
-<br>
-        <center>
-        <input type="text" id="txtDestination" placeholder="Find device" style="width: 300px" />
-        <input type="button" value="Find route" class="btn btn-primary active" style="margin-right: 120px;" onclick="GetRoute()" />
-
-        <input type="text" id="update_location" placeholder="Update location" style="width: 300px" />
-        <input type="button" id="btn_update_location" class="btn btn-primary active" value="Update location" style="margin-right: 120px;" class="btn btn-info active"/>
-
-
-</center>
-
-
-    </div>                            <!-- END GOOGLE WORLD MAP-->
-                                    </form>
-
-
+                                    <div class="tab-pane active locate-tab" id="tab8">
+                                        <div class="locate-map-shell {% if device.located %}device-located-panel{% endif %}">
+                                            <div class="panel-body panel-body-map">
+                                                <div id="google_world_map"></div>
+                                                <form id="form1" class="locate-map-controls" runat="server">
+                                                    <input type="text" id="txtDestination" placeholder="Find device" />
+                                                    <input type="button" value="Find route" class="btn btn-primary active" onclick="GetRoute()" />
+                                                    <input type="text" id="update_location" placeholder="Update location" />
+                                                    <input type="button" id="btn_update_location" class="btn btn-primary active" value="Update location" />
+                                                </form>
+                                            </div>
+                                        </div>
                                     </div>
-
-                                </div>
-                                </div>
 
 
 
 <div class="tab-pane" id="tab9">
-    <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">{{ device.ip }}</h3>
+    <div class="row intel-row intel-summary-row">
+        <div class="{% if device.screenshot %}col-md-8{% else %}col-md-12{% endif %} intel-summary-column">
+            <div class="panel panel-default intel-panel">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ device.ip }}</h3>
+                </div>
+                <div class="panel-body padding-0 intel-panel-body">
+                    <div class="intel-result-card intel-result-grid device-summary-card">
+                        <div class="intel-field">
+                            <div class="intel-label">Identity</div>
+                            <div class="intel-value">
+                                <div class="intel-chip-list">
+                                    <span class="intel-chip">{{ device.ip }}</span>
+                                    {% if device.type %}<span class="intel-chip">{{ device.type }}</span>{% endif %}
+                                    {% if device.category %}<span class="intel-chip">{{ device.category }}</span>{% endif %}
+                                    {% if device.port %}<span class="intel-chip">Port {{ device.port }}</span>{% endif %}
                                 </div>
-                                <div class="panel-body"><center>
-                                        <b>{{ device.hostnames }}<br>
-                                        {{ device.product }}<br>
-                                        {{ device.type }}<br>
-                                        {{ device.org }}<br>
-                                        {{ device.vulns|slice:"1:-1" }}<br>
-                                            {{ device.city }}</b><br><br>
-                                     {{ device.data }}<br>
-                                        {{ device.ssl }}
-                                                                                    <td>{{ device.category }}</td><br>
-
-                                    {% if device.screenshot %}
-                                    <img src="data:image/jpeg;base64,{{ device.screenshot }}">
-                                    {% endif %}
-</center>
-                                    </div>
                             </div>
+                        </div>
+                        <div class="intel-field">
+                            <div class="intel-label">Hostnames</div>
+                            <div class="intel-value">{% if device.hostnames %}{{ device.hostnames }}{% else %}<span class="intel-muted">No hostnames returned</span>{% endif %}</div>
+                        </div>
+                        <div class="intel-field">
+                            <div class="intel-label">Product</div>
+                            <div class="intel-value">{% if device.product %}{{ device.product }}{% else %}<span class="intel-muted">No product returned</span>{% endif %}</div>
+                        </div>
+                        <div class="intel-field">
+                            <div class="intel-label">Organization</div>
+                            <div class="intel-value">{% if device.org %}{{ device.org }}{% else %}<span class="intel-muted">No organization returned</span>{% endif %}</div>
+                        </div>
+                        <div class="intel-field">
+                            <div class="intel-label">Location</div>
+                            <div class="intel-value">
+                                {% if device.city or device.country_code %}
+                                    {% if device.city %}{{ device.city }}{% endif %}{% if device.city and device.country_code %}, {% endif %}{% if device.country_code %}{{ device.country_code }}{% endif %}
+                                {% else %}
+                                    <span class="intel-muted">No location returned</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="intel-field">
+                            <div class="intel-label">Vulnerabilities</div>
+                            <div class="intel-value">
+                                {% if device.vulns_preview %}
+                                    <div class="intel-chip-list">
+                                        {% for vuln in device.vulns_preview %}
+                                            <span class="intel-chip">{{ vuln }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    <span class="intel-muted">No vulnerabilities returned</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="intel-field intel-field-wide">
+                            <div class="intel-label">Banner Data</div>
+                            <div class="intel-value intel-value-pre">{% if device.data %}{{ device.data }}{% else %}<span class="intel-muted">No banner data returned</span>{% endif %}</div>
+                        </div>
+                        <div class="intel-field intel-field-wide">
+                            <div class="intel-label">SSL</div>
+                            <div class="intel-value intel-value-pre">{% if device.ssl %}{{ device.ssl }}{% else %}<span class="intel-muted">No SSL data returned</span>{% endif %}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<div class="row">
-                        <div class="col-md-4">
+        {% if device.screenshot %}
+        <div class="col-md-4 intel-screenshot-column">
+            <div class="panel panel-default intel-panel screenshot-panel">
+                <div class="panel-heading">
+                    <div class="panel-title-box"><h3>Screenshot</h3></div>
+                </div>
+                <div class="panel-body padding-0 intel-panel-body">
+                    <div class="intel-result-card screenshot-card">
+                        <img class="intel-screenshot" src="data:image/jpeg;base64,{{ device.screenshot }}" alt="Device screenshot">
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+<div class="row intel-row">
+                        <div class="col-md-6">
 
                             <!-- START USERS ACTIVITY BLOCK -->
-                            <div class="panel panel-default">
+                            <div class="panel panel-default intel-panel">
                                 <div class="panel-heading ui-draggable-handle">
                                     <div class="panel-title-box">
                                         <h3><a href="https://shodan.io/host/{{device.ip}}">Shodan Scan</a>  </h3>
                                     </div>
 
                                 </div>
-                                <div class="panel-body padding-0">
-                                    <button type="button" id="shodan_scan" class="btn btn-primary active">Scan</button>
-                                                                        <button type="button" id="shodan_show" class="btn btn-primary active">Display</button>
-
-                                    <progress id="progress-bar2" value="0" max="100" style="display:none; margin-bottom: 1em;"></progress>
-                                    <div id="shodan_results" style="display: none;"></div>
+                                <div class="panel-body padding-0 intel-panel-body">
+                                    <div class="intel-actions">
+                                        <button type="button" id="shodan_scan" class="btn btn-primary active">Scan</button>
+                                        <span id="shodan_status" class="intel-status">Ready</span>
+                                    </div>
+                                    <progress id="progress-bar2" class="intel-progress" value="0" max="100" style="display:none;"></progress>
+                                    <div id="shodan_results" class="intel-results"></div>
 
                                 </div>
                             </div>
@@ -202,21 +246,23 @@
 
                         </div>
 
-   <div class="col-md-4">
+   <div class="col-md-6">
 
                             <!-- START USERS ACTIVITY BLOCK -->
-                            <div class="panel panel-default">
+                            <div class="panel panel-default intel-panel">
                                 <div class="panel-heading ui-draggable-handle">
                                     <div class="panel-title-box">
                                         <h3>Whois XML API</h3>
                                     </div>
 
                                 </div>
-                                <div class="panel-body padding-0">
-                                    <button type="button" id="whois_scan" class="btn btn-primary active">Scan</button>
-                                                                        <button type="button" id="whois_show" class="btn btn-primary active">Display</button>
-                                    <div id="whois_results" class="contact-info" style="display: none;"></div>
-                                    <progress id="progress-bar6" value="0" max="100" style="display:none; margin-bottom: 1em;"></progress>
+                                <div class="panel-body padding-0 intel-panel-body">
+                                    <div class="intel-actions">
+                                        <button type="button" id="whois_scan" class="btn btn-primary active">Scan</button>
+                                        <span id="whois_status" class="intel-status">Ready</span>
+                                    </div>
+                                    <progress id="progress-bar6" class="intel-progress" value="0" max="100" style="display:none;"></progress>
+                                    <div id="whois_results" class="contact-info intel-results"></div>
 
                                 </div>
                             </div>
@@ -554,6 +600,17 @@ library.json = {
             $('#exploit_results').html(library.json.prettyPrint({{ device.exploit|safe }}));
 </script>
 <script>
+        function resizeLocateMap() {
+            if (window.google && google.maps && window.map) {
+                google.maps.event.trigger(map, 'resize');
+                map.setCenter(init_marker);
+            }
+        }
+
+        $(window).on('resize', resizeLocateMap);
+        $('a[href="#tab8"]').on('shown.bs.tab', resizeLocateMap);
+        setTimeout(resizeLocateMap, 0);
+
         $('#btn_update_location').on('click', function(){
     var bla = $('#update_location').val();
         $.ajax({
@@ -575,50 +632,192 @@ library.json = {
 </script>
 
             <script type="text/javascript">
-    var pgrbar2 = $('#progress-bar2');
-    $('#shodan_scan').on('click', function(){
+    var shodanConfig = {
+        button: $('#shodan_scan'),
+        progress: $('#progress-bar2'),
+        results: $('#shodan_results'),
+        status: $('#shodan_status'),
+        scanUrl: "/{{device.id}}/shodan/scan",
+        resultsUrl: "/get_shodan_scan_results/{{device.id}}",
+        emptyText: "Run a Shodan scan to collect exposed service data.",
+        renderer: renderShodanResults
+    };
+
+    var whoisConfig = {
+        button: $('#whois_scan'),
+        progress: $('#progress-bar6'),
+        results: $('#whois_results'),
+        status: $('#whois_status'),
+        scanUrl: "/whois/{{device.id}}",
+        resultsUrl: "/get_whois/{{device.id}}",
+        emptyText: "Run a Whois XML API scan to collect registry data.",
+        renderer: renderWhoisResults
+    };
+
+    function escapeHtml(value) {
+        return String(value == null ? "" : value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    function normalizeList(value) {
+        if (Array.isArray(value)) {
+            return value.filter(function(item) { return item !== null && item !== undefined && String(item).trim() !== ""; });
+        }
+        if (value === null || value === undefined || String(value).trim() === "") {
+            return [];
+        }
+        return [value];
+    }
+
+    function setIntelStatus(config, text, state) {
+        config.status
+            .removeClass('is-running is-ready is-error')
+            .addClass(state ? 'is-' + state : '')
+            .text(text);
+    }
+
+    function renderIntelEmpty(config, text) {
+        config.results.html('<div class="intel-empty">' + escapeHtml(text || config.emptyText) + '</div>');
+    }
+
+    function renderChips(values, emptyLabel) {
+        values = normalizeList(values);
+        if (!values.length) {
+            return '<span class="intel-muted">' + escapeHtml(emptyLabel || 'No data returned') + '</span>';
+        }
+        return '<div class="intel-chip-list">' + values.map(function(value) {
+            return '<span class="intel-chip">' + escapeHtml(value) + '</span>';
+        }).join('') + '</div>';
+    }
+
+    function firstItems(values, count) {
+        return normalizeList(values).slice(0, count);
+    }
+
+    function renderField(label, value) {
+        var values = normalizeList(value);
+        var rendered = values.length ? values.map(escapeHtml).join('<br>') : '<span class="intel-muted">No data returned</span>';
+        return '<div class="intel-field"><div class="intel-label">' + escapeHtml(label) + '</div><div class="intel-value">' + rendered + '</div></div>';
+    }
+
+    function renderFieldHtml(label, html) {
+        return '<div class="intel-field"><div class="intel-label">' + escapeHtml(label) + '</div><div class="intel-value">' + html + '</div></div>';
+    }
+
+    function renderShodanResults(results) {
+        var html = results.map(function(record) {
+            return '<div class="intel-result-card">' +
+                renderFieldHtml('Ports', renderChips(record.ports, 'No ports returned')) +
+                renderFieldHtml('Products', renderChips(record.products, 'No products returned')) +
+                renderFieldHtml('Modules', renderChips(record.modules, 'No modules returned')) +
+                renderFieldHtml('Vulnerabilities', renderChips(firstItems(record.vulns, 3), 'No vulnerabilities returned')) +
+                renderFieldHtml('Tags', renderChips(record.tags, 'No tags returned')) +
+            '</div>';
+        }).join('');
+        return html || '<div class="intel-empty">No Shodan records returned.</div>';
+    }
+
+    function renderWhoisResults(results) {
+        var labels = {
+            name: 'Registrant',
+            org: 'Organization',
+            street: 'Street',
+            city: 'City',
+            netrange: 'Network Range',
+            admin_org: 'Admin Organization',
+            admin_email: 'Admin Email',
+            admin_phone: 'Admin Phone',
+            email: 'Registrant Email'
+        };
+        var html = results.map(function(record) {
+            return '<div class="intel-result-card intel-result-grid">' +
+                Object.keys(labels).map(function(key) {
+                    return renderField(labels[key], record[key]);
+                }).join('') +
+            '</div>';
+        }).join('');
+        return html || '<div class="intel-empty">No Whois records returned.</div>';
+    }
+
+    function fetchIntelResults(config, options) {
+        options = options || {};
         $.ajax({
-        type: "GET",
-        url: "/{{device.id}}/shodan/scan",
-        success: function (data) {
-                if (data.task_id != null) {
-                    get_task_info(data.task_id,pgrbar2);
-                noty({text: "Wait couple sec and click Display" , layout: 'topRight', type: 'success', timeout: 4000});
-                }
-                else if (data.Error){
-                noty({text: data.Error , layout: 'topRight', type: 'error', timeout: 1000});
+            url: config.resultsUrl,
+            type: "get",
+            success: function(response) {
+                var results = response && response.results ? response.results : [];
+                if (response && response.ready && results.length) {
+                    config.results.html(config.renderer(results));
+                    setIntelStatus(config, "Results ready", "ready");
+                } else {
+                    renderIntelEmpty(config, options.emptyText || config.emptyText);
+                    setIntelStatus(config, "Ready", "ready");
                 }
             },
-            error: function (data) {
-                console.log("Something went wrong!");
+            error: function() {
+                renderIntelEmpty(config, "Unable to load scan results.");
+                setIntelStatus(config, "Load failed", "error");
+            },
+            complete: function() {
+                config.button.prop('disabled', false);
+            }
+        });
+    }
+
+    function startIntelScan(config) {
+        config.button.prop('disabled', true);
+        config.progress.val(0).css('display', 'block');
+        renderIntelEmpty(config, "Scan running. Results will appear automatically.");
+        setIntelStatus(config, "Scanning", "running");
+        $.ajax({
+            type: "GET",
+            url: config.scanUrl,
+            success: function(data) {
+                if (data && data.ready) {
+                    config.progress.css('display', 'none');
+                    fetchIntelResults(config);
+                } else if (data && data.task_id != null) {
+                    get_task_info(data.task_id, config.progress, function() {
+                        fetchIntelResults(config, {emptyText: "Scan finished, but no records were returned."});
+                    }, function() {
+                        renderIntelEmpty(config, "Scan task failed.");
+                        setIntelStatus(config, "Scan failed", "error");
+                        config.button.prop('disabled', false);
+                    });
+                } else if (data && (data.Error || data.error)) {
+                    renderIntelEmpty(config, data.Error || data.error);
+                    setIntelStatus(config, "Scan failed", "error");
+                    config.progress.css('display', 'none');
+                    config.button.prop('disabled', false);
+                    noty({text: data.Error || data.error, layout: 'topRight', type: 'error', timeout: 2000});
+                } else {
+                    renderIntelEmpty(config, "Scan did not return a task id.");
+                    setIntelStatus(config, "Scan failed", "error");
+                    config.progress.css('display', 'none');
+                    config.button.prop('disabled', false);
+                }
+            },
+            error: function() {
+                renderIntelEmpty(config, "Scan request failed.");
+                setIntelStatus(config, "Scan failed", "error");
+                config.progress.css('display', 'none');
+                config.button.prop('disabled', false);
             }
         });
         return false;
+    }
+
+    $('#shodan_scan').on('click', function(){
+        return startIntelScan(shodanConfig);
     });
 
-        var pgrbar6 = $('#progress-bar6');
-
-$('#whois_scan').on('click', function(){
-       $.ajax({
-        type: "GET",
-        url: "/whois/{{device.id}}",
-        success: function (data) {
-
-
-                if (data.task_id != null) {
-                    get_task_info(data.task_id,pgrbar6);
-                }
-                else if (data.Error){
-                noty({text: data.Error , layout: 'topRight', type: 'error', timeout: 1000});
-                }
-            },
-            error: function (data) {
-                console.log("Something went wrong!");
-            }
-        });
-        return false;
+    $('#whois_scan').on('click', function(){
+        return startIntelScan(whoisConfig);
     });
-
 
 $('#scan').on('click', function(){
        $.ajax({
@@ -668,42 +867,11 @@ $('#exploit').on('click', function(){
         return false;
     });
 
-$('#whois_show').on('click', function(){
-var x = document.getElementById("whois_results");
-if (x.style.display === "none") {
-    x.style.display = "block";
-  } else {
-    x.style.display = "none";
-  } if(x.innerHTML == ""){
-        $.ajax({
-            url: "/get_whois/{{device.id}}",
-            type: "get",
-            success: function(response) {
-           if (response.length==0) {
-                            noty({text: "No records" , layout: 'topRight', type: 'error', timeout: 1000});
-}
-            else {
-            $.each(response, function(key, val) {
-
-              $.each(val.fields, function(fieldname, field) {
-                 // response is form in html format
-                 if (fieldname!="device"){
-              $("#whois_results").append("<p><b>" + fieldname + ' </b><br> ' + field +"</p>");
-}
-            });
-
-              }
-              )
-            }}
-        })
-        }
-  });
-
 
 var frm = $('#generate-user-form');
     var pgrbar = $('#progress-bar');
 
-function get_task_info(task_id,pgrbar) {
+function get_task_info(task_id, pgrbar, onSuccess, onFailure) {
         $.ajax({
             type: 'get',
             url: '/get-task-info/',
@@ -711,24 +879,41 @@ function get_task_info(task_id,pgrbar) {
             success: function (data) {
                 frm.html('');
                 if (data.state == 'PENDING') {
-                    frm.html('Please wait...');
+                    pgrbar.css('display', 'block');
                 }
                 else if (data.state == 'PROGRESS') {
                     pgrbar.css('display', 'block');
-                    pgrbar.val(data.result.percent);
+                    pgrbar.val(data.result && data.result.percent ? data.result.percent : 0);
                 }
                 else if (data.state == 'SUCCESS') {
-                                    pgrbar.css('display', 'none');
-}
+                    pgrbar.val(100);
+                    pgrbar.css('display', 'none');
+                    if (typeof onSuccess === 'function') {
+                        onSuccess(data);
+                    }
+                    return;
+                }
+                else if (data.state == 'FAILURE') {
+                    pgrbar.css('display', 'none');
+                    if (typeof onFailure === 'function') {
+                        onFailure(data);
+                    }
+                    noty({text: "Scan task failed", layout: 'topRight', type: 'error', timeout: 2000});
+                    return;
+                }
                 if (data.state != 'SUCCESS') {
                     setTimeout(function () {
-                        get_task_info(task_id, pgrbar)
-                    }, 100);
+                        get_task_info(task_id, pgrbar, onSuccess, onFailure)
+                    }, 500);
 
                 }
             },
             error: function (data) {
                 frm.html("Something went wrong!");
+                pgrbar.css('display', 'none');
+                if (typeof onFailure === 'function') {
+                    onFailure(data);
+                }
             }
         });
     }
@@ -761,38 +946,8 @@ if (x.style.display === "none") {
         }
   });
 
-$('#shodan_show').on('click', function(){
-var x = document.getElementById("shodan_results");
-if (x.style.display === "none") {
-    x.style.display = "block";
-  } else {
-    x.style.display = "none";
-  } if(x.innerHTML == ""){
-        $.ajax({
-            url: "/get_shodan_scan_results/{{device.id}}",
-            type: "get",
-            success: function(response) {
-<!--            console.log(fields.ports);-->
-console.log(response);
-            $.each(response, function(key, val) {
-            var ports = val.fields.ports.substring(1, val.fields.ports.length-1)
-            var products = val.fields.products.substring(1, val.fields.products.length-1)
-                        var modules = val.fields.module.substring(1, val.fields.module.length-1)
-
-            var vulns = val.fields.vulns.substring(1, val.fields.vulns.length-1)
-
-            var tags = val.fields.tags.substring(1, val.fields.tags.length-1)
-
-                 // response is form in html format
-             $("#shodan_results").append("<p><b>Ports</b><br>" + ports + ' </p><br><p><b>Products</b><br>' + products + " </p><br><b>Module</b><br>"+' ' + val.fields.module +"</p><br><b>Vulnerabilities</b><br>" + vulns + " </p><br><b>Tags</b><br>"+' ' + tags + "<br>");
-
-              }
-              )
-            }
-        })
-    }
-
-});
+    fetchIntelResults(shodanConfig);
+    fetchIntelResults(whoisConfig);
 
 </script>
 

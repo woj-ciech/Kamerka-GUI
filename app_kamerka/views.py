@@ -20,6 +20,77 @@ from kamerka.tasks import shodan_search, devices_nearby, shodan_scan_task, \
     exploit
 
 
+def _clean_api_value(value):
+    if value is None:
+        return ""
+    if isinstance(value, (list, tuple, set)):
+        return ", ".join(_clean_api_value(item) for item in value if _clean_api_value(item))
+
+    text = str(value).strip()
+    if not text:
+        return ""
+
+    if text[0] in "[({":
+        try:
+            parsed = ast.literal_eval(text)
+        except (ValueError, SyntaxError):
+            return text
+        if isinstance(parsed, (list, tuple, set)):
+            return ", ".join(_clean_api_value(item) for item in parsed if _clean_api_value(item))
+        if isinstance(parsed, dict):
+            return ", ".join(_clean_api_value(key) for key in parsed.keys() if _clean_api_value(key))
+        return _clean_api_value(parsed)
+
+    return text
+
+
+def _clean_api_list(value):
+    if value is None:
+        return []
+    if isinstance(value, (list, tuple, set)):
+        return [_clean_api_value(item) for item in value if _clean_api_value(item)]
+    if isinstance(value, dict):
+        return [_clean_api_value(key) for key in value.keys() if _clean_api_value(key)]
+
+    text = str(value).strip()
+    if not text:
+        return []
+
+    if text[0] in "[({":
+        try:
+            parsed = ast.literal_eval(text)
+        except (ValueError, SyntaxError):
+            parsed = None
+        if parsed is not None:
+            return _clean_api_list(parsed)
+
+    return [item.strip().strip("'\"") for item in text.split(",") if item.strip().strip("'\"")]
+
+
+def _serialize_shodan_scan(scan):
+    return {
+        "ports": _clean_api_list(scan.ports),
+        "products": _clean_api_list(scan.products),
+        "modules": _clean_api_list(scan.module),
+        "vulns": _clean_api_list(scan.vulns),
+        "tags": _clean_api_list(scan.tags),
+    }
+
+
+def _serialize_whois_record(record):
+    return {
+        "name": _clean_api_value(record.name),
+        "org": _clean_api_value(record.org),
+        "street": _clean_api_value(record.street),
+        "city": _clean_api_value(record.city),
+        "netrange": _clean_api_value(record.netrange),
+        "admin_org": _clean_api_value(record.admin_org),
+        "admin_email": _clean_api_value(record.admin_email),
+        "admin_phone": _clean_api_value(record.admin_phone),
+        "email": _clean_api_value(record.email),
+    }
+
+
 # Create your views here.
 
 passwds = {"bosch_security":"""The Bosch Video Recorder 630/650 Series is an 8/16 
@@ -449,6 +520,7 @@ def device(request, id, device_id, ip):
         all_devices.indicator = ast.literal_eval(all_devices.indicator)
     except:
         pass
+    all_devices.vulns_preview = _clean_api_list(all_devices.vulns)[:3]
 
     if all_devices.type in passwds.keys():
         info = passwds[all_devices.type]
@@ -483,13 +555,12 @@ def shodan_scan(request, id):
         shodan_scan2 = ShodanScan.objects.filter(device_id=id)
 
         if shodan_scan2:
-            print('already')
-            return HttpResponse(json.dumps({'Error': "Already in database"}), content_type='application/json')
+            return JsonResponse({'ready': True, 'message': "Already in database"})
 
         shodan_scan_task2 = shodan_scan_task.delay(id=id)
-        return HttpResponse(json.dumps({'task_id': shodan_scan_task2.id}), content_type='application/json')
+        return JsonResponse({'task_id': shodan_scan_task2.id, 'ready': False})
     else:
-        return HttpResponse(json.dumps({'task_id': None}), content_type='application/json')
+        return JsonResponse({'task_id': None, 'ready': False})
 
 
 def get_task_info(request):
@@ -511,19 +582,11 @@ def get_task_info(request):
 def get_shodan_scan_results(request, id):
     if request.is_ajax() and request.method == 'GET':
         shodan_scan2 = ShodanScan.objects.filter(device_id=id)
-
-        print(shodan_scan2)
-
-        # shodan_scan2[0].ports = shodan_scan2[0].ports[:1][:-1]
-        # shodan_scan2[0].tags = shodan_scan2[0].tags[:1][:-1]
-        # shodan_scan2[0].vulns = shodan_scan2[0].vulns[:1][:-1]
-        # shodan_scan2[0].products = shodan_scan2[0].products[:1][:-1]
-
-        print(shodan_scan2[0].ports)
-
-        response_data = serializers.serialize('json', shodan_scan2)
-
-        return HttpResponse(response_data, content_type="application/json")
+        return JsonResponse({
+            'ready': shodan_scan2.exists(),
+            'results': [_serialize_shodan_scan(scan) for scan in shodan_scan2],
+        })
+    return JsonResponse({'ready': False, 'results': []})
 
 
 def get_nearby_devices(request, id):
@@ -564,20 +627,21 @@ def whois(request, id):
         whoiss = Whois.objects.filter(device_id=id)
 
         if whoiss:
-            print('already')
-            return HttpResponse(json.dumps({'Error': "Already in database"}), content_type='application/json')
+            return JsonResponse({'ready': True, 'message': "Already in database"})
 
         wh_task = whoisxml.delay(id=id)
 
-        return HttpResponse(json.dumps({'task_id': wh_task.id}), content_type='application/json')
+        return JsonResponse({'task_id': wh_task.id, 'ready': False})
     else:
-        return HttpResponse(json.dumps({'task_id': None}), content_type='application/json')
+        return JsonResponse({'task_id': None, 'ready': False})
 
 
 def get_whois(request, id):
     if request.is_ajax() and request.method == 'GET':
         whoiss = Whois.objects.filter(device_id=id)
 
-        response_data = serializers.serialize('json', whoiss)
-
-        return HttpResponse(response_data, content_type="application/json")
+        return JsonResponse({
+            'ready': whoiss.exists(),
+            'results': [_serialize_whois_record(record) for record in whoiss],
+        })
+    return JsonResponse({'ready': False, 'results': []})

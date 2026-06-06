@@ -819,7 +819,6 @@ def nmap_host_worker(host_arg, max_reader, search):
             ports_list.append("None")
 
     ports_string = ', '.join(str(e) for e in ports_list)
-    print(ports_string)
     device = Device(search=search, ip=host_arg.address, product="", org="",
                     data="", port=ports_string, type="NMAP", city="NMAP",
                     lat=a['location']['latitude'], lon=a['location']['longitude'],
@@ -858,18 +857,22 @@ def shodan_scan_task(id):
     device = Device.objects.get(id=id)
     api = Shodan(SHODAN_API_KEY)
     product = []
+    module = []
     tags = []
     vulns = []
     try:
         # Search Shodan
         results = api.host(device.ip)
         # Show the results
-        total = len(results['ports'])
-        print(total)
-        for counter, i in enumerate(results['data']):
+        banners = results.get('data', [])
+        total = max(len(banners), 1)
+        for counter, i in enumerate(banners, start=1):
 
             if 'product' in i:
                 product.append(i['product'])
+
+            if '_shodan' in i and 'module' in i['_shodan']:
+                module.append(i['_shodan']['module'])
 
             if 'tags' in i:
                 for j in i['tags']:
@@ -882,9 +885,9 @@ def shodan_scan_task(id):
         if 'vulns' in results:
             vulns = results['vulns']
 
-        ports = results['ports']
+        ports = results.get('ports', [])
         device1 = ShodanScan(device=device, products=product,
-                             ports=ports, tags=tags, vulns=vulns)
+                             ports=ports, tags=tags, module=module, vulns=vulns)
         device1.save()
         print(results['ports'])
 
@@ -892,6 +895,7 @@ def shodan_scan_task(id):
 
     except Exception as e:
         print(e.args)
+        raise
 
 
 ics_scan = {"dnp3": "--script=nmap_scripts/dnp3-info.nse", "niagara": "--script=nmap_scripts/fox-info.nse",
@@ -1013,43 +1017,37 @@ def whoisxml(id):
     end = "https://www.whoisxmlapi.com/whoisserver/WhoisService?apiKey=" + api_key + "&domainName=" + device1.ip + "&outputFormat=json"
 
     req = requests.get(end)
-
     req_json = json.loads(req.content)
 
-    netrange = ""
-    admin_org = ""
-    admin_email = ""
-    admin_phone = ""
-    city = ""
-    email = ""
-    street = ""
-    name = ""
-    org = ""
+    def custom_field(container, name):
+        for index in range(1, 10):
+            if container.get("customField{}Name".format(index)) == name:
+                return container.get("customField{}Value".format(index), "")
+        return ""
 
-    if 'administrativeContact' in req_json['WhoisRecord']['registryData']:
-        admin_email = req_json['WhoisRecord']['registryData']['administrativeContact']['email'],
-        admin_phone = req_json['WhoisRecord']['registryData']['administrativeContact']['telephone'],
-        admin_org = req_json['WhoisRecord']['registryData']['administrativeContact']['organization']
+    record = req_json.get('WhoisRecord', {})
+    registry_data = record.get('registryData', {}) or {}
+    sub_records = record.get('subRecords', []) or []
+    source = registry_data
+    registrant = registry_data.get('registrant') or {}
 
-    if 'registrant' in req_json['WhoisRecord']['registryData']:
-        if "name" in req_json['WhoisRecord']['registryData']['registrant']:
-            name = req_json['WhoisRecord']['registryData']['registrant']['name']
-        if "organization" in req_json['WhoisRecord']['registryData']['registrant']:
-            org = req_json['WhoisRecord']['registryData']['registrant']['organization']
-        if "street1" in req_json['WhoisRecord']['registryData']['registrant']:
-            street = req_json['WhoisRecord']['registryData']['registrant']['street1']
+    if not registrant and sub_records:
+        source = sub_records[0] or {}
+        registrant = source.get('registrant') or {}
 
-        if req_json['WhoisRecord']['registryData']['customField1Name'] == "netRange":
-            netrange = req_json['WhoisRecord']['registryData']['customField1Value']
-        if req_json['WhoisRecord']['registryData']['customField2Name'] == "netRange":
-            netrange = req_json['WhoisRecord']['registryData']['customField2Value']
+    admin_contact = registry_data.get('administrativeContact') or {}
 
-        if 'city' in req_json['WhoisRecord']['registryData']['registrant']:
-            city = req_json['WhoisRecord']['registryData']['registrant']['city']
+    name = registrant.get('name', '')
+    org = registrant.get('organization', '')
+    street = registrant.get('street1', '')
+    city = registrant.get('city', '')
+    email = registrant.get('email', '')
+    netrange = custom_field(registry_data, "netRange") or custom_field(source, "netRange")
+    admin_org = admin_contact.get('organization', '')
+    admin_email = admin_contact.get('email', '')
+    admin_phone = admin_contact.get('telephone', '')
 
-        if 'email' in req_json['WhoisRecord']['registryData']['registrant']:
-            email = req_json['WhoisRecord']['registryData']['registrant']['email']
-
+    if any([name, org, street, city, email, netrange, admin_org, admin_email, admin_phone]):
         wh = Whois(device=device1, org=org,
                    street=street,
                    city=city,
@@ -1059,39 +1057,4 @@ def whoisxml(id):
 
         wh.save()
 
-
-    elif 'subRecords' in req_json['WhoisRecord']:
-        try:
-            if "name" in req_json['WhoisRecord']['subRecords'][0]['registrant']:
-                name = req_json['WhoisRecord']['subRecords'][0]['registrant']['name']
-                if "street1" in req_json['WhoisRecord']['subRecords'][0]['registrant']:
-                    street = req_json['WhoisRecord']['subRecords'][0]['registrant']['street1']
-        except:
-            pass
-
-        try:
-            if req_json['WhoisRecord']['subRecords'][0]['customField1Name'] == "netRange":
-                netrange = req_json['WhoisRecord']['subRecords'][0]['customField1Value']
-            if req_json['WhoisRecord']['subRecords'][0]['customField2Name'] == "netRange":
-                netrange = req_json['WhoisRecord']['subRecords'][0]['customField2Value']
-        except:
-            pass
-
-        try:
-            org = req_json['WhoisRecord']['subRecords'][0]['registrant']['organization']
-            if 'city' in req_json['WhoisRecord']['subRecords'][0]['registrant']:
-                city = req_json['WhoisRecord']['subRecords'][0]['registrant']['city']
-
-            if 'email' in req_json['WhoisRecord']['subRecords'][0]['registrant']:
-                email = req_json['WhoisRecord']['subRecords'][0]['registrant']['email']
-        except:
-            pass
-
-        wh = Whois(device=device1, org=org,
-                   street=street,
-                   city=city,
-                   admin_org=admin_org,
-                   admin_email=admin_email,
-                   admin_phone=admin_phone, netrange=netrange, name=name, email=email)
-
-        wh.save()
+    return {'current': 1, 'total': 1, 'percent': 100}
