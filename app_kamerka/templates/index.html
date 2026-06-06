@@ -86,10 +86,12 @@
                 <!-- START BREADCRUMB -->
                 <ul class="breadcrumb">
 
+                           {% if task_id %}
                            <div class='progress-wrapper'>
                 <div id='progress-bar' class='progress-bar' style="width: 0%;">&nbsp;</div>
                 </div>
                 <div id="progress-bar-message">Starting...</div>
+                           {% endif %}
                 </ul>
                 <!-- END BREADCRUMB -->                       
                 

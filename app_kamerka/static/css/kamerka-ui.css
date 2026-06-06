@@ -291,20 +291,6 @@ a:hover, a:focus {
   position: relative;
 }
 
-/* Thin accent line across the very top */
-.x-navigation.x-navigation-horizontal.x-navigation-panel::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg,
-    var(--km-warm) 0%,
-    var(--km-accent-2) 40%,
-    var(--km-accent) 70%,
-    var(--km-warm) 100%);
-  opacity: 0.65;
-  pointer-events: none;
-}
 
 .x-navigation.x-navigation-horizontal.x-navigation-panel h1 {
   color: var(--km-soft) !important;
@@ -1098,7 +1084,7 @@ table.dataTable td:hover {
 }
 
 #progress-bar-message {
-  color: var(--km-muted);
+  color: var(--km-accent);
   font-family: var(--km-font-mono);
   font-size: 9px;
   letter-spacing: 0.14em;

@@ -128,7 +128,7 @@ ics_queries = {"niagara": "port:1911,4911 product:Niagara",
                "redlion": 'port:789 product:"Red Lion Controls"',
                'codesys': 'product:"3S-Smart Software Solutions"',
                "iec": "port:2404 asdu address",
-               'proconos': "port:20547 PLC",
+               # 'proconos': "port:20547 PLC",
 
                "plantvisor": "Server: CarelDataServer",
                "iologik": "iologik",
@@ -137,7 +137,7 @@ ics_queries = {"niagara": "port:1911,4911 product:Niagara",
                "spidercontrol": "powered by SpiderControl TM",
                "tank": "port:10001 tank",
                "iq3": "Server: IQ3",
-               "is2": "IS2 Web Server",
+               "is2": "'IS2 Web Server' -openresty",
                "vtscada": "Server: VTScada",
                'zworld': "Z-World Rabbit 200 OK",
                "nordex": "html:nordex",
@@ -147,24 +147,24 @@ ics_queries = {"niagara": "port:1911,4911 product:Niagara",
                "axc": "PLC Type: AXC",
                "modicon": "modicon",
                "xp277": "HMI, XP277",
-               "vxworks": "vxworks",
-               "eig": "EIG Embedded Web Server",
+               # "vxworks": "vxworks",
+               # "eig": "EIG Embedded Web Server",
                "digi": "TransPort WR21",
-               "windweb": "server: WindWeb",
-               "moxahttp": "MoxaHttp",
+               # "windweb": "server: WindWeb",
+               "moxahttp": "MoxaHttp -Hipcam -FlowWeb Pragma",
                "lantronix": "lantronix",
                "entelitouch": "Server: DELTA enteliTOUCH",
-               "energyict_rtu": "EnergyICT RTU",
+               # "energyict_rtu": "EnergyICT RTU",
                "crestron": "crestron",
                "saphir": 'Server: "Microsoft-WinCE" "Content-Length: 12581"',
                "ipc@chip": "IPC@CHIP",
                "addup": "addUPI",
                "anybus": '"anybus-s"',
                "windriver": "WindRiver-WebServer",
-               "wago": "wago",
+               "wago": "wago Vendor",
                "niagara_audit": "niagara_audit",
                "niagara_web_server": "Niagara Web Server",
-               "trendnet": "trendnet",
+               # "trendnet": "trendnet",
                "stulz_klimatechnik": "Stulz GmbH Klimatechnik",
                "somfy": "title:Somfy",
                "scalance": "scalance",
@@ -172,10 +172,10 @@ ics_queries = {"niagara": "port:1911,4911 product:Niagara",
                "simatic_s7": "Portal0000",
                "schneider_electric": "Schneider Electric",
                "power_measurement": "Power Measurement Ltd",
-               "power_logic": "title:PowerLogic",
+               "power_logic": "title:'PowerLogic ion'",
                "telemecanique_bxm": "TELEMECANIQUE BMX",
                "schneider_web": "Schneider-WEB",
-               "fujitsu_serverview": "serverview",
+               # "fujitsu_serverview": "serverview",
                "eiportal": "eiPortal",
                "ilon": "i.LON",
                "webvisu": "Webvisu",
@@ -255,7 +255,7 @@ ics_queries = {"niagara": "port:1911,4911 product:Niagara",
                "acadia": "acadia",
                "walchem": "html:walchem",
                "gnss": "'NTRIP' 'SOURCETABLE'",
-               "traccar": "title:traccar",
+               "traccar": "title:traccar 1312",
                "trimble": 'html:"trimble Navigation"',
                "spacelynk": "title:spaceLYnk",
                }
@@ -311,7 +311,7 @@ coordinates_queries = {"videoiq": 'title:"VideoIQ Camera Login"',
                        "redlion": 'port:789 product:"Red Lion Controls"',
                        'codesys': "port:2455 operating system",
                        "iec": "port:2404 asdu address",
-                       'proconos': "port:20547 PLC",
+                       # 'proconos': "port:20547 PLC",
 
                        "plantvisor": "Server: CarelDataServer",
                        "iologik": "iologik",
@@ -320,7 +320,7 @@ coordinates_queries = {"videoiq": 'title:"VideoIQ Camera Login"',
                        "spidercontrol": "powered by SpiderControl TM",
                        "tank": "port:10001 tank",
                        "iq3": "Server: IQ3",
-                       "is2": "IS2 Web Server",
+                       "is2": "'IS2 Web Server' -openresty",
                        "vtscada": "Server: VTScada",
                        'zworld': "Z-World Rabbit",
                        "nordex": "html:nordex",
@@ -328,24 +328,24 @@ coordinates_queries = {"videoiq": 'title:"VideoIQ Camera Login"',
                        "axc": "PLC Type: AXC",
                        "modicon": "modicon",
                        "xp277": "HMI, XP277",
-                       "vxworks": "vxworks",
-                       "eig": "EIG Embedded Web Server",
+                       # "vxworks": "vxworks",
+                       # "eig": "EIG Embedded Web Server",
                        "digi": "TransPort WR21",
-                       "windweb": "server: WindWeb",
-                       "moxahttp": "MoxaHttp",
+                       # "windweb": "server: WindWeb",
+                       "moxahttp": "MoxaHttp MoxaHttp -Hipcam -FlowWeb Pragma",
                        "lantronix": "lantronix",
                        "entelitouch": "Server: DELTA enteliTOUCH",
-                       "energyict_rtu": "EnergyICT RTU",
+                       # "energyict_rtu": "EnergyICT RTU",
                        "crestron": "crestron",
                        "wince": 'Server: "Microsoft-WinCE"',
                        "ipc@chip": "IPC@CHIP",
                        "addup": "addUPI",
                        "anybus": '"anybus-s"',
                        "windriver": "WindRiver-WebServer",
-                       "wago": "wago",
+                       "wago": "wago Vendor",
                        "niagara_audit": "niagara_audit",
                        "niagara_web_server": "Niagara Web Server",
-                       "trendnet": "trendnet",
+                       # "trendnet": "trendnet",
                        "stulz_klimatechnik": "Stulz GmbH Klimatechnik",
                        "somfy": "title:Somfy",
                        "scalance": "scalance",
@@ -353,10 +353,10 @@ coordinates_queries = {"videoiq": 'title:"VideoIQ Camera Login"',
                        "simatic_s7": "Portal0000",
                        "schneider_electric": "Schneider Electric",
                        "power_measurement": "Power Measurement Ltd",
-                       "power_logic": "title:PowerLogic",
+                       "power_logic": "title:'PowerLogic ion'",
                        "telemecanique_bxm": "TELEMECANIQUE BMX",
                        "schneider_web": "Schneider-WEB",
-                       "fujitsu_serverview": "serverview",
+                       # "fujitsu_serverview": "serverview",
                        "eiportal": "eiPortal",
                        "ilon": "i.LON",
                        "Webvisu": "Webvisu",
@@ -436,7 +436,7 @@ coordinates_queries = {"videoiq": 'title:"VideoIQ Camera Login"',
                        "acadia": "acadia",
                        "walchem": "html:walchem",
                        "GNSS": "NTRIP" "SOURCETABLE",
-                       "traccar": "title:traccar",
+                       "traccar": "title:traccar 1312",
                        "trimble": 'html:"trimble Navigation"',
                        "spacelynk": "title:spaceLYnk",
                        }
@@ -640,6 +640,10 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
             lon = str(result['location']['longitude'])
             city = ""
             indicator = []
+            skip = False
+
+            if 'honeypot' in result.get('tags', []):
+                skip = True
 
             try:
                 product = result['product']
@@ -720,13 +724,16 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
                 except:
                     pass
 
-            # get indicator from tank
+            # get indicator from tank; skip Gaspot honeypots
             if result['port'] == 10001 and "Siemens" not in query:
-                try:
-                    tank_info = result['data'].split("\r\n\r\n")
-                    indicator.append(tank_info[1])
-                except:
-                    pass
+                if "Gaspot" in result['data']:
+                    skip = True
+                else:
+                    try:
+                        tank_info = result['data'].split("\r\n\r\n")
+                        indicator.append(tank_info[1])
+                    except:
+                        pass
 
             if result['port'] == 2000:
                 try:
@@ -785,12 +792,13 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
                 except:
                     pass
 
-            device = Device(search=search, ip=result['ip_str'], product=product, org=result['org'],
-                            data=result['data'], port=str(result['port']), type=search_type, city=city,
-                            lat=lat, lon=lon,
-                            country_code=result['location']['country_code'], query=search_type, category=category,
-                            vulns=vulns, indicator=indicator, hostnames=hostnames, screenshot=screenshot)
-            device.save()
+            if not skip:
+                device = Device(search=search, ip=result['ip_str'], product=product, org=result['org'],
+                                data=result['data'], port=str(result['port']), type=search_type, city=city,
+                                lat=lat, lon=lon,
+                                country_code=result['location']['country_code'], query=search_type, category=category,
+                                vulns=vulns, indicator=indicator, hostnames=hostnames, screenshot=screenshot)
+                device.save()
 
         page = page + 1
         if not all_results and page > max_pages:

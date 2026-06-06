@@ -115,8 +115,12 @@
                                             {% for device in devices %}
                                                 <tr {% if device.located %}class="device-located-row"{% endif %} data-ip-count="{{ device.ip_count }}">
 
-                                                <td>                                     <a href="{% url 'device' id=device.search_id ip=device.ip device_id=device.id %}">
-                                                        {{ device.ip }}</a></td>
+                                                <td>
+                                                    <a href="{% url 'device' id=device.search_id ip=device.ip device_id=device.id %}">{{ device.ip }}</a>
+                                                    <a href="https://www.shodan.io/host/{{ device.ip|urlencode }}" target="_blank" rel="noopener noreferrer" title="View on Shodan" style="margin-left:6px;opacity:0.5;font-size:10px;">
+                                                        <i class="fa fa-external-link"></i>
+                                                    </a>
+                                                </td>
                                                     <td>{{ device.type }}</td>
                                                     <td>{%if device.type == "NMAP" %} {{device.port}} {% else %} {{ device.product }}{% endif %}</td>
                                                     <td>{{ device.port }}</td>

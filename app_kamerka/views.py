@@ -263,6 +263,11 @@ def index(request):
     healthcare_len = Device.objects.filter(category="healthcare")
     search_all = Search.objects.all()
     task = request.session.get('task_id')
+    if task:
+        task_result = AsyncResult(task)
+        if task_result.state in ('SUCCESS', 'FAILURE', 'REVOKED'):
+            del request.session['task_id']
+            task = None
     ports = Device.objects.values('port').annotate(c=Count('port')).order_by('-c')[:7]
     ports_list = list(ports)
     products = Device.objects.exclude(product__exact='').values('product').annotate(c=Count('product')).order_by('-c')[:10]
