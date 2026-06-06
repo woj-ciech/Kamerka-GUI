@@ -577,7 +577,7 @@ def check_credits():
 
         api = Shodan(SHODAN_API_KEY)
         a = api.info()
-        keys_list.append(a['query_credits'])
+        keys_list.append(a['scan_credits'])
     except Exception as e:
         print(e)
 
