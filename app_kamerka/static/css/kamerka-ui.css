@@ -236,22 +236,14 @@ body:not(.body-full-height) .row {
 
 /* Profile / logo image slot */
 .x-navigation > li.xn-profile {
-  background:
-    radial-gradient(circle at 50% 12%, rgba(0, 212, 240, 0.07), transparent 44%),
-    linear-gradient(180deg, rgba(255, 0, 205, 0.035), rgba(3, 10, 19, 0.14));
-  border-bottom: 1px solid rgba(0, 212, 240, 0.16);
+  background: transparent;
+  border-bottom: 0;
   padding: 18px 12px 20px;
   position: relative;
 }
 
 .x-navigation > li.xn-profile::before {
-  content: '';
-  position: absolute;
-  inset: 10px 18px auto;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(0, 212, 240, 0.34), rgba(255, 0, 205, 0.22), transparent);
-  box-shadow: 0 0 12px rgba(0, 212, 240, 0.14);
-  pointer-events: none;
+  display: none;
 }
 
 .x-navigation > li.xn-profile .profile {
@@ -266,6 +258,8 @@ body:not(.body-full-height) .row {
 }
 
 .x-navigation > li.xn-profile .profile-data {
+  background: transparent;
+  box-shadow: none;
   text-align: center;
 }
 
@@ -273,11 +267,8 @@ body:not(.body-full-height) .row {
   background: transparent;
   border: 0;
   border-radius: 0;
-  box-shadow:
-    0 0 14px rgba(0, 212, 240, 0.13),
-    0 0 28px rgba(255, 0, 205, 0.055),
-    0 10px 20px rgba(0, 0, 0, 0.62);
-  filter: brightness(0.98) contrast(1.08) saturate(0.92) drop-shadow(0 0 7px rgba(0, 212, 240, 0.12));
+  box-shadow: none;
+  filter: none;
   height: auto;
   max-width: 168px;
   opacity: 1;
@@ -286,11 +277,8 @@ body:not(.body-full-height) .row {
 }
 
 .x-navigation > li.xn-profile:hover img {
-  box-shadow:
-    0 0 20px rgba(0, 212, 240, 0.20),
-    0 0 34px rgba(255, 0, 205, 0.085),
-    0 8px 24px rgba(0, 0, 0, 0.68);
-  filter: brightness(1.04) contrast(1.1) saturate(0.98) drop-shadow(0 0 9px rgba(0, 212, 240, 0.18));
+  box-shadow: none;
+  filter: none;
   transform: translateY(-1px);
 }
 
@@ -655,11 +643,100 @@ body:not(.body-full-height) .row {
 
 .intel-screenshot {
   border: 1px solid var(--km-border-strong);
+  cursor: zoom-in;
   display: block;
   height: 100%;
   min-height: 220px;
   object-fit: cover;
+  transition: border-color 0.16s ease, filter 0.16s ease, transform 0.16s ease;
   width: 100%;
+}
+
+.intel-screenshot:hover,
+.intel-screenshot:focus {
+  border-color: var(--km-accent);
+  filter: brightness(1.08) contrast(1.04);
+  outline: none;
+  transform: scale(1.01);
+}
+
+.screenshot-modal {
+  text-align: center;
+}
+
+.screenshot-modal::before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+}
+
+.screenshot-modal-dialog {
+  display: inline-block;
+  margin: 0 auto;
+  max-width: min(1180px, 92vw);
+  text-align: left;
+  vertical-align: middle;
+  width: auto;
+}
+
+.screenshot-modal-content {
+  background:
+    radial-gradient(circle at 92% 0, rgba(0, 212, 240, 0.10), transparent 32%),
+    rgba(4, 10, 20, 0.96);
+  border: 1px solid var(--km-border-strong);
+  border-radius: var(--km-radius);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.78), 0 0 34px rgba(0, 212, 240, 0.18);
+}
+
+.screenshot-modal-header {
+  background:
+    linear-gradient(90deg, rgba(255, 0, 205, 0.10), transparent 34%),
+    rgba(7, 16, 30, 0.98) !important;
+  border-bottom: 1px solid var(--km-border) !important;
+  border-radius: var(--km-radius) var(--km-radius) 0 0;
+  min-height: 46px;
+  padding: 10px 16px;
+}
+
+.screenshot-modal-header .modal-title {
+  color: var(--km-accent-2);
+  font-family: var(--km-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  line-height: 24px;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.screenshot-modal-close {
+  color: var(--km-accent-2);
+  line-height: 24px;
+  margin: 0 !important;
+  opacity: 0.85;
+  text-shadow: none;
+}
+
+.screenshot-modal-close:hover,
+.screenshot-modal-close:focus {
+  color: #ffffff;
+  opacity: 1;
+}
+
+.screenshot-modal-body {
+  background: rgba(4, 10, 20, 0.96);
+  display: flex;
+  justify-content: center;
+  padding: 14px;
+}
+
+.screenshot-modal-image {
+  border: 1px solid var(--km-border-strong);
+  display: block;
+  max-height: 82vh;
+  max-width: 90vw;
+  object-fit: contain;
+  width: auto;
 }
 
 .device-page .page-content .page-content-wrap {
@@ -1255,10 +1332,6 @@ body:not(.body-full-height) .row {
   flex: 1 1 0;
   min-height: 0;
   overflow: hidden;
-}
-
-#res-ports {
-  overflow-y: auto;
 }
 
 /* ─── DATATABLES ────────────────────────────────────────── */

@@ -62,7 +62,7 @@
                                             {% for search in history %}
                                             <tr>
                                                 <td><a href="{% url 'results' id=search.id %}">{% if search.country_display %}{{ search.country_display }}{% else %}{{ search.country }}{% endif %} {{ search.coordinates }}</a></td>
-                                                <td>{% for i in search.ics %} {{ i }} {% endfor %} {% for i in search.coordinates_search %} {{ i }} {% endfor %}</td>
+                                                <td>{% for i in search.devices_display %} {{ i }} {% endfor %}</td>
                                             </tr>
                                             {% endfor %}
                                         </tbody>

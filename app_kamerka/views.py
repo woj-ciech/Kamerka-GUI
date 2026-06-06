@@ -107,6 +107,19 @@ def _country_display_name(value):
     return ", ".join(countries)
 
 
+def _unique_display_list(*values):
+    items = []
+    seen = set()
+    for value in values:
+        for item in _clean_api_list(value):
+            key = item.lower()
+            if key in seen:
+                continue
+            seen.add(key)
+            items.append(item)
+    return items
+
+
 # Create your views here.
 
 passwds = {"bosch_security":"""The Bosch Video Recorder 630/650 Series is an 8/16 
@@ -500,6 +513,7 @@ def history(request):
 
     for i in all_searches:
         i.country_display = _country_display_name(i.country)
+        i.devices_display = _unique_display_list(i.ics, i.coordinates_search)
 
         try:
             i.coordinates_search = ast.literal_eval(i.coordinates_search)

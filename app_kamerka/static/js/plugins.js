@@ -151,7 +151,12 @@ $(function() {
         //Datatables
         var uiDatatable = function(){
             if($(".datatable").length > 0){
-                $(".datatable").dataTable({ autoWidth: false });
+                var datatableOptions = { autoWidth: false };
+                if($(".page-container.results-page").length > 0){
+                    datatableOptions.iDisplayLength = 15;
+                    datatableOptions.aLengthMenu = [[15, 25, 50, 100], [15, 25, 50, 100]];
+                }
+                $(".datatable").dataTable(datatableOptions);
                 $(".datatable").on('page.dt',function () {
                     onresize(100);
                 });

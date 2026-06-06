@@ -213,7 +213,7 @@
                 </div>
                 <div class="panel-body padding-0 intel-panel-body">
                     <div class="intel-result-card screenshot-card">
-                        <img class="intel-screenshot" src="data:image/jpeg;base64,{{ device.screenshot }}" alt="Device screenshot">
+                        <img class="intel-screenshot" src="data:image/jpeg;base64,{{ device.screenshot }}" alt="Device screenshot" data-toggle="modal" data-target="#screenshot-modal" role="button" tabindex="0">
                     </div>
                 </div>
             </div>
@@ -387,10 +387,25 @@
             </div>
 </div>
             </div>
+	        </div>
+
+	                            <!-- START DATATABLE EXPORT -->
+
+{% if device.screenshot %}
+<div class="modal fade screenshot-modal" id="screenshot-modal" tabindex="-1" role="dialog" aria-labelledby="screenshot-modal-title" aria-hidden="true">
+    <div class="modal-dialog screenshot-modal-dialog" role="document">
+        <div class="modal-content screenshot-modal-content">
+            <div class="modal-header screenshot-modal-header">
+                <button type="button" class="close screenshot-modal-close" data-dismiss="modal" aria-label="Close">&times;</button>
+                <h4 class="modal-title" id="screenshot-modal-title">Screenshot</h4>
+            </div>
+            <div class="modal-body screenshot-modal-body">
+                <img class="screenshot-modal-image" src="data:image/jpeg;base64,{{ device.screenshot }}" alt="Device screenshot enlarged">
+            </div>
         </div>
-
-                            <!-- START DATATABLE EXPORT -->
-
+    </div>
+</div>
+{% endif %}
 
 <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_key }}&callback=myMap&libraries=places"></script>
 
