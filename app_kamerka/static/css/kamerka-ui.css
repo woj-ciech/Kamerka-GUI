@@ -104,7 +104,6 @@ a:hover, a:focus {
     linear-gradient(90deg, rgba(255, 0, 205, 0.20), transparent 34%),
     linear-gradient(135deg, rgba(0, 212, 240, 0.18), rgba(3, 10, 19, 0.96) 48%, rgba(3, 10, 19, 1));
   border-bottom: 1px solid rgba(0, 212, 240, 0.34);
-  border-left: 4px solid var(--km-warm);
   box-shadow:
     inset 0 -1px 0 rgba(255, 255, 255, 0.04),
     0 0 28px rgba(0, 212, 240, 0.12);
@@ -337,7 +336,6 @@ a:hover, a:focus {
 .panel {
   background: var(--km-surface);
   border: 1px solid var(--km-border);
-  border-left: 2px solid var(--km-border-strong);
   border-radius: var(--km-radius);
   box-shadow: var(--km-shadow);
   color: var(--km-text);
@@ -399,7 +397,6 @@ a:hover, a:focus {
 
 .panel.panel-default {
   border-color: var(--km-border);
-  border-left-color: var(--km-border-strong);
 }
 
 .panel .panel-heading,
@@ -566,7 +563,6 @@ a:hover, a:focus {
 .widget {
   background: var(--km-surface);
   border: 1px solid var(--km-border);
-  border-left: 2px solid var(--km-border-strong);
   border-radius: var(--km-radius);
   box-shadow: var(--km-shadow);
   min-height: 108px;
@@ -694,7 +690,6 @@ a:hover, a:focus {
 
 /* ── Warm (magenta) tile variant ── */
 .widget.km-tile-warm {
-  border-left-color: var(--km-warm);
 }
 
 .widget.km-tile-warm .km-tile-icon {
@@ -1116,7 +1111,6 @@ table.dataTable td:hover {
 pre {
   background: #04091a;
   border: 1px solid var(--km-border);
-  border-left: 2px solid var(--km-accent);
   border-radius: var(--km-radius);
   color: var(--km-text);
   font-family: var(--km-font-mono);
@@ -1250,10 +1244,6 @@ textarea:focus,
   box-shadow: 0 0 10px rgba(255, 0, 205, 0.35) !important;
 }
 
-/* Pre / code block left border in warm */
-pre {
-  border-left-color: var(--km-warm) !important;
-}
 
 /* Scrollbar track — magenta thumb */
 ::-webkit-scrollbar { width: 4px; height: 4px; }

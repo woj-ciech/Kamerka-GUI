@@ -17,6 +17,28 @@
         <link rel="stylesheet" type="text/css" id="theme" href="{% static 'css/theme-default.css' %}"/>
         <link rel="stylesheet" type="text/css" href="{% static 'css/kamerka-ui.css' %}"/>
         <!-- EOF CSS INCLUDE -->
+        <style>
+            /* Shrink Google Maps InfoWindow close button */
+            .gm-ui-hover-effect {
+                width: 20px !important;
+                height: 20px !important;
+                top: 2px !important;
+                right: 2px !important;
+            }
+            .gm-ui-hover-effect span {
+                width: 14px !important;
+                height: 14px !important;
+                margin: 3px !important;
+            }
+            /* Tighten InfoWindow padding */
+            .gm-style-iw-c {
+                padding: 8px 12px !important;
+            }
+            .gm-style-iw-d {
+                overflow: hidden !important;
+                padding-right: 0 !important;
+            }
+        </style>
     </head>
     <body>
         <!-- START PAGE CONTAINER -->
