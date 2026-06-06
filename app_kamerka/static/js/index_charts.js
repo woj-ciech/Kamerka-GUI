@@ -43,7 +43,7 @@ function drawcharts(ics_len, coordinates_len, healthcare_len, ports, countries, 
         svg.selectAll('.tk').data(ports).enter().append('rect').attr({
             y: function (d) { return y(d.port); }, x: 0,
             height: y.rangeBand(), width: w,
-            fill: 'rgba(13,74,135,0.12)', rx: 1
+            fill: 'rgba(0,212,240,0.06)', rx: 1
         });
 
         /* bar */
@@ -51,7 +51,7 @@ function drawcharts(ics_len, coordinates_len, healthcare_len, ports, countries, 
             y: function (d) { return y(d.port); }, x: 0,
             height: y.rangeBand(),
             width: function (d) { return Math.max(2, x(d.c)); },
-            fill: T.bar, rx: 1
+            fill: T.accent, rx: 1
         });
 
         /* count */
