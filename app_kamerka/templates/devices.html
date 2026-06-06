@@ -11,8 +11,11 @@
         <!-- END META SECTION -->
 
         <!-- CSS INCLUDE -->
-
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" type="text/css" id="theme" href="{% static 'css/theme-default.css' %}"/>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/kamerka-ui.css' %}"/>
         <!-- EOF CSS INCLUDE -->
     </head>
     <body>
@@ -57,11 +60,8 @@
                         <a href="/gallery"><span class="fa fa-camera"></span> <span class="xn-text">Gallery</span></a>
                     </li>
 
-                    <li class="xn-title">Components</li>
-
-                    <li>
-                        <a href="sources"><span class="fa fa-book"></span> <span class="xn-text">Useful links</span></a>
-                    </li>
+                    <li class="xn-title">Other</li>
+                    <li><a href="sources"><span class="fa fa-book"></span> <span class="xn-text">Useful links</span></a></li>
 
 
                 </ul>
@@ -72,19 +72,9 @@
             <!-- PAGE CONTENT -->
             <div class="page-content">
 
-                <!-- START X-NAVIGATION VERTICAL -->
                 <ul class="x-navigation x-navigation-horizontal x-navigation-panel">
-                    <!-- TOGGLE NAVIGATION -->
-
-
-                    <!-- END TASKS -->
+                    <h1 style="display:inline-block;">Devices</h1>
                 </ul>
-                <!-- START BREADCRUMB -->
-<ul class="breadcrumb">
-
-
-                </ul>
-                <!-- END BREADCRUMB -->
 
                 <!-- PAGE CONTENT WRAPPER -->
                 <div class="page-content-wrap">
@@ -94,10 +84,13 @@
                         <div class="col-md-12">
 
                                             <div class="panel panel-default">
-                                <div class="panel-heading">
+                                <div class="panel-heading km-panel-heading-flex">
                                     <h3 class="panel-title">Devices</h3>
-
-
+                                    <label class="km-filter-toggle" title="Hide IPs seen more than 3 times in the database">
+                                        <input type="checkbox" id="ip-uniqueness-filter">
+                                        <span class="km-toggle-track"><span class="km-toggle-thumb"></span></span>
+                                        <span class="km-toggle-label">Filter Honeypots</span>
+                                    </label>
                                 </div>
                                 <div class="panel-body">
                                     <table id="customers2" class="table datatable">
@@ -108,9 +101,9 @@
                                                     <th>{% if device.nmap %} Ports {% else %} Product {% endif %}</th>
                                                     <th>Port</th>
                                                     <th>City</th>
-                                                    <th>Latitude</th>
-                                                    <th>Longitude</th>
-                                                    <th>CVE</th>
+<!--                                                    <th>Latitude</th>-->
+<!--                                                    <th>Longitude</th>-->
+<!--                                                    <th>CVE</th>-->
                                                     <th>Indicator</th>
                                                 <th>Located</th>
                                                 <th>Exploited</th>
@@ -120,11 +113,7 @@
                                         <tbody>
 
                                             {% for device in devices %}
-                                            {% if device.located %}
-                                                <tr style="background:#1caf9a">
-                                                    {% else %}
-                                                    <tr>
-                                                {% endif %}
+                                                <tr {% if device.located %}class="device-located-row"{% endif %} data-ip-count="{{ device.ip_count }}">
 
                                                 <td>                                     <a href="{% url 'device' id=device.search_id ip=device.ip device_id=device.id %}">
                                                         {{ device.ip }}</a></td>
@@ -132,9 +121,9 @@
                                                     <td>{%if device.type == "NMAP" %} {{device.port}} {% else %} {{ device.product }}{% endif %}</td>
                                                     <td>{{ device.port }}</td>
                                                     <td>{{ device.city }}</td>
-                                                    <td>{{ device.lat }}</td>
-                                                    <td>{{ device.lon }}</td>
-                                                    <td>{{ device.vulns }}</td>
+<!--                                                    <td>{{ device.lat }}</td>-->
+<!--                                                    <td>{{ device.lon }}</td>-->
+<!--                                                    <td>{{ device.vulns }}</td>-->
                                                     <td>{% for a in device.indicator %}{{ a }} {% endfor %}</td>
                                                     <td>{{ device.located }}</td>
                                                    {% if device.exploited_scanned %}
@@ -158,15 +147,13 @@
 
 
                                     </table>
-</div>
-
-
-</div>
-
-</div>
-                <!-- END PAGE CONTENT WRAPPER -->
-            <!-- END PAGE CONTENT -->
-            <!-- END PAGE CONTAINER -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
 
@@ -198,11 +185,24 @@
 
         <!-- END TEMPLATE -->
     <!-- END SCRIPTS -->
+
+    <script>
+    (function() {
+        $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+            if (!$('#ip-uniqueness-filter').is(':checked')) return true;
+            var node = settings.aoData[dataIndex] && settings.aoData[dataIndex].nTr;
+            if (!node) return true;
+            return parseInt($(node).data('ip-count') || 0) <= 3;
+        });
+        $('#ip-uniqueness-filter').on('change', function() {
+            $('.datatable').DataTable().draw();
+        });
+    })();
+    </script>
     </body>
 </html>
 
 {% endblock %}
-
 
 
 

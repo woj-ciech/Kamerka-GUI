@@ -150,8 +150,8 @@ $(function() {
 
         //Datatables
         var uiDatatable = function(){
-            if($(".datatable").length > 0){                
-                $(".datatable").dataTable();
+            if($(".datatable").length > 0){
+                $(".datatable").dataTable({ autoWidth: false });
                 $(".datatable").on('page.dt',function () {
                     onresize(100);
                 });

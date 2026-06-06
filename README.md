@@ -4,7 +4,7 @@
 
 <p align="center"><img src="https://www.offensiveosint.io/content/images/2020/07/OffensiveOsint-logo-RGB-2.png" alt="logo" width="200"/></p>
 
-### Powered by Shodan - Supported by Binary Edge & WhoisXMLAPI
+### Powered by Shodan - Supported by WhoisXMLAPI
 
 ## NSA and CISA Recommend Immediate Actions to Reduce Exposure Across Operational Technologies and Control Systems
 
@@ -21,7 +21,7 @@ https://us-cert.cisa.gov/ncas/alerts/aa20-205a
 ## Usage
 
 #### 1. Scan for Internet facing Industrial Control Systems, Medical and Internet of Things devices based on country or coordinates.
-#### 2. Gather passive intelligence from WHOISXML, BinaryEdge and Shodan or active by scanning target directly.
+#### 2. Gather passive intelligence from WHOISXML and Shodan or active by scanning target directly.
 #### 3. Thanks to indicators from devices and google maps, pinpoit device to specific place or facility (hospital, wastewater treatment plant, gas station, university, etc.)
 #### 4. (Optional, not recommended) 4. Guess/Bruteforce or use default password to gain access to the device. Some exploits are implemented for couple specific IoTs.
 #### 5. Report devices in critical infrastructure to your local CERT.
@@ -60,11 +60,9 @@ https://www.icscybersecurityconference.com/intelligence-gathering-on-u-s-critica
 - celery
 - redis
 - Shodan paid account
-- BinaryEdge (Optional)
 - WHOISXMLAPI (Optional)
 - Flickr (Optional)
 - Google Maps API
-- Pastebin PRO (Optional)
 - xmltodict
 - python-libnmap
 
@@ -98,7 +96,6 @@ And server should be available on ```http://localhost:8000/```
  ![](screens/search1.png)
 
 - "All results" checkbox means get all results from Shodan, if it's turned off - only first page (100) results will be downloaded.
-- "Own database" checkbox does not work but shows that is possible to integrate your own geolocation database.
 
 ### Search for Internet of things in specific coordinates
 Type your coordinates in format "lat,lon", hardcoded radius is 20km.

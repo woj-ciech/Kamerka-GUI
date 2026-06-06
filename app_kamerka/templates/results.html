@@ -11,10 +11,12 @@
         <!-- END META SECTION -->
 
         <!-- CSS INCLUDE -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
         <script src="{% static 'js/d3.js' %}"></script>
-        <script src="{% static 'js/d3.layout.cloud.js' %}" charset="UTF-8"></script>
-        <script src="{% static 'js/d3.wordcloud.js' %}" charset="UTF-8"></script>
         <link rel="stylesheet" type="text/css" id="theme" href="{% static 'css/theme-default.css' %}"/>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/kamerka-ui.css' %}"/>
         <!-- EOF CSS INCLUDE -->
     </head>
     <body>
@@ -59,11 +61,8 @@
                         <a href="/gallery"><span class="fa fa-camera"></span> <span class="xn-text">Gallery</span></a>
                     </li>
 
-                    <li class="xn-title">Components</li>
-
-                    <li>
-                        <a href="/sources"><span class="fa fa-book"></span> <span class="xn-text">Useful links</span></a>
-                    </li>
+                    <li class="xn-title">Other</li>
+                    <li><a href="/sources"><span class="fa fa-book"></span> <span class="xn-text">Useful links</span></a></li>
 
 
                 </ul>
@@ -74,30 +73,9 @@
             <!-- PAGE CONTENT -->
             <div class="page-content" style="height: 100%">
 
-                <!-- START X-NAVIGATION VERTICAL -->
                 <ul class="x-navigation x-navigation-horizontal x-navigation-panel">
-                    <!-- TOGGLE NAVIGATION -->
-
-                    <!-- END TOGGLE NAVIGATION -->
-                    <!-- SEARCH -->
-
-                    <!-- END SEARCH -->
-                    <!-- SIGN OUT -->
-
-                    <!-- END SIGN OUT -->
-                    <!-- MESSAGES -->
-
-                    <!-- END MESSAGES -->
-                    <!-- TASKS -->
-
-                    <!-- END TASKS -->
+                    <h1 style="display:inline-block;">Results</h1>
                 </ul>
-                <!-- START BREADCRUMB -->
-<ul class="breadcrumb">
-
-
-                </ul>
-                <!-- END BREADCRUMB -->
 
                 <!-- PAGE CONTENT WRAPPER -->
 
@@ -120,7 +98,7 @@
                                     <h3 class="panel-title">Google World Map</h3>
                                 </div>
                                 <div class="panel-body panel-body-map">
-                                    <div id="google_world_map" style="width: 100%; height: 700px;"></div>
+                                    <div id="google_world_map" style="width: 100%; height: calc(100vh - 195px); min-height: 500px;"></div>
 
 
                                 </div>
@@ -130,10 +108,13 @@
 
                                     <div class="tab-pane" id="tab9">
               <div class="panel panel-default">
-                                <div class="panel-heading">
+                                <div class="panel-heading km-panel-heading-flex">
                                     <h3 class="panel-title">Devices</h3>
-
-
+                                    <label class="km-filter-toggle" title="Hide IPs seen more than 3 times in the database">
+                                        <input type="checkbox" id="ip-uniqueness-filter">
+                                        <span class="km-toggle-track"><span class="km-toggle-thumb"></span></span>
+                                        <span class="km-toggle-label">Filter Honeypots</span>
+                                    </label>
                                 </div>
                                 <div class="panel-body">
                                         <table id="customers2" class="table datatable">
@@ -144,9 +125,9 @@
                                                     <th>{% if device.nmap %} Ports {% else %} Product {% endif %}</th>
                                                     <th>Port</th>
                                                     <th>City</th>
-                                                    <th>Latitude</th>
-                                                    <th>Longitude</th>
-                                                    <th>CVE</th>
+<!--                                                    <th>Latitude</th>-->
+<!--                                                    <th>Longitude</th>-->
+<!--                                                    <th>CVE</th>-->
                                                     <th>Indicator</th>
                                                 <th>Located</th>
                                                     <th>Exploited</th>
@@ -154,24 +135,24 @@
 
                                                 </tr>
                                             </thead>
-                                            <tbody style="color: #0064d7;">
+                                            <tbody>
 
                                                 {% for device in search %}
-                                                {% if device.located or device.exploited_scanned %}
-                                                <tr style="background:#ff00cd">
-                                                    {% else %}
-                                                    <tr>
-                                                {% endif %}
+                                                <tr {% if device.located or device.exploited_scanned %}class="device-attention-row"{% endif %} data-ip-count="{{ device.ip_count }}">
 
-                                                    <td>                                     <a href="{% url 'device' id=device.search_id ip=device.ip device_id=device.id %}">
-                                                        {{ device.ip }}</a></td>
+                                                    <td>
+                                                        <a href="{% url 'device' id=device.search_id ip=device.ip device_id=device.id %}">{{ device.ip }}</a>
+                                                        <a href="https://shodan.io/host/{{ device.ip|urlencode }}" target="_blank" rel="noopener noreferrer" title="Search on Shodan" style="margin-left:5px;opacity:0.55;">
+                                                            <i class="fa fa-search" style="font-size:11px;"></i>
+                                                        </a>
+                                                    </td>
                                                     <td>{{ device.type }}</td>
                                                     <td>{%if device.type == "NMAP" %} {{device.port}} {% else %} {{ device.product }}{% endif %}</td>
                                                     <td>{{ device.port }}</td>
                                                     <td>{{ device.city }}</td>
-                                                    <td>{{ device.lat }}</td>
-                                                    <td>{{ device.lon }}</td>
-                                                    <td>{{ device.vulns|slice:"1:-1" }}</td>
+<!--                                                    <td>{{ device.lat }}</td>-->
+<!--                                                    <td>{{ device.lon }}</td>-->
+<!--                                                    <td>{{ device.vulns|slice:"1:-1" }}</td>-->
                                                     <td>{% for a in device.indicator %}{{ a }} {% endfor %}</td>
                                                     <td>{{ device.located }}</td>
                                                    <td>{{ device.exploited_scanned }}</td>
@@ -195,104 +176,61 @@
                                     </div>
 
                                     <div class="tab-pane" id="tab10">
-
-                                    <!-- START DONUT CHART -->
-
-
-                <!-- END PAGE TITLE -->
-
-                <!-- PAGE CONTENT WRAPPER -->
-                <div class="page-content-wrap">
-
-                                                <div class="col-md-6">
-
-                            <!-- START DONUT CHART -->
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">Ports</h3>
-                                </div>
-                                <div class="panel-body">
-                                    <div id="morris-horizontal" style="height: 300px;"></div>
-                                </div>
-                            </div>
-                            <!-- END DONUT CHART -->
-
-                        </div>
+                                        <div class="row">
                                             <div class="col-md-6">
-
-                            <!-- START DONUT CHART -->
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">Vulnerabilities</h3>
-                                </div>
-                                <div class="panel-body">
-                                    <div id="wordcloud" style="height: 300px;"></div>
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <div class="panel-title-box"><h3>Ports</h3></div>
+                                                    </div>
+                                                    <div class="panel-body padding-0">
+                                                        <div id="res-ports" style="min-height:40px;"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <div class="panel-title-box"><h3>Products</h3></div>
+                                                    </div>
+                                                    <div class="panel-body padding-0">
+                                                        <div id="res-products" style="min-height:40px;"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <div class="panel-title-box"><h3>Cities</h3></div>
+                                                    </div>
+                                                    <div class="panel-body padding-0">
+                                                        <div id="res-cities" style="min-height:40px;"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <div class="panel-title-box"><h3>Device Types</h3></div>
+                                                    </div>
+                                                    <div class="panel-body padding-0">
+                                                        <div id="res-devices" style="min-height:40px;"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <!-- END DONUT CHART -->
-
-                        </div>
-
-
-                    <div class="row">
-                        <div class="col-md-6">
-
-                            <!-- START BAR CHART -->
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">Cities</h3>
-                                </div>
-                                <div class="panel-body">
-                                    <div id="morris-bar-example" style="height: 300px; "></div>
-                                </div>
-                            </div>
-                            <!-- END BAR CHART -->
-
-                        </div>
-                        <div class="col-md-6">
-
-                            <!-- START DONUT CHART -->
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">Devices</h3>
-                                </div>
-                                <div class="panel-body">
-                                    <div id="morris-donut-example" style="height: 300px;"></div>
-                                </div>
-                            </div>
-                            <!-- END DONUT CHART -->
-
                         </div>
                     </div>
-
                 </div>
-                <!-- END PAGE CONTENT WRAPPER -->
             </div>
-            <!-- END PAGE CONTENT -->
-        </div>
-        <!-- END PAGE CONTAINER -->
-
-                                </div>
-                            </div>
-
-                            <!-- START DATATABLE EXPORT -->
-
-                            </div>
-                <!-- END PAGE CONTENT WRAPPER -->
-            </div>
-            <!-- END PAGE CONTENT -->
-        </div>
-        <!-- END PAGE CONTAINER -->
-
-        <!-- MESSAGE BOX-->
-
         </div>
 
-
-
-        <!-- END MESSAGE BOX--><script async defer
-    src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_key }}&callback=myMap&libraries=places" type="text/javascript"></script>
-         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="{% static 'js/markerclusterer.js' %}"></script>
 <!--<br>{% if device.screenshot %}
 marker['infowindow'] = new
 google.maps.InfoWindow({
@@ -303,14 +241,19 @@ google.maps.InfoWindow({
 var marker;
 var gm_map;
 var markerArray = [];
+var initialLat = 0;
+var initialLon = 0;
 {% for device in search %}
     {% if forloop.first %}
-    var mumbai = new google.maps.LatLng({{ device.lat }},{{ device.lon }});
+    initialLat = {{ device.lat }};
+    initialLon = {{ device.lon }};
     {% endif %}
     {% endfor %}
-var infoWindow = new google.maps.InfoWindow();
+var infoWindow;
 
 function initialize() {
+    infoWindow = new google.maps.InfoWindow();
+    var mumbai = new google.maps.LatLng(initialLat, initialLon);
     var clusterMarkers = [
               {% for device in search %}
 
@@ -638,10 +581,12 @@ function initialize() {
         })(marker));
     }
 
-}$(document).ready(function() {
+}
 
-    // INITIALIZE GOOGLE MAPS
-    initialize();
+window.myMap = initialize;
+
+$(document).ready(function() {
+
 
 
     // CLOSE
@@ -653,19 +598,11 @@ function initialize() {
 });
 
 </script>
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_key }}&callback=myMap&libraries=places" type="text/javascript"></script>
         <script>
 
         </script>
-<script src="{% static 'js/markerclusterer.js' %}"></script>
-<script src="{% static 'js/d3.wordcloud.js' %}" charset="UTF-8"></script>
-                <script src="{% static 'js/d3.layout.cloud.js' %}" charset="UTF-8"></script>
-<script type="text/javascript">
-     d3v3.wordcloud()
-        .size([500, 300])
-        .selector('#wordcloud')
-        .words([{% for vuln, link in vulns %} {text: "{{  vuln }}", size: "15"}, {% endfor %}])
-        .start();
-    </script>
 
 
 
@@ -676,8 +613,6 @@ function initialize() {
 
         <!-- START THIS PAGE PLUGINS-->
 
-        <script type="text/javascript" src="{% static 'js/plugins/morris/raphael-min.js' %}"></script>
-        <script type="text/javascript" src="{% static 'js/plugins/morris/morris.min.js' %}"></script>
                 <script type="text/javascript" src="{% static 'js/plugins/datatables/jquery.dataTables.min.js' %}"></script>
         <script type='text/javascript' src="{% static 'js/plugins/bootstrap/bootstrap-datepicker.js' %}"></script>
 
@@ -691,19 +626,27 @@ function initialize() {
 
         <script type="text/javascript" src="{% static 'js/actions.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/draw_charts_results.js' %}"></script>
-                <script>drawCharts({{ports|safe}}, {{city|safe}},{{category|safe}});</script>
+                <script>drawCharts({{ ports|safe }}, {{ city|safe }}, {{ category|safe }}, {{ products|safe }});</script>
 
         <!-- END TEMPLATE -->
 
     <!-- END SCRIPTS -->
 
-
+    <script>
+    (function() {
+        $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+            if (!$('#ip-uniqueness-filter').is(':checked')) return true;
+            var node = settings.aoData[dataIndex] && settings.aoData[dataIndex].nTr;
+            if (!node) return true;
+            return parseInt($(node).data('ip-count') || 0) <= 3;
+        });
+        $('#ip-uniqueness-filter').on('change', function() {
+            $('.datatable').DataTable().draw();
+        });
+    })();
+    </script>
     </body>
 </html>
 
 {% endblock %}
-
-
-
-
 

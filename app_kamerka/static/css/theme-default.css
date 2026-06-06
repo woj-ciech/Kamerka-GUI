@@ -1985,16 +1985,6 @@ background-color: #0a141d;
   -webkit-box-shadow: none;
   box-shadow: none;
 }
-.btn.btn-twitter {
-  background: #1AB2E8;
-  border-color: #1AB2E8;
-}
-.btn.btn-twitter:hover,
-.btn.btn-twitter:focus,
-.btn.btn-twitter:active,
-.btn.btn-twitter.active {
-  background: #15a1d3;
-}
 .btn.btn-facebook {
   background: #3C599B;
   border-color: #3C599B;
@@ -2564,14 +2554,6 @@ blockquote.pull-right {
 .bg-danger {
   color: #fff;
   background-color: #E04B4A;
-}
-.twitter {
-  border-color: #1AB2E8 !important;
-  color: #1AB2E8 !important;
-}
-.twitter:hover {
-  border-color: #48c2ed !important;
-  color: #48c2ed !important;
 }
 .facebook {
   border-color: #3C599B !important;
@@ -5150,4 +5132,3 @@ input.ui-editRangeSlider-inputValue {
 .x-navigation-minimized .xn-logo{
 display:none;
 }
-

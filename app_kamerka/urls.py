@@ -10,6 +10,7 @@ urlpatterns = [
 
     path('devices', views.devices, name='devices'),
     path('sources', views.sources, name='sources'),
+    path('search/<id>/delete', views.delete_search, name='delete_search'),
 
     path("results/<id>", views.results, name='results'),
 
@@ -18,25 +19,17 @@ urlpatterns = [
     path("<id>/nearby/<query>", views.nearby, name='nearby'),
     path("<id>/update_coordinates/<coordinates>", views.update_coordinates, name='update_coordinates'),
 
-    path("<id>/twitter/nearby", views.twitter_nearby, name='twitter_nearby'),
-    path("<id>/twitter/show", views.twitter_show, name='twitter_show'),
-
-    path("<id>/flickr/nearby", views.flickr_nearby, name='flickr_nearby'),
     path("<id>/shodan/scan", views.shodan_scan, name='shodan_scan'),
     path('get-task-info/', views.get_task_info, name="get_task_info"),
-    path('get_flickr_results/<id>', views.get_flickr_results, name="get_flickr_results"),
-    path('get_flickr_coordinates/<id>', views.get_flickr_coordinates, name="get_flickr_coordinates"),
     path('get_shodan_scan_results/<id>', views.get_shodan_scan_results, name="get_shodan_scan_results"),
     path('get_nearby_devices/<id>', views.get_nearby_devices, name="get_nearby_devices"),
 
     path('get_nearby_devices_coordinates/<id>', views.get_nearby_devices_coordinates,
          name="get_nearby_devices_coordinates"),
-    path('get_binaryedge_score/<id>', views.get_binaryedge_score, name="get_binaryedge_score"),
-    path('send_to_field_agent/<id>/<notes>', views.send_to_field_agent, name="send_to_field_agent"),
-    path('get_binaryedge_score_results/<id>', views.get_binaryedge_score_results, name="get_binaryedge_score_results"),
     path('whois/<id>', views.whois, name="whois"),
     path('get_whois/<id>', views.get_whois, name="get_whois"),
     path('scan/<id>', views.scan_dev, name="scan"),
     path('exploit/<id>', views.exploit_dev, name="exploit"),
     # path('show_bosch_usernames/<id>', views.show_bosch_usernames, name="show_bosch_usernames"),
+    path('favorite/<int:device_id>', views.toggle_favorite, name='toggle_favorite'),
 ]

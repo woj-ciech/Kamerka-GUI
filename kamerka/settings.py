@@ -24,7 +24,7 @@ SECRET_KEY = 'y8bbfvj#b7a%)t_tu28#tzvfhk_s)o_-oqkgch7^z00us)&qh@'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = "*"
 
 # CELERY STUFF
 BROKER_URL = 'redis://localhost:6379'

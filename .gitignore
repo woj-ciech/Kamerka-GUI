@@ -1,0 +1,54 @@
+# API keys and secrets
+keys.json
+
+# Database
+db.sqlite3
+*.sqlite3
+
+# Redis dump
+dump.rdb
+
+# Screenshot images (collected at runtime)
+app_kamerka/static/images/screens/
+
+# Django migrations (auto-generated)
+app_kamerka/migrations/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+*.egg
+dist/
+build/
+.eggs/
+
+# Virtual environment
+.venv/
+venv/
+env/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Logs
+*.log
+celerybeat-schedule
+celerybeat.pid
+
+# Coverage
+.coverage
+htmlcov/
+
+# Claude Code session data
+.claude/
