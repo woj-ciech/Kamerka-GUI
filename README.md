@@ -23,7 +23,7 @@ Use it only for authorized research, asset inventory, defensive exposure managem
 
 ## Screenshots
 
-### Map
+### Dashboard
 
 ![Dashboard](screens/v2/scr4.png)
 
@@ -39,7 +39,7 @@ Use it only for authorized research, asset inventory, defensive exposure managem
 
 ![Screenshot gallery](screens/v2/scr3.png)
 
-### Dashboard
+### Map
 
 ![Global map](screens/v2/scr5.png)
 
@@ -55,7 +55,7 @@ Use it only for authorized research, asset inventory, defensive exposure managem
 
 ## Requirements
 
-- Python 3.8 or 3.9 recommended for the legacy Django 2.2 stack.
+- Python 3.10 to 3.13 recommended for the maintained Django 5.2 and Celery stack.
 - Redis server for Celery background jobs.
 - Shodan API key. A paid account is recommended because broad searches consume credits/pages.
 - Google Maps JavaScript API key for maps and route/location features.
@@ -63,7 +63,7 @@ Use it only for authorized research, asset inventory, defensive exposure managem
 - `GeoLite2-City.mmdb` in the repository root if you want Nmap XML import geolocation.
 - Nmap installed locally if you want to run active Nmap scans.
 
-Python dependencies are listed in [requirements.txt](requirements.txt).
+Python dependencies are listed in [requirements.txt](requirements.txt). The project now targets the Django 5.2 LTS line, Celery 5.6, and bounded Python packages so installs stay current without jumping to incompatible major versions.
 
 ## Installation
 
@@ -72,10 +72,13 @@ Clone the repository and create a virtual environment:
 ```bash
 git clone https://github.com/woj-ciech/Kamerka-GUI.git
 cd Kamerka-GUI
-python3 -m venv .venv
+python3.12 -m venv .venv
 source .venv/bin/activate
+python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
+
+If `python3.12` is not available, use another Python 3.10-3.13 interpreter. Avoid reusing an old Python 3.8/3.9 virtual environment because the current dependency set requires Python 3.10+.
 
 Create the database schema:
 
@@ -106,12 +109,6 @@ Start a Celery worker in another terminal:
 ```bash
 source .venv/bin/activate
 celery --app kamerka worker --loglevel=info
-```
-
-For older Celery versions, this command may also work:
-
-```bash
-celery worker -A kamerka --loglevel=info
 ```
 
 Start the Django development server:

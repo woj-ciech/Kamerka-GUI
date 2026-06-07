@@ -121,6 +121,10 @@ def _unique_display_list(*values):
     return items
 
 
+def _is_ajax_get(request):
+    return request.method == 'GET' and request.headers.get('x-requested-with') == 'XMLHttpRequest'
+
+
 # Create your views here.
 
 passwds = {"bosch_security":"""The Bosch Video Recorder 630/650 Series is an 8/16 
@@ -509,7 +513,7 @@ def history(request):
 
 
 def update_coordinates(request,id, coordinates):
-    if request.is_ajax() and request.method == 'GET':
+    if _is_ajax_get(request):
         dev = Device.objects.get(id=id)
         splitted_coord = coordinates.split(",")
         dev.lat = splitted_coord[0]
@@ -548,7 +552,7 @@ def device(request, id, device_id, ip):
 
 
 def nearby(request, id, query):
-    if request.is_ajax() and request.method == 'GET':
+    if _is_ajax_get(request):
         all_devices = Device.objects.filter(id=id)
         device_nearby_task = devices_nearby.delay(lat=all_devices[0].lat, lon=all_devices[0].lon, id=id, query=query)
         return HttpResponse(json.dumps({'task_id': device_nearby_task.id}), content_type='application/json')
@@ -561,7 +565,7 @@ def sources(request):
 
 
 def shodan_scan(request, id):
-    if request.is_ajax() and request.method == 'GET':
+    if _is_ajax_get(request):
 
         shodan_scan2 = ShodanScan.objects.filter(device_id=id)
 
@@ -592,7 +596,7 @@ def get_task_info(request):
 
 
 def get_shodan_scan_results(request, id):
-    if request.is_ajax() and request.method == 'GET':
+    if _is_ajax_get(request):
         shodan_scan2 = ShodanScan.objects.filter(device_id=id)
         return JsonResponse({
             'ready': shodan_scan2.exists(),
@@ -602,7 +606,7 @@ def get_shodan_scan_results(request, id):
 
 
 def get_nearby_devices(request, id):
-    if request.is_ajax() and request.method == 'GET':
+    if _is_ajax_get(request):
         nearby_devices = DeviceNearby.objects.filter(device_id=id)
 
         response_data = serializers.serialize('json', nearby_devices)
@@ -610,7 +614,7 @@ def get_nearby_devices(request, id):
         return HttpResponse(response_data, content_type="application/json")
 
 def scan_dev(request, id):
-    if request.is_ajax() and request.method == 'GET':
+    if _is_ajax_get(request):
         res = scan(id)
         if res:
             return HttpResponse(json.dumps(res), content_type='application/json')
@@ -618,7 +622,7 @@ def scan_dev(request, id):
             return HttpResponse(json.dumps({'Error': "Connection Error"}), content_type='application/json')
 
 def exploit_dev(request, id):
-    if request.is_ajax() and request.method == 'GET':
+    if _is_ajax_get(request):
         res = exploit(id)
         if res:
             return HttpResponse(json.dumps(res), content_type='application/json')
@@ -626,7 +630,7 @@ def exploit_dev(request, id):
             return HttpResponse(json.dumps({'Error': "Connection Error"}), content_type='application/json')
 
 def get_nearby_devices_coordinates(request, id):
-    if request.is_ajax() and request.method == 'GET':
+    if _is_ajax_get(request):
         nearby_devices = DeviceNearby.objects.filter(device_id=id)
 
         response_data = serializers.serialize('json', nearby_devices)
@@ -634,7 +638,7 @@ def get_nearby_devices_coordinates(request, id):
         return HttpResponse(response_data, content_type="application/json")
 
 def whois(request, id):
-    if request.is_ajax() and request.method == 'GET':
+    if _is_ajax_get(request):
 
         whoiss = Whois.objects.filter(device_id=id)
 
@@ -649,7 +653,7 @@ def whois(request, id):
 
 
 def get_whois(request, id):
-    if request.is_ajax() and request.method == 'GET':
+    if _is_ajax_get(request):
         whoiss = Whois.objects.filter(device_id=id)
 
         return JsonResponse({

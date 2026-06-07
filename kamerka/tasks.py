@@ -698,7 +698,7 @@ def shodan_search_worker(fk, query, search_type, category, country=None, coordin
             if "SOURCETABLE" in query:
                 data = result['data'].split(";")
                 try:
-                    if re.match("^((\-?|\+?)?\d+(\.\d+)?)$", data[9]):
+                    if re.match(r"^((-?|\+?)?\d+(\.\d+)?)$", data[9]):
                         indicator.append(data[9] + "," + data[10])
                         lat = data[9]
                         lon = data[10]
