@@ -59,22 +59,36 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
                                     <h3 class="panel-title" style="margin:0;">Screenshots</h3>
-                                    {% if countries %}
-                                    <div style="display:flex;flex-wrap:wrap;gap:5px;align-items:center;">
-                                        <a href="?page=1"
-                                           style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;padding:3px 9px;border-radius:3px;text-decoration:none;
-                                                  {% if not active_country %}background:rgba(0,100,215,0.3);color:#00d4f0;border:1px solid #0064d7;{% else %}background:transparent;color:#5a7d8e;border:1px solid rgba(0,100,215,0.25);{% endif %}">
-                                            ALL
-                                        </a>
-                                        {% for cc in countries %}
-                                        <a href="?country={{ cc }}&page=1"
-                                           style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;padding:3px 9px;border-radius:3px;text-decoration:none;
-                                                  {% if active_country == cc %}background:rgba(0,100,215,0.3);color:#00d4f0;border:1px solid #0064d7;{% else %}background:transparent;color:#5a7d8e;border:1px solid rgba(0,100,215,0.25);{% endif %}">
-                                            {{ cc }}
-                                        </a>
-                                        {% endfor %}
+                                    <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:flex-end;">
+                                        <form method="get" action="{% url 'gallery' %}" style="display:flex;align-items:center;gap:6px;margin:0;">
+                                            {% if active_country %}
+                                            <input type="hidden" name="country" value="{{ active_country }}">
+                                            {% endif %}
+                                            <label for="gallery-per-page" style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;color:#5a7d8e;text-transform:uppercase;margin:0;">Show</label>
+                                            <select id="gallery-per-page" name="per_page" onchange="this.form.submit()"
+                                                    style="height:26px;background:#071126;border:1px solid rgba(0,100,215,0.35);border-radius:3px;color:#00d4f0;font-family:'JetBrains Mono',monospace;font-size:10px;padding:0 8px;">
+                                                {% for option in page_size_options %}
+                                                <option value="{{ option }}" {% if page_size == option %}selected{% endif %}>{{ option }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </form>
+                                        {% if countries %}
+                                        <div style="display:flex;flex-wrap:wrap;gap:5px;align-items:center;">
+                                            <a href="?per_page={{ page_size }}&page=1"
+                                               style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;padding:3px 9px;border-radius:3px;text-decoration:none;
+                                                      {% if not active_country %}background:rgba(0,100,215,0.3);color:#00d4f0;border:1px solid #0064d7;{% else %}background:transparent;color:#5a7d8e;border:1px solid rgba(0,100,215,0.25);{% endif %}">
+                                                ALL
+                                            </a>
+                                            {% for cc in countries %}
+                                            <a href="?country={{ cc }}&per_page={{ page_size }}&page=1"
+                                               style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;padding:3px 9px;border-radius:3px;text-decoration:none;
+                                                      {% if active_country == cc %}background:rgba(0,100,215,0.3);color:#00d4f0;border:1px solid #0064d7;{% else %}background:transparent;color:#5a7d8e;border:1px solid rgba(0,100,215,0.25);{% endif %}">
+                                                {{ cc }}
+                                            </a>
+                                            {% endfor %}
+                                        </div>
+                                        {% endif %}
                                     </div>
-                                    {% endif %}
                                 </div>
                                 <div class="panel-body">
                                     <div class="row">
@@ -115,7 +129,7 @@
                                             </span>
                                             <ul class="pagination" style="margin:0;">
                                                 {% if page_obj.has_previous %}
-                                                <li><a href="?{% if active_country %}country={{ active_country }}&{% endif %}page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+                                                <li><a href="?{% if active_country %}country={{ active_country }}&{% endif %}per_page={{ page_size }}&page={{ page_obj.previous_page_number }}">&laquo;</a></li>
                                                 {% else %}
                                                 <li class="disabled"><span>&laquo;</span></li>
                                                 {% endif %}
@@ -123,11 +137,11 @@
                                                     {% if page_obj.number == num %}
                                                     <li class="active"><span>{{ num }}</span></li>
                                                     {% elif num >= page_obj.number|add:"-3" and num <= page_obj.number|add:"3" %}
-                                                    <li><a href="?{% if active_country %}country={{ active_country }}&{% endif %}page={{ num }}">{{ num }}</a></li>
+                                                    <li><a href="?{% if active_country %}country={{ active_country }}&{% endif %}per_page={{ page_size }}&page={{ num }}">{{ num }}</a></li>
                                                     {% endif %}
                                                 {% endfor %}
                                                 {% if page_obj.has_next %}
-                                                <li><a href="?{% if active_country %}country={{ active_country }}&{% endif %}page={{ page_obj.next_page_number }}">&raquo;</a></li>
+                                                <li><a href="?{% if active_country %}country={{ active_country }}&{% endif %}per_page={{ page_size }}&page={{ page_obj.next_page_number }}">&raquo;</a></li>
                                                 {% else %}
                                                 <li class="disabled"><span>&raquo;</span></li>
                                                 {% endif %}
