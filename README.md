@@ -23,7 +23,7 @@ Use it only for authorized research, asset inventory, defensive exposure managem
 
 ## Screenshots
 
-### Dashboard
+### Map
 
 ![Dashboard](screens/v2/scr4.png)
 
@@ -35,11 +35,13 @@ Use it only for authorized research, asset inventory, defensive exposure managem
 
 ![Device intel with screenshot](screens/v2/scr2.png)
 
+![Device intel with screenshot](screens/v2/scr6.png)
+
 ### Screenshot Gallery
 
 ![Screenshot gallery](screens/v2/scr3.png)
 
-### Map
+### Dashboard
 
 ![Global map](screens/v2/scr5.png)
 
