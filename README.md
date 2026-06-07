@@ -1,171 +1,231 @@
-# ꓘamerka GUI
+# Kamerka GUI
 
-## Ultimate Internet of Things/Industrial Control Systems reconnaissance tool.
+Kamerka GUI is a Django-based reconnaissance dashboard for discovering, reviewing, and triaging Internet-exposed ICS, IoT, medical devices. It combines Shodan search data, Google Maps visualization, device screenshots, passive intelligence enrichment, and selected scan/exploit helpers into one web interface.
 
-<p align="center"><img src="https://www.offensiveosint.io/content/images/2020/07/OffensiveOsint-logo-RGB-2.png" alt="logo" width="200"/></p>
+Use it only for authorized research, asset inventory, defensive exposure management, and reporting to the appropriate owners or CERT/CSIRT teams.
 
-### Powered by Shodan - Supported by WhoisXMLAPI
+<p align="center">
+  <img src="https://www.offensiveosint.io/content/images/2020/07/OffensiveOsint-logo-RGB-2.png" alt="Offensive OSINT logo" width="180"/>
+</p>
 
-## NSA and CISA Recommend Immediate Actions to Reduce Exposure Across Operational Technologies and Control Systems
+## What It Does
 
-> Shodan, Kamerka, are creating a “perfect storm” of 
-> 
-> 1) easy access to unsecured assets, 
-> 
-> 2) use of common, open-source information about devices, and 
-> 
-> 3) an extensive list of exploits deployable via common exploit frameworks (e.g., Metasploit, Core Impact, and Immunity Canvas).
+- Searches Shodan for ICS, IoT, healthcare, and attacker-infrastructure device categories.
+- Supports country-based searches and coordinate-based searches.
+- Stores searches and discovered devices in a local Django database.
+- Shows search history, dashboards, statistics, favorites, and a screenshot gallery.
+- Displays devices on global and per-device Google Maps views.
+- Parses device indicators from banners and protocol responses to help with geolocation.
+- Shows device-level intelligence, banner data, screenshots, hostnames, organization, location, ports, products, and vulnerabilities.
+- Runs Shodan host scans and Whois XML API enrichment from the Intel tab.
+- Supports importing Nmap XML output and running selected Nmap NSE scans.
+- Includes selected proof-of-concept exploit helpers for specific device families.
 
-https://us-cert.cisa.gov/ncas/alerts/aa20-205a
+## Screenshots
 
-## Usage
+### Map
 
-#### 1. Scan for Internet facing Industrial Control Systems, Medical and Internet of Things devices based on country or coordinates.
-#### 2. Gather passive intelligence from WHOISXML and Shodan or active by scanning target directly.
-#### 3. Thanks to indicators from devices and google maps, pinpoit device to specific place or facility (hospital, wastewater treatment plant, gas station, university, etc.)
-#### 4. (Optional, not recommended) 4. Guess/Bruteforce or use default password to gain access to the device. Some exploits are implemented for couple specific IoTs.
-#### 5. Report devices in critical infrastructure to your local CERT.
+![Dashboard](screens/v2/scr4.png)
 
-## Features
-- More than 100 ICS devices
-- Gallery section shows every gathered screenshot in one place
-- Interactive Google maps
-- Google street view support
-- Possibility to implement own exploits or scanning techiques
-- Support for NMAP scan in xml format as an input
-- Find the route and change location of device
-- Statistics for each search
-- Search Flick photos nearby your device
-- Position for vessels is scraped from device directly, rather than IP based
-- Some devices return hints or location in the response. It's parsed and displayed as an indicator that helps to geolocate device.
+### Device Intel
 
-## Articles
-https://www.offensiveosint.io/hack-the-planet-with-amerka-gui-ultimate-internet-of-things-industrial-control-systems-reconnaissance-tool/
+![Device intel](screens/v2/scr1.png)
 
-https://www.offensiveosint.io/offensive-osint-s01e03-intelligence-gathering-on-critical-infrastructure-in-southeast-asia/
+### Device Intel With Screenshot
 
-https://www.offensiveosint.io/hack-like-its-2077-presenting-amerka-mobile/
+![Device intel with screenshot](screens/v2/scr2.png)
 
-https://www.zdnet.com/article/kamerka-osint-tool-shows-your-countrys-internet-connected-critical-infrastructure/
+### Screenshot Gallery
 
-https://www.icscybersecurityconference.com/intelligence-gathering-on-u-s-critical-infrastructure/
+![Screenshot gallery](screens/v2/scr3.png)
+
+### Dashboard
+
+![Global map](screens/v2/scr5.png)
+
+## Main Views
+
+- `Dashboard`: high-level counts, Shodan credits, recent searches, charts, world coverage, and favorites.
+- `Database`: searchable table of all discovered devices with filtering for likely honeypots.
+- `History`: previous searches with country names, selected device categories, and links to results.
+- `Map`: global clustered Google Map of discovered devices.
+- `Gallery`: all collected device screenshots, with country filtering.
+- `Results`: per-search device table, map, statistics, and export-style browsing.
+- `Device`: Locate, Intel, and Exploit tabs for a single device.
+
+## Requirements
+
+- Python 3.8 or 3.9 recommended for the legacy Django 2.2 stack.
+- Redis server for Celery background jobs.
+- Shodan API key. A paid account is recommended because broad searches consume credits/pages.
+- Google Maps JavaScript API key for maps and route/location features.
+- Whois XML API key if you want Whois enrichment.
+- `GeoLite2-City.mmdb` in the repository root if you want Nmap XML import geolocation.
+- Nmap installed locally if you want to run active Nmap scans.
+
+Python dependencies are listed in [requirements.txt](requirements.txt).
 
 ## Installation
 
-### Requirements
-- beautiful soup
-- python3
-- django
-- pynmea2
-- celery
-- redis
-- Shodan paid account
-- WHOISXMLAPI (Optional)
-- Flickr (Optional)
-- Google Maps API
-- xmltodict
-- python-libnmap
+Clone the repository and create a virtual environment:
 
-
-**Make sure your API keys are correct and put them in keys.json in main directory.**
-
-### Run
-```
-git clone https://github.com/woj-ciech/Kamerka-GUI/
-pip3 install -r requirements.txt
-python3 manage.py makemigrations
-python3 manage.py migrate
-python3 manage.py runserver
+```bash
+git clone https://github.com/woj-ciech/Kamerka-GUI.git
+cd Kamerka-GUI
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
 ```
 
-In a new window (in main directory) run celery worker
-```celery worker -A kamerka --loglevel=info```
+Create the database schema:
 
-For new version of Celery
-```celery --app kamerka worker```
+```bash
+python manage.py migrate
+```
 
-In a new window fire up redis
-```apt-get install redis```
-```redis-server```
+Create `keys.json` in the repository root:
 
-And server should be available on ```http://localhost:8000/```
+```json
+{
+  "keys": {
+    "shodan": "YOUR_SHODAN_API_KEY",
+    "google_maps": "YOUR_GOOGLE_MAPS_API_KEY",
+    "whoisxmlapi": "YOUR_WHOIS_XML_API_KEY"
+  }
+}
+```
 
+Start Redis in a separate terminal:
 
-## Search
-### Search for Industrial Control Devices in specific country
- ![](screens/search1.png)
+```bash
+redis-server
+```
 
-- "All results" checkbox means get all results from Shodan, if it's turned off - only first page (100) results will be downloaded.
+Start a Celery worker in another terminal:
 
-### Search for Internet of things in specific coordinates
-Type your coordinates in format "lat,lon", hardcoded radius is 20km.
-  ![](screens/search2.png)
+```bash
+source .venv/bin/activate
+celery --app kamerka worker --loglevel=info
+```
 
-## Dashboard
-   ![](screens/dashboard.png)
+For older Celery versions, this command may also work:
 
-## Gallery
-![](screens/gallery.png)
+```bash
+celery worker -A kamerka --loglevel=info
+```
 
-## Maps
-### City map
- ![](screens/map.png)
+Start the Django development server:
 
-### Industrial Control Systems in Poland - ~2.5k different devices
-![](screens/map2.png)
+```bash
+source .venv/bin/activate
+python manage.py runserver
+```
 
-## Statistics
-![](screens/stats.png)
+Open the app:
 
-## Device map
-![](screens/device_map.png)
+```text
+http://localhost:8000/
+```
 
-## Intel
-![](screens/intel.png)
+## Configuration Notes
 
-## Geolocate
-![](screens/map3.png)
+- `keys.json` is required at runtime because the app reads API keys from `keys['keys']`.
+- Keep `keys.json` out of source control. It contains private credentials.
+- The default database is SQLite. This is fine for local testing; use a production database if deploying.
+- Background searches, Shodan scans, Whois scans, and Nmap imports depend on Celery workers being active.
+- Coordinate searches use Shodan geo queries around the supplied latitude/longitude.
+- Large Shodan searches can consume credits quickly. Use page limits intentionally.
 
-## Scan & Exploit & Information
-![](screens/exploit.png)
+## Typical Workflow
 
-## Full list of supported devices with corresponding queries
-https://github.com/woj-ciech/Kamerka-GUI/blob/master/queries.md
+1. Open the search page and choose an ICS, IoT, healthcare, or infrastructure search mode.
+2. Select one or more device categories.
+3. Pick a country or provide coordinates, then choose how many Shodan pages to collect.
+4. Submit the search and wait for the Celery task to finish.
+5. Review the dashboard, history, or per-search results page.
+6. Open individual devices to inspect Intel, map location, screenshots, Shodan scan results, and Whois data.
+7. Use active scans or exploit helpers only when you have explicit authorization.
 
-## NMAP Scripts
-- atg-info
-- codesys
-- cspv4-info
-- dnp3-info
-- enip-info
-- fox-info
-- modbus-discover
-- modicon-info
-- omron-info
-- pcworx-info
-- s7-enumerate
-- s7-info
+## Supported Search Categories
 
-## Exploits
-- CirCarLife SCADA 4.3.0 - Credential Disclosure
-- VideoIQ - Remote file disclosure
-- Grandstream UCM6202 1.0.18.13 - Remote Command Injection
-- Contec Smart Home 4.15 - Unauthorized Password Reset
-- Netwave IP Camera - Password Disclosure
-- Amcrest Cameras 2.520.AC00.18.R - Unauthenticated Audio Streaming
-- Lutron Quantum 2.0 - 3.2.243 - Information Disclosure
-- Bosch Security Systems DVR 630/650/670 Series - Multiple Vulnerabilities
+The full list of supported Shodan queries is maintained in [queries.md](queries.md).
 
+Broad categories include:
 
-## Used components
-- Joli admin template - https://github.com/sbilly/joli-admin
-- Search form - Colorlib Search Form v15
-- country picker - https://github.com/mojoaxel/bootstrap-select-country
-- Multiselect - https://github.com/varundewan/multiselect/
-- Arsen Zbidniakov Flat UI Checkbox https://codepen.io/ARS/pen/aeDHE/
-- icon from icons8.com and icon-icons.com
-- Nmap Scripts from NMAP Script Engine and Digital Bond repository
-- Exploits from exploit-db and routersploit
+- Industrial control systems and OT protocols.
+- Cameras and screenshot-capable IoT devices.
+- Healthcare and medical systems.
+- Building automation and smart infrastructure.
+- Attacker infrastructure indicators.
+- Generic exposed services such as VNC, RDP, MQTT, printers, and web cameras.
 
-## Additional
-- I'm not responsible for any damage caused by using this tool.
+## Nmap Support
+
+Kamerka can import Nmap XML output and includes NSE helper scripts under [nmap_scripts](nmap_scripts).
+
+Included script families include:
+
+- ATG
+- BACnet
+- Codesys
+- DNP3
+- EtherNet/IP
+- Fox/Niagara
+- Modbus
+- Omron FINS
+- PCWorx
+- ProConOS
+- Siemens S7
+
+## Exploit Helpers
+
+The project includes selected exploit/helper modules for specific device families, including:
+
+- Bosch Security Systems DVR 630/650/670 Series
+- VideoIQ remote file disclosure
+- Hikvision backdoor-style user modification flow
+- Contec Smart Home password reset behavior
+- Grandstream UCM information/version check
+- Netwave camera status disclosure
+- CirCarLife SCADA information disclosure
+- Amcrest unauthenticated audio/video endpoint helper
+- Lutron Quantum information disclosure
+
+These helpers are for controlled validation only. Do not run them against systems you do not own or have permission to test.
+
+## Troubleshooting
+
+- If searches never complete, confirm Redis is running and the Celery worker is connected.
+- If maps do not load, confirm the Google Maps API key is valid and authorized for your host.
+- If Shodan searches fail, confirm the API key has credits and the query/page count is allowed.
+- If Whois enrichment is empty, confirm the Whois XML API key and quota.
+- If Nmap XML import fails, confirm the XML file is valid and `GeoLite2-City.mmdb` exists in the project root.
+
+## Security And Legal Notice
+
+Kamerka can identify exposed critical infrastructure, IoT, and medical assets. Treat all findings responsibly:
+
+- Use only on assets you own or are authorized to assess.
+- Do not exploit, change, or disrupt third-party systems.
+- Report exposed critical systems through appropriate responsible disclosure channels.
+- The authors and contributors are not responsible for misuse or damage caused by this tool.
+
+## Related Reading
+
+- https://www.offensiveosint.io/hack-the-planet-with-amerka-gui-ultimate-internet-of-things-industrial-control-systems-reconnaissance-tool/
+- https://www.offensiveosint.io/offensive-osint-s01e03-intelligence-gathering-on-critical-infrastructure-in-southeast-asia/
+- https://www.offensiveosint.io/hack-like-its-2077-presenting-amerka-mobile/
+- https://www.zdnet.com/article/kamerka-osint-tool-shows-your-countrys-internet-connected-critical-infrastructure/
+- https://www.icscybersecurityconference.com/intelligence-gathering-on-u-s-critical-infrastructure/
+- https://us-cert.cisa.gov/ncas/alerts/aa20-205a
+
+## Credits
+
+- Joli Admin template: https://github.com/sbilly/joli-admin
+- Bootstrap Select Country: https://github.com/mojoaxel/bootstrap-select-country
+- Selectr multi-select: https://github.com/Mobius1/Selectr
+- Google Maps JavaScript API
+- Shodan API
+- Whois XML API
+- Nmap Script Engine and Digital Bond NSE repositories
+- Exploit references from Exploit-DB and RouterSploit
