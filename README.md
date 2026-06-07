@@ -1,6 +1,8 @@
 # Kamerka GUI
 
-Kamerka GUI is a Django-based reconnaissance dashboard for discovering, reviewing, and triaging Internet-exposed ICS, IoT, medical devices. It combines Shodan search data, Google Maps visualization, device screenshots, passive intelligence enrichment, and selected scan/exploit helpers into one web interface.
+Kamerka GUI is a Django-based reconnaissance dashboard for discovering, reviewing, and triaging Internet-exposed Industrial Control System, Internet of Things and medical devices. It combines Shodan search data, Google Maps visualization, device screenshots, passive intelligence enrichment, and selected scan/exploit helpers into one web interface.
+
+The app helps reduce noise during review with a `Filter Honeypots` toggle in device tables. This excludes devices that expose honeypot-style indicators, so analysts can focus on likely real assets first. Kamerka also surfaces a device `Indicator` field, built from parsed banners, protocol responses, screenshot labels, and other device metadata, to explain why a device was flagged or how it can be located or classified.
 
 Use it only for authorized research, asset inventory, defensive exposure management, and reporting to the appropriate owners or CERT/CSIRT teams.
 
