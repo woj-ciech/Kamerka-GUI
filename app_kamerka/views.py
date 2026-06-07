@@ -11,6 +11,7 @@ from django.db.models import Count
 from django.http import HttpResponse, JsonResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
 
 from app_kamerka import forms
 from app_kamerka.models import Search, Device, DeviceNearby, ShodanScan, Whois
@@ -414,6 +415,21 @@ def delete_search(request, id):
         search.delete()
 
     return HttpResponseRedirect('/index')
+
+
+def delete_device(request, device_id):
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Method not allowed'}, status=405)
+
+    device = get_object_or_404(Device, id=device_id)
+    search_id = device.search_id
+    device.delete()
+
+    redirect_url = reverse('results', kwargs={'id': search_id})
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return JsonResponse({'deleted': True, 'redirect_url': redirect_url})
+
+    return HttpResponseRedirect(redirect_url)
 
 
 def devices(request):

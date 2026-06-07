@@ -197,7 +197,9 @@
                                                     <td style="text-align:right;width:1%;white-space:nowrap;">
                                                         <form class="search-delete-form" method="post" action="{% url 'delete_search' id=object.id %}">
                                                             {% csrf_token %}
-                                                            <button class="search-delete-button" type="submit" title="Delete search" aria-label="Delete search" onclick="return confirm('Delete this search and all related devices?');">X</button>
+                                                            <button class="search-delete-button" type="submit" title="Delete search" aria-label="Delete search" onclick="return confirm('Delete this search and all related devices?');">
+                                                                <span class="fa fa-times" aria-hidden="true"></span>
+                                                            </button>
                                                         </form>
                                                     </td>
                                                 </tr>

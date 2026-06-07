@@ -97,13 +97,13 @@
                             <!-- START JUSTIFIED TABS -->
                             <div class="panel panel-default tabs">
                                 <div style="position:relative;">
-                                <ul class="nav nav-tabs nav-justified" style="margin-right:96px;">
+                                <ul class="nav nav-tabs nav-justified" style="margin-right:144px;">
                                     <li class="active {% if device.located %}device-located-tab{% endif %}"><a href="#tab8" data-toggle="tab">Locate</a></li>
                                     <li><a href="#tab9" data-toggle="tab">Intel</a></li>
                                     <li><a href="#tab10" data-toggle="tab">Exploit</a></li>
                                 </ul>
                                 <a href="https://www.shodan.io/host/{{ device.ip }}" target="_blank" title="View on Shodan"
-                                   style="position:absolute; top:0; right:48px; height:100%; width:48px;
+                                   style="position:absolute; top:0; right:96px; height:100%; width:48px;
                                           background:none; border:none; border-left:1px solid rgba(255,255,255,0.1);
                                           display:flex; align-items:center; justify-content:center; text-decoration:none;">
                                     <span class="fa fa-external-link"
@@ -111,13 +111,24 @@
                                           onmouseover="this.style.color='#00d4f0'" onmouseout="this.style.color='#7F8C9A'"></span>
                                 </a>
                                 <button id="btn-favorite" type="button" title="Toggle favorite"
-                                        style="position:absolute; top:0; right:0; height:100%;
+                                        style="position:absolute; top:0; right:48px; height:100%;
                                                width:48px; background:none; border:none; border-left:1px solid rgba(255,255,255,0.1);
                                                cursor:pointer; display:flex; align-items:center; justify-content:center;">
                                     <span class="fa {% if device.favorite %}fa-heart{% else %}fa-heart-o{% endif %}"
                                           style="font-size:18px; color:{% if device.favorite %}#ff00cd{% else %}#7F8C9A{% endif %};
                                                  transition: color 0.2s ease;"></span>
                                 </button>
+                                <form id="delete-device-form" method="post" action="{% url 'delete_device' device_id=device.id %}"
+                                      style="position:absolute; top:0; right:0; height:100%; width:48px; margin:0;">
+                                    {% csrf_token %}
+                                    <button type="submit" title="Delete device" aria-label="Delete device"
+                                            style="height:100%; width:48px; background:none; border:none; border-left:1px solid rgba(255,255,255,0.1);
+                                                   cursor:pointer; display:flex; align-items:center; justify-content:center;">
+                                        <span class="fa fa-trash-o"
+                                              style="font-size:17px; color:#7F8C9A; transition: color 0.2s ease;"
+                                              onmouseover="this.style.color='#ff5c7a'" onmouseout="this.style.color='#7F8C9A'"></span>
+                                    </button>
+                                </form>
                                 </div>
                                 <div class="panel-body tab-content">
                                     <div class="tab-pane active locate-tab" id="tab8">
@@ -1001,6 +1012,29 @@ if (x.style.display === "none") {
                     noty({text: 'Error toggling favorite', layout: 'topRight', type: 'error', timeout: 1500});
                 }
             });
+        });
+
+        $('#delete-device-form').on('submit', function (event) {
+            event.preventDefault();
+            if (!confirm('Delete this device from the database?')) {
+                return false;
+            }
+
+            var form = $(this);
+            $.ajax({
+                type: 'POST',
+                url: form.attr('action'),
+                data: form.serialize(),
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                success: function (data) {
+                    noty({text: 'Device removed', layout: 'topRight', type: 'success', timeout: 1000});
+                    window.location.href = data.redirect_url || '/results/{{ device.search_id }}';
+                },
+                error: function () {
+                    noty({text: 'Error deleting device', layout: 'topRight', type: 'error', timeout: 1500});
+                }
+            });
+            return false;
         });
         </script>
         <!-- END TEMPLATE -->

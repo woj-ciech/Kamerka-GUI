@@ -12,6 +12,7 @@ urlpatterns = [
     path('devices', views.devices, name='devices'),
     path('sources', views.sources, name='sources'),
     path('search/<id>/delete', views.delete_search, name='delete_search'),
+    path('device/<int:device_id>/delete', views.delete_device, name='delete_device'),
 
     path("results/<id>", views.results, name='results'),
 

@@ -1457,27 +1457,30 @@ table.dataTable td:hover {
 }
 
 .search-delete-button {
-  background: transparent;
-  border: 1px solid var(--km-border);
-  border-radius: var(--km-radius);
-  color: var(--km-muted);
+  align-items: center;
+  background: rgba(255, 51, 85, 0.08);
+  border: 1px solid rgba(255, 92, 122, 0.55);
+  border-radius: 50%;
+  color: #ff5c7a;
   cursor: pointer;
-  font-family: var(--km-font-mono);
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  line-height: 1;
+  display: inline-flex;
+  font-size: 12px;
+  height: 24px;
+  justify-content: center;
+  line-height: 24px;
   margin-left: 8px;
-  padding: 2px 5px;
-  text-transform: uppercase;
+  padding: 0;
   transition: all 0.12s ease;
+  width: 24px;
 }
 
 .search-delete-button:hover,
 .search-delete-button:focus {
-  background: rgba(255, 51, 85, 0.10);
-  border-color: var(--km-danger);
-  color: var(--km-danger);
+  background: rgba(255, 51, 85, 0.18);
+  border-color: #ff5c7a;
+  box-shadow: 0 0 0 3px rgba(255, 51, 85, 0.10);
+  color: #ff8aa0;
+  outline: none;
 }
 
 /* ─── PROGRESS BAR ──────────────────────────────────────── */
