@@ -1,23 +1,128 @@
 import ast
 import json
-from collections import Counter
-import requests
+import logging
+
 from django.core.files.storage import FileSystemStorage
-from .forms import UploadFileForm
 import pycountry
 from celery.result import AsyncResult
 from django.core import serializers
+from django.core.paginator import Paginator
 from django.db.models import Count
 from django.http import HttpResponse, JsonResponse
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 
 from app_kamerka import forms
-from app_kamerka.models import Search, Device, DeviceNearby, FlickrNearby, ShodanScan, BinaryEdgeScore, Whois, \
-    TwitterNearby, Bosch
-from kamerka.tasks import shodan_search, devices_nearby, twitter_nearby_task, flickr, shodan_scan_task, \
-    binary_edge_scan, whoisxml, check_credits, send_to_field_agent_task, nmap_scan, validate_nmap, validate_maxmind, scan, \
+from app_kamerka.models import Search, Device, DeviceNearby, ShodanScan, Whois
+from kamerka.tasks import shodan_search, devices_nearby, shodan_scan_task, \
+    whoisxml, check_credits, nmap_scan, validate_nmap, validate_maxmind, scan, \
     exploit
+
+logger = logging.getLogger(__name__)
+
+
+def _clean_api_value(value):
+    if value is None:
+        return ""
+    if isinstance(value, (list, tuple, set)):
+        return ", ".join(filter(None, (_clean_api_value(item) for item in value)))
+
+    text = str(value).strip()
+    if not text:
+        return ""
+
+    if text[0] in "[({":
+        try:
+            parsed = ast.literal_eval(text)
+        except (ValueError, SyntaxError):
+            return text
+        if isinstance(parsed, (list, tuple, set)):
+            return ", ".join(filter(None, (_clean_api_value(item) for item in parsed)))
+        if isinstance(parsed, dict):
+            return ", ".join(filter(None, (_clean_api_value(key) for key in parsed.keys())))
+        return _clean_api_value(parsed)
+
+    return text
+
+
+def _clean_api_list(value):
+    if value is None:
+        return []
+    if isinstance(value, (list, tuple, set)):
+        return list(filter(None, (_clean_api_value(item) for item in value)))
+    if isinstance(value, dict):
+        return list(filter(None, (_clean_api_value(key) for key in value.keys())))
+
+    text = str(value).strip()
+    if not text:
+        return []
+
+    if text[0] in "[({":
+        try:
+            parsed = ast.literal_eval(text)
+        except (ValueError, SyntaxError):
+            parsed = None
+        if parsed is not None:
+            return _clean_api_list(parsed)
+
+    return [item.strip().strip("'\"") for item in text.split(",") if item.strip().strip("'\"")]
+
+
+def _serialize_shodan_scan(scan):
+    return {
+        "ports": _clean_api_list(scan.ports),
+        "products": _clean_api_list(scan.products),
+        "modules": _clean_api_list(scan.module),
+        "vulns": _clean_api_list(scan.vulns),
+        "tags": _clean_api_list(scan.tags),
+    }
+
+
+def _serialize_whois_record(record):
+    return {
+        "name": _clean_api_value(record.name),
+        "org": _clean_api_value(record.org),
+        "street": _clean_api_value(record.street),
+        "city": _clean_api_value(record.city),
+        "netrange": _clean_api_value(record.netrange),
+        "admin_org": _clean_api_value(record.admin_org),
+        "admin_email": _clean_api_value(record.admin_email),
+        "admin_phone": _clean_api_value(record.admin_phone),
+        "email": _clean_api_value(record.email),
+    }
+
+
+def _country_display_name(value):
+    countries = []
+    for code in _clean_api_list(value):
+        normalized = code.strip().upper()
+        if not normalized:
+            continue
+        if normalized == "XX":
+            countries.append("Global")
+            continue
+
+        country = pycountry.countries.get(alpha_2=normalized)
+        countries.append(country.name if country else code)
+
+    return ", ".join(countries)
+
+
+def _unique_display_list(*values):
+    items = []
+    seen = set()
+    for value in values:
+        for item in _clean_api_list(value):
+            key = item.lower()
+            if key in seen:
+                continue
+            seen.add(key)
+            items.append(item)
+    return items
+
+
+def _is_ajax_get(request):
+    return request.method == 'GET' and request.headers.get('x-requested-with') == 'XMLHttpRequest'
 
 
 # Create your views here.
@@ -79,15 +184,41 @@ def get_keys():
             keys_json = json.load(keys)
 
         return keys_json
-    except Exception as e:
-        print(e)
+    except Exception:
+        logger.exception("Unable to load keys.json")
+        return {}
 
 
 keys = get_keys()
 
 
+def _parse_max_pages(request):
+    try:
+        v = int(request.POST.get('max_pages', 1) or 1)
+        return max(1, v)
+    except (TypeError, ValueError):
+        return 1
+
+
 def search_main(request):
     if request.method == 'POST':
+
+        # IoT country mode — must be checked before form validation
+        if request.POST.get('iot_search_mode') == 'country':
+            iot_country = request.POST.get('iot_country', '').strip()
+            iot_devices = request.POST.getlist('coordinates_search')
+            if iot_country and iot_devices:
+                iot_all = request.POST.get('iot_all') == 'on'
+                max_pages = _parse_max_pages(request)
+                search = Search(country=iot_country, ics=str(iot_devices), coordinates_search=str(iot_devices))
+                search.save()
+                shodan_search_task = shodan_search.delay(
+                    fk=search.id, country=iot_country, ics=iot_devices, all_results=iot_all, iot=True,
+                    max_pages=max_pages
+                )
+                request.session['task_id'] = shodan_search_task.task_id
+                return HttpResponseRedirect('index')
+            return render(request, 'search_main.html', {})
 
         # create a form instance and populate it with data from the request:
         coordinates_form = forms.CoordinatesForm(request.POST)
@@ -108,12 +239,11 @@ def search_main(request):
             search.save()
             post = request.POST.getlist('ics_country')
 
-            if ics_form.cleaned_data['all'] == True:
-                all_results = True
-            else:
-                all_results = False
+            all_results = ics_form.cleaned_data['all']
 
-            shodan_search_task = shodan_search.delay(fk=search.id, country=code, ics=post, all_results=all_results)
+            max_pages = _parse_max_pages(request)
+            shodan_search_task = shodan_search.delay(fk=search.id, country=code, ics=post, all_results=all_results,
+                                                     max_pages=max_pages)
             request.session['task_id'] = shodan_search_task.task_id
 
             return HttpResponseRedirect('index')
@@ -134,12 +264,11 @@ def search_main(request):
             search.save()
             post = request.POST.getlist('healthcare')
 
-            if healthcare_form.cleaned_data['all'] == True:
-                all_results = True
-            else:
-                all_results = False
+            all_results = healthcare_form.cleaned_data['all']
 
-            shodan_search_task = shodan_search.delay(fk=search.id, country=code, ics=post, healthcare=True, all_results=all_results)
+            max_pages = _parse_max_pages(request)
+            shodan_search_task = shodan_search.delay(fk=search.id, country=code, ics=post, healthcare=True,
+                                                     all_results=all_results, max_pages=max_pages)
             request.session['task_id'] = shodan_search_task.task_id
 
             return HttpResponseRedirect('index')
@@ -155,8 +284,10 @@ def search_main(request):
                             coordinates_search=request.POST.getlist('coordinates_search'))
 
             search.save()
+            max_pages = _parse_max_pages(request)
             shodan_search_task = shodan_search.delay(fk=search.id, coordinates=coordinates,
-                                     coordinates_search=request.POST.getlist('coordinates_search'))
+                                     coordinates_search=request.POST.getlist('coordinates_search'),
+                                     max_pages=max_pages)
 
             request.session['task_id'] = shodan_search_task.task_id
 
@@ -176,12 +307,11 @@ def search_main(request):
             search.save()
             post = request.POST.getlist('infra')
 
-            if ics_form.cleaned_data['all'] == True:
-                all_results = True
-            else:
-                all_results = False
+            all_results = infra_form.cleaned_data['all']
 
-            shodan_search_task = shodan_search.delay(fk=search.id, country=code, ics=post, all_results=all_results)
+            max_pages = _parse_max_pages(request)
+            shodan_search_task = shodan_search.delay(fk=search.id, country=code, ics=post, all_results=all_results,
+                                                     max_pages=max_pages)
             request.session['task_id'] = shodan_search_task.task_id
 
             return HttpResponseRedirect('index')
@@ -198,17 +328,15 @@ def search_main(request):
                 fs = FileSystemStorage()
                 filename = fs.save(myfile.name, myfile)
                 uploaded_file_url = fs.url(filename)
-                print(uploaded_file_url)
                 validate_nmap(uploaded_file_url)
                 validate_maxmind()
-                search = Search(country="NMAP Scan", ics=myfile.name,nmap=True)
+                search = Search(country="NMAP Scan", ics=myfile.name, nmap=True)
                 search.save()
-                nmap_task = nmap_scan.delay(uploaded_file_url ,fk=search.id)
+                nmap_task = nmap_scan.delay(uploaded_file_url, fk=search.id)
 
                 request.session['task_id'] = nmap_task.task_id
-                print('session')
             except Exception as e:
-                print(e)
+                logger.exception("Failed to start NMAP scan")
                 return JsonResponse({'message':str(e)}, status=500)
 
             return HttpResponseRedirect('index')
@@ -230,32 +358,19 @@ def index(request):
     healthcare_len = Device.objects.filter(category="healthcare")
     search_all = Search.objects.all()
     task = request.session.get('task_id')
+    if task:
+        task_result = AsyncResult(task)
+        if task_result.state in ('SUCCESS', 'FAILURE', 'REVOKED'):
+            del request.session['task_id']
+            task = None
     ports = Device.objects.values('port').annotate(c=Count('port')).order_by('-c')[:7]
     ports_list = list(ports)
-    vulns = Device.objects.exclude(vulns__isnull=True).exclude(vulns__exact='')
+    products = Device.objects.exclude(product__exact='').values('product').annotate(c=Count('product')).order_by('-c')[:10]
+    products_list = list(products)
+    favorites = Device.objects.filter(favorite=True)
 
-    vulns_list = []
+    countries = {item.country: "1" for item in search_all}
 
-    for i in vulns:
-        vulns_list.append(ast.literal_eval(i.vulns))
-
-    cves = []
-    for i in vulns_list:
-        for j in i:
-            cves.append(j)
-
-    countr_cves = {}
-    c = Counter(cves)
-    for key, value in c.items():
-        countr_cves[key] = value
-
-    sort = sorted(countr_cves.items())[:7]
-
-    countries = {}
-    for i in search_all:
-        countries[i.country] = "1"
-
-    #make list out of last 5 searches
     for j in last_5_searches:
         try:
             j.country = pycountry.countries.get(alpha_2=j.country).name
@@ -273,24 +388,45 @@ def index(request):
                "search": last_5_searches,
                "ics": ics_len,
                "coordinates": coordinates_search_len,
-               "healthcare":healthcare_len,
+               "healthcare": healthcare_len,
                "ports": ports_list,
+               "products": products_list,
                "countries": countries,
-               'vulns': sort,
+               "favorites": favorites,
                "task_id": task,
                "search_len": search_all,
                "credits": credits}
     return render(request, 'index.html', context)
 
 
+def toggle_favorite(request, device_id):
+    if request.method == 'POST':
+        dev = get_object_or_404(Device, id=device_id)
+        dev.favorite = not dev.favorite
+        dev.save()
+        return JsonResponse({'favorite': dev.favorite})
+    return JsonResponse({'error': 'Method not allowed'}, status=405)
+
+
+def delete_search(request, id):
+    if request.method == 'POST':
+        search = get_object_or_404(Search, id=id)
+        search.delete()
+
+    return HttpResponseRedirect('/index')
+
+
 def devices(request):
     all_devices = Device.objects.all()
+
+    ip_counts = {d['ip']: d['cnt'] for d in Device.objects.values('ip').annotate(cnt=Count('id'))}
 
     for i in all_devices:
         try:
             i.indicator = ast.literal_eval(i.indicator)
         except:
             pass
+        i.ip_count = ip_counts.get(i.ip, 1)
 
     context = {"devices": all_devices}
 
@@ -306,9 +442,24 @@ def map(request):
     return render(request, "map.html", context=context)
 
 def gallery(request):
-    all_devices = Device.objects.filter(screenshot__gt='',screenshot__isnull=False)
-    context = {"devices": all_devices}
-
+    active_country = request.GET.get('country', '').strip().upper()
+    qs = Device.objects.filter(screenshot__gt='', screenshot__isnull=False)
+    if active_country:
+        qs = qs.filter(country_code=active_country)
+    countries = (Device.objects
+                 .filter(screenshot__gt='', screenshot__isnull=False)
+                 .exclude(country_code='')
+                 .values_list('country_code', flat=True)
+                 .distinct()
+                 .order_by('country_code'))
+    paginator = Paginator(qs, 20)
+    page_obj = paginator.get_page(request.GET.get('page', 1))
+    context = {
+        "devices": page_obj,
+        "page_obj": page_obj,
+        "countries": list(countries),
+        "active_country": active_country,
+    }
     return render(request, "gallery.html", context=context)
 
 
@@ -328,37 +479,23 @@ def results(request, id):
         i['label'] = i.pop('type')
         i['value'] = i.pop('c')
 
-    vulns = Device.objects.exclude(vulns__isnull=True).exclude(vulns__exact='')
+    products = Device.objects.filter(search_id=id).exclude(product__exact='').values('product').annotate(c=Count('product')).order_by('-c')[:10]
+    products_list = list(products)
 
-    cves_list = []
-
-    for i in vulns:
-        cves_list.append(ast.literal_eval(i.vulns))
-    cves = []
-    for i in cves_list:
-        for j in i:
-            cves.append(j)
-
-    cves_counter = {}
-    c = Counter(cves)
-    for key, value in c.items():
-        cves_counter[key] = value
-
-    sort = sorted(cves_counter.items())[:7]
+    ip_counts = {d['ip']: d['cnt'] for d in Device.objects.values('ip').annotate(cnt=Count('id'))}
 
     for i in all_devices:
         try:
             i.indicator = ast.literal_eval(i.indicator)
-
         except:
             pass
-
+        i.ip_count = ip_counts.get(i.ip, 1)
 
     context = {'search': all_devices,
                'ports': ports_list,
-               "vulns": sort,
-               "category": categories_list,
-               "city": cities_list,
+               'products': products_list,
+               'category': categories_list,
+               'city': cities_list,
                'google_maps_key': google_maps_key}
 
     return render(request, 'results.html', context)
@@ -368,22 +505,15 @@ def history(request):
     all_searches = Search.objects.all()
 
     for i in all_searches:
-        try:
-            i.coordinates_search = ast.literal_eval(i.coordinates_search)
-        except Exception as e:
-            print(e)
-
-        try:
-            i.ics = ast.literal_eval(i.ics)
-        except Exception as e:
-            print(e)
+        i.country_display = _country_display_name(i.country)
+        i.devices_display = _unique_display_list(i.ics, i.coordinates_search)
 
     context = {'history': all_searches}
     return render(request, 'history.html', context)
 
 
 def update_coordinates(request,id, coordinates):
-    if request.is_ajax() and request.method == 'GET':
+    if _is_ajax_get(request):
         dev = Device.objects.get(id=id)
         splitted_coord = coordinates.split(",")
         dev.lat = splitted_coord[0]
@@ -398,7 +528,6 @@ def update_coordinates(request,id, coordinates):
 def device(request, id, device_id, ip):
     all_devices = Device.objects.get(search_id=id, id=device_id)
     nearby = DeviceNearby.objects.filter(device_id=all_devices.id)
-    flickr = FlickrNearby.objects.filter(device_id=all_devices.id)
     shodan = ShodanScan.objects.filter(device_id=all_devices.id)
     google_maps_key = keys['keys']['google_maps']
 
@@ -406,6 +535,7 @@ def device(request, id, device_id, ip):
         all_devices.indicator = ast.literal_eval(all_devices.indicator)
     except:
         pass
+    all_devices.vulns_preview = _clean_api_list(all_devices.vulns)[:3]
 
     if all_devices.type in passwds.keys():
         info = passwds[all_devices.type]
@@ -414,7 +544,6 @@ def device(request, id, device_id, ip):
 
     context = {'device': all_devices,
                'nearby': nearby,
-               'flickr': flickr,
                "shodan": shodan,
                'google_maps_key': google_maps_key,
                "passwd": info}
@@ -423,7 +552,7 @@ def device(request, id, device_id, ip):
 
 
 def nearby(request, id, query):
-    if request.is_ajax() and request.method == 'GET':
+    if _is_ajax_get(request):
         all_devices = Device.objects.filter(id=id)
         device_nearby_task = devices_nearby.delay(lat=all_devices[0].lat, lon=all_devices[0].lon, id=id, query=query)
         return HttpResponse(json.dumps({'task_id': device_nearby_task.id}), content_type='application/json')
@@ -435,63 +564,18 @@ def sources(request):
     return render(request, 'sources.html', {})
 
 
-def twitter_nearby(request, id):
-    if request.is_ajax() and request.method == 'GET':
-
-        tw = TwitterNearby.objects.filter(device_id=id)
-
-        if tw:
-            print('already')
-            return HttpResponse(json.dumps({'Error': "Already in database"}), content_type='application/json')
-
-        a = Device.objects.filter(id=id)
-        tw_task = twitter_nearby_task.delay(lat=a[0].lat, lon=a[0].lon, id=id)
-        return HttpResponse(json.dumps({'task_id': tw_task.id}), content_type='application/json')
-    else:
-        return HttpResponse(json.dumps({'task_id': None}), content_type='application/json')
-
-
-def twitter_show(request, id):
-    if request.is_ajax() and request.method == 'GET':
-        a = TwitterNearby.objects.filter(device_id=id)
-
-        response_data = serializers.serialize('json', a)
-        if not response_data:
-            return HttpResponse(json.dumps({'Error': "No records"}), content_type='application/json')
-        else:
-            return HttpResponse(response_data, content_type="application/json")
-
-
-def flickr_nearby(request, id):
-    if request.is_ajax() and request.method == 'GET':
-
-        fl = FlickrNearby.objects.filter(device_id=id)
-
-        if fl:
-            print('already')
-            return HttpResponse(json.dumps({'Error': "Already in database"}), content_type='application/json')
-
-        a = Device.objects.get(id=id)
-
-        flickr_task = flickr.delay(lat=a.lat, lon=a.lon, id=id)
-        return HttpResponse(json.dumps({'task_id': flickr_task.id}), content_type='application/json')
-    else:
-        return HttpResponse(json.dumps({'task_id': None}), content_type='application/json')
-
-
 def shodan_scan(request, id):
-    if request.is_ajax() and request.method == 'GET':
+    if _is_ajax_get(request):
 
         shodan_scan2 = ShodanScan.objects.filter(device_id=id)
 
         if shodan_scan2:
-            print('already')
-            return HttpResponse(json.dumps({'Error': "Already in database"}), content_type='application/json')
+            return JsonResponse({'ready': True, 'message': "Already in database"})
 
         shodan_scan_task2 = shodan_scan_task.delay(id=id)
-        return HttpResponse(json.dumps({'task_id': shodan_scan_task2.id}), content_type='application/json')
+        return JsonResponse({'task_id': shodan_scan_task2.id, 'ready': False})
     else:
-        return HttpResponse(json.dumps({'task_id': None}), content_type='application/json')
+        return JsonResponse({'task_id': None, 'ready': False})
 
 
 def get_task_info(request):
@@ -507,29 +591,22 @@ def get_task_info(request):
         else:
             return HttpResponse('No job id given.')
     except Exception as e:
-        print(e)
+        logger.exception("Failed to fetch task info for task_id=%s", task_id)
+        return JsonResponse({'error': str(e)}, status=500)
 
 
 def get_shodan_scan_results(request, id):
-    if request.is_ajax() and request.method == 'GET':
+    if _is_ajax_get(request):
         shodan_scan2 = ShodanScan.objects.filter(device_id=id)
-
-        print(shodan_scan2)
-
-        # shodan_scan2[0].ports = shodan_scan2[0].ports[:1][:-1]
-        # shodan_scan2[0].tags = shodan_scan2[0].tags[:1][:-1]
-        # shodan_scan2[0].vulns = shodan_scan2[0].vulns[:1][:-1]
-        # shodan_scan2[0].products = shodan_scan2[0].products[:1][:-1]
-
-        print(shodan_scan2[0].ports)
-
-        response_data = serializers.serialize('json', shodan_scan2)
-
-        return HttpResponse(response_data, content_type="application/json")
+        return JsonResponse({
+            'ready': shodan_scan2.exists(),
+            'results': [_serialize_shodan_scan(scan) for scan in shodan_scan2],
+        })
+    return JsonResponse({'ready': False, 'results': []})
 
 
 def get_nearby_devices(request, id):
-    if request.is_ajax() and request.method == 'GET':
+    if _is_ajax_get(request):
         nearby_devices = DeviceNearby.objects.filter(device_id=id)
 
         response_data = serializers.serialize('json', nearby_devices)
@@ -537,7 +614,7 @@ def get_nearby_devices(request, id):
         return HttpResponse(response_data, content_type="application/json")
 
 def scan_dev(request, id):
-    if request.is_ajax() and request.method == 'GET':
+    if _is_ajax_get(request):
         res = scan(id)
         if res:
             return HttpResponse(json.dumps(res), content_type='application/json')
@@ -545,99 +622,42 @@ def scan_dev(request, id):
             return HttpResponse(json.dumps({'Error': "Connection Error"}), content_type='application/json')
 
 def exploit_dev(request, id):
-    if request.is_ajax() and request.method == 'GET':
+    if _is_ajax_get(request):
         res = exploit(id)
         if res:
             return HttpResponse(json.dumps(res), content_type='application/json')
         else:
             return HttpResponse(json.dumps({'Error': "Connection Error"}), content_type='application/json')
 
-def get_flickr_results(request, id):
-    if request.is_ajax() and request.method == 'GET':
-        nearby_flickr = FlickrNearby.objects.filter(device_id=id)
-
-        response_data = serializers.serialize('json', nearby_flickr)
-
-        return HttpResponse(response_data, content_type="application/json")
-
-
-def get_flickr_coordinates(request, id):
-    if request.is_ajax() and request.method == 'GET':
-        nearby_flickr = FlickrNearby.objects.filter(device_id=id)
-
-        response_data = serializers.serialize('json', nearby_flickr)
-
-        return HttpResponse(response_data, content_type="application/json")
-
-
 def get_nearby_devices_coordinates(request, id):
-    if request.is_ajax() and request.method == 'GET':
+    if _is_ajax_get(request):
         nearby_devices = DeviceNearby.objects.filter(device_id=id)
 
         response_data = serializers.serialize('json', nearby_devices)
 
         return HttpResponse(response_data, content_type="application/json")
 
-def send_to_field_agent(request, id, notes):
-    if request.is_ajax() and request.method == 'GET':
-        print(id)
-
-        host = Device.objects.get(id=id)
-        host.notes = notes
-        host.save()
-
-        af_task = send_to_field_agent_task.delay(id, notes)
-
-        return HttpResponse(json.dumps({'Status': "OK"}), content_type='application/json')
-    else:
-        return HttpResponse(json.dumps({'task_id': None}), content_type='application/json')
-
-
-def get_binaryedge_score(request, id):
-    if request.is_ajax() and request.method == 'GET':
-
-        be = BinaryEdgeScore.objects.filter(device_id=id)
-
-        if be:
-            print('already')
-            return HttpResponse(json.dumps({'Error': "Already in database"}), content_type='application/json')
-
-        be_task = binary_edge_scan.delay(id=id)
-
-        return HttpResponse(json.dumps({'task_id': be_task.id}), content_type='application/json')
-    else:
-        return HttpResponse(json.dumps({'task_id': None}), content_type='application/json')
-
-
-def get_binaryedge_score_results(request, id):
-    if request.is_ajax() and request.method == 'GET':
-        be = BinaryEdgeScore.objects.filter(device_id=id)
-
-        response_data = serializers.serialize('json', be)
-
-        return HttpResponse(response_data, content_type="application/json")
-
-
 def whois(request, id):
-    if request.is_ajax() and request.method == 'GET':
+    if _is_ajax_get(request):
 
         whoiss = Whois.objects.filter(device_id=id)
 
         if whoiss:
-            print('already')
-            return HttpResponse(json.dumps({'Error': "Already in database"}), content_type='application/json')
+            return JsonResponse({'ready': True, 'message': "Already in database"})
 
         wh_task = whoisxml.delay(id=id)
 
-        return HttpResponse(json.dumps({'task_id': wh_task.id}), content_type='application/json')
+        return JsonResponse({'task_id': wh_task.id, 'ready': False})
     else:
-        return HttpResponse(json.dumps({'task_id': None}), content_type='application/json')
+        return JsonResponse({'task_id': None, 'ready': False})
 
 
 def get_whois(request, id):
-    if request.is_ajax() and request.method == 'GET':
+    if _is_ajax_get(request):
         whoiss = Whois.objects.filter(device_id=id)
 
-        response_data = serializers.serialize('json', whoiss)
-
-        return HttpResponse(response_data, content_type="application/json")
+        return JsonResponse({
+            'ready': whoiss.exists(),
+            'results': [_serialize_whois_record(record) for record in whoiss],
+        })
+    return JsonResponse({'ready': False, 'results': []})

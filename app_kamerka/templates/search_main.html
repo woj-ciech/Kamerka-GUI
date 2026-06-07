@@ -17,7 +17,9 @@
 
     <link href="https://unpkg.com/mobius1-selectr@latest/dist/selectr.min.css" rel="stylesheet" type="text/css">
 <script src="https://unpkg.com/mobius1-selectr@latest/dist/selectr.min.js" type="text/javascript"></script>
-    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Raleway'>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons'>
 <style>.dropdown-toggle.btn-default {
   position: relative;
@@ -126,6 +128,40 @@ font-size: 22px;
 
 
     </style>
+    <style>
+        .iot-mode-toggle {
+            display: flex;
+            gap: 0;
+            margin: 10px 0 18px;
+            border: 1px solid #0064d7;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .iot-mode-btn {
+            flex: 1;
+            padding: 10px 0;
+            background: transparent;
+            border: none;
+            color: #7F8C9A;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 150ms, color 150ms;
+        }
+        .iot-mode-btn:hover {
+            background: rgba(0,100,215,0.15);
+            color: #00E1FF;
+        }
+        .iot-mode-active {
+            background: rgba(0,100,215,0.28) !important;
+            color: #00E1FF !important;
+            box-shadow: inset 0 -2px 0 #00E1FF;
+        }
+    </style>
+
     <!-- Title Page-->
     <title>Search - ꓘamerka</title>
 
@@ -138,6 +174,9 @@ font-size: 22px;
 
         <div class="wrapper wrapper--w900">
             <h1>ꓘamerka</h1>
+            <div class="search-nav">
+                <a href="/index">Dashboard</a>
+            </div>
             <div class="card card-4">
                 <div class="card-body">
                     <ul class="tab-list">
@@ -165,7 +204,7 @@ font-size: 22px;
                                                                            <h3><center style="color: #00E1FF;">Country</center></h3>
                             <form method="POST" action="">
 
-	 <select class="selectpicker countrypicker" name='country' id='country' data-default="CA" data-flag="true" ></select>
+	 <select class="selectpicker countrypicker" name='country' id='country' data-default="CA" data-flag="true" data-live-search="true" ></select>
 
 <br>
                                 <br>
@@ -321,18 +360,16 @@ font-size: 22px;
 
 
                                                                                                    </select>
-<br>
 
+<div style="display:flex;justify-content:flex-end;margin:4px 0 0;">
+    <span style="text-align:right;">
+        <label for="max_pages_ics" style="color:#7F8C9A;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.08em;display:block;margin-bottom:4px;">PAGES TO COLLECT</label>
+        <input type="number" name="max_pages" id="max_pages_ics" value="1" min="1" max="100"
+               style="width:90px;background:#060e1a;border:1px solid #0064d7;color:#b0ccd8;font-family:'JetBrains Mono',monospace;font-size:13px;padding:6px 10px;border-radius:3px;">
+    </span>
+</div>
 
-<input type="checkbox" id="test1" name="all" /><label for="test1"><span class="ui"></span> <h4>All results </h4></label>
-
-                                <input type="checkbox" id="test2" name="own_database"/><label style="float:right" for="test2"><span class="ui"></span> <h4>Own database</h4></label>
-
-
-                                <br>
-                                <br>
-
-<button class="btn-submit m-t-0" type="submit">search</button>
+<button class="btn-submit m-t-0" type="submit" style="margin-top:14px;">search</button>
 
 
 
@@ -341,14 +378,36 @@ font-size: 22px;
 
                         <div class="tab-pane" id="tab2">
 
-
                                                         <form method="POST" action="">
-                                                           <h3><center style="color:#00E1FF;">Coordinates</center></h3>
+                                                           <input type="hidden" name="iot_search_mode" id="iot_search_mode" value="coordinates">
 
-                                                            <section class="webdesigntuts-workshop">
-		<input type="search" name="coordinates" id="coordinates" placeholder="Search...">
-</section>
-                          <br>    <br><br><h3><center style="color:#00E1FF;">Camera</center></h3>
+                                                            <!-- Mode toggle -->
+                                                            <div class="iot-mode-toggle">
+                                                                <button type="button" class="iot-mode-btn iot-mode-active" id="btn-iot-coords" onclick="setIoTMode('coordinates')">
+                                                                    <span class="fa fa-crosshairs"></span>&nbsp; Coordinates
+                                                                </button>
+                                                                <button type="button" class="iot-mode-btn" id="btn-iot-country" onclick="setIoTMode('country')">
+                                                                    <span class="fa fa-globe"></span>&nbsp; Country
+                                                                </button>
+                                                            </div>
+
+                                                            <div id="iot-mode-container">
+                                                            <!-- Coordinates mode -->
+                                                            <div id="iot-coords-section" class="iot-mode-panel is-active" aria-hidden="false">
+                                                                <h3><center style="color:#00E1FF;">Coordinates</center></h3>
+                                                                <section class="webdesigntuts-workshop">
+                                                                    <input type="search" name="coordinates" id="coordinates" placeholder="lat,lon  e.g. 52.229,21.012">
+                                                                </section>
+                                                            </div>
+
+                                                            <!-- Country mode -->
+                                                            <div id="iot-country-section" class="iot-mode-panel" aria-hidden="true">
+                                                                <h3><center style="color:#00E1FF;">Country</center></h3>
+                                                                <select class="selectpicker countrypicker" name="iot_country" id="iot_country" data-default="US" data-flag="true" data-live-search="true"></select>
+                                                            </div>
+                                                            </div><!-- /iot-mode-container -->
+
+                          <br><h3 style="margin-top:27px !important;"><center style="color:#00E1FF;">Camera</center></h3>
 
                                                            <select multiple name="coordinates_search" id="cam" >
                                                       													 <option value="webcam">Webcam</option>
@@ -524,17 +583,17 @@ font-size: 22px;
 
 
                                                 </select>
-<br>
-                                                            <input type="checkbox" id="test3" name="all" /><label for="test3"><span class="ui"></span> <h4>All results </h4></label>
-
-                                <input type="checkbox" id="test4" name="own_database"/><label style="float:right" for="test4"><span class="ui"></span> <h4>Own database</h4></label>
 
 
-                                <br>
-                                <br>
-<button class="btn-submit m-t-0" type="submit">search</button>
+<div style="display:flex;justify-content:flex-end;margin:4px 0 0;">
+    <span style="text-align:right;">
+        <label for="max_pages_iot" style="color:#7F8C9A;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.08em;display:block;margin-bottom:4px;">PAGES TO COLLECT</label>
+        <input type="number" name="max_pages" id="max_pages_iot" value="1" min="1" max="100"
+               style="width:90px;background:#060e1a;border:1px solid #0064d7;color:#b0ccd8;font-family:'JetBrains Mono',monospace;font-size:13px;padding:6px 10px;border-radius:3px;">
+    </span>
+</div>
 
-
+<button class="btn-submit m-t-0" type="submit" style="margin-top:14px;">search</button>
 
 
 
@@ -548,7 +607,7 @@ font-size: 22px;
                                                                            <h3><center style="color: #00E1FF;">Country</center></h3>
                             <form method="POST" action="">
 
-	 <select class="selectpicker countrypicker" name='country_healthcare' id='country_healthcare' data-default="CA" data-flag="true" ></select>
+	 <select class="selectpicker countrypicker" name='country_healthcare' id='country_healthcare' data-default="CA" data-flag="true" data-live-search="true" ></select>
 
 <br>
                                 <br>
@@ -642,18 +701,17 @@ font-size: 22px;
                                                     <option value="xero_viewer">XERO Viewer</option>
 
                                                                                                    </select>
-<br>
+
+<div style="display:flex;justify-content:flex-end;margin:4px 0 0;">
+    <span style="text-align:right;">
+        <label for="max_pages_health" style="color:#7F8C9A;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.08em;display:block;margin-bottom:4px;">PAGES TO COLLECT</label>
+        <input type="number" name="max_pages" id="max_pages_health" value="1" min="1" max="100"
+               style="width:90px;background:#060e1a;border:1px solid #0064d7;color:#b0ccd8;font-family:'JetBrains Mono',monospace;font-size:13px;padding:6px 10px;border-radius:3px;">
+    </span>
+</div>
 
 
-<input type="checkbox" id="test9" name="all" /><label for="test7"><span class="ui"></span> <h4>All results </h4></label>
-
-                                <input type="checkbox" id="test8" name="own_database"/><label style="float:right" for="test7"><span class="ui"></span> <h4>Own database</h4></label>
-
-
-                                <br>
-                                <br>
-
-<button class="btn-submit m-t-0" type="submit">search</button>
+<button class="btn-submit m-t-0" type="submit" style="margin-top:14px;">search</button>
 
 
                             </form>
@@ -695,7 +753,7 @@ font-size: 22px;' class="image-title">
                                                                            <h3><center style="color: #00E1FF;">Country</center></h3>
                             <form method="POST" action="">
 
-	 <select class="selectpicker countrypicker" name='country_infra' id='country_infra' data-default="CA" data-flag="true" ></select>
+	 <select class="selectpicker countrypicker" name='country_infra' id='country_infra' data-default="CA" data-flag="true" data-live-search="true" ></select>
 
 <br>
                                 <br>
@@ -710,18 +768,16 @@ font-size: 22px;' class="image-title">
                                                     <option value="bruteratel">BruteRatel</option>
 
                                                                                                    </select>
-<br>
 
+<div style="display:flex;justify-content:flex-end;margin:4px 0 0;">
+    <span style="text-align:right;">
+        <label for="max_pages_infra" style="color:#7F8C9A;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.08em;display:block;margin-bottom:4px;">PAGES TO COLLECT</label>
+        <input type="number" name="max_pages" id="max_pages_infra" value="1" min="1" max="100"
+               style="width:90px;background:#060e1a;border:1px solid #0064d7;color:#b0ccd8;font-family:'JetBrains Mono',monospace;font-size:13px;padding:6px 10px;border-radius:3px;">
+    </span>
+</div>
 
-<input type="checkbox" id="test7" name="all" /><label for="test7"><span class="ui"></span> <h4>All results </h4></label>
-
-                                <input type="checkbox" id="test10" name="own_database"/><label style="float:right" for="test7"><span class="ui"></span> <h4>Own database</h4></label>
-
-
-                                <br>
-                                <br>
-
-<button class="btn-submit m-t-0" type="submit">search</button>
+<button class="btn-submit m-t-0" type="submit" style="margin-top:14px;">search</button>
 
 
                             </form>
@@ -790,51 +846,125 @@ a = document.querySelector(".bg-img-1").style.background = 'url({% static 'image
 }
 </script>
     <script>
-			$('.country').countrypicker();
+			$('.countrypicker').countrypicker();
+            $('.selectpicker').selectpicker({
+                width: '100%'
+            });
 		</script>
+
+    <script>
+        function setIoTMode(mode) {
+            document.getElementById('iot_search_mode').value = mode;
+            var isCountry = (mode === 'country');
+            var coordsSection = document.getElementById('iot-coords-section');
+            var countrySection = document.getElementById('iot-country-section');
+            coordsSection.classList.toggle('is-active', !isCountry);
+            countrySection.classList.toggle('is-active', isCountry);
+            coordsSection.setAttribute('aria-hidden', isCountry ? 'true' : 'false');
+            countrySection.setAttribute('aria-hidden', isCountry ? 'false' : 'true');
+            if (isCountry) {
+                document.getElementById('btn-iot-coords').classList.remove('iot-mode-active');
+                document.getElementById('btn-iot-country').classList.add('iot-mode-active');
+            } else {
+                document.getElementById('btn-iot-coords').classList.add('iot-mode-active');
+                document.getElementById('btn-iot-country').classList.remove('iot-mode-active');
+            }
+        }
+    </script>
 
 
         <script>
-        a = new Selectr('#infra', {
+        var selectrInstances = {};
+
+        function addSelectAllControl(selectId) {
+            var select = document.getElementById(selectId);
+            if (!select) {
+                return;
+            }
+
+            var button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'search-select-all';
+            button.textContent = 'Select all items';
+            button.addEventListener('click', function () {
+                var values = [];
+                Array.prototype.forEach.call(select.options, function (option) {
+                    if (!option.disabled && option.value) {
+                        option.selected = true;
+                        values.push(option.value);
+                    }
+                });
+
+                var instance = selectrInstances[selectId];
+                if (instance) {
+                    if (typeof instance.setValue === 'function') {
+                        instance.setValue(values);
+                    } else if (typeof instance.set === 'function') {
+                        instance.set(values);
+                    } else if (typeof instance.select === 'function') {
+                        values.forEach(function (value) {
+                            instance.select(value);
+                        });
+                    }
+                }
+
+                select.dispatchEvent(new Event('change', {bubbles: true}));
+            });
+
+            select.parentNode.insertBefore(button, select);
+        }
+
+        selectrInstances.infra = new Selectr('#infra', {
 	searchable: true,
-	width: 300,
+	width: '100%',
 		multiple: true,
 
 });
-a.selectedValues = [];
+selectrInstances.infra.selectedValues = [];
+addSelectAllControl('infra');
 </script>
 
     <script>
-        a = new Selectr('#ics_country', {
+        selectrInstances.ics_country = new Selectr('#ics_country', {
 	searchable: true,
-	width: 300,
+	width: '100%',
 		multiple: true,
 
 });
-a.selectedValues = [];
+selectrInstances.ics_country.selectedValues = [];
+addSelectAllControl('ics_country');
 </script>
     <script>
-        a = new Selectr('#healthcare', {
+        selectrInstances.healthcare = new Selectr('#healthcare', {
 	searchable: true,
-	width: 300,
+	width: '100%',
 		multiple: true,
 
 });
-a.selectedValues = [];
+selectrInstances.healthcare.selectedValues = [];
+addSelectAllControl('healthcare');
 </script>
     <script>
-new Selectr('#icsiot', {
+selectrInstances.icsiot = new Selectr('#icsiot', {
 	searchable: true,
-	width: 300,
+	width: '100%',
 	multiple: true,
 });
-new Selectr('#cam', {
+addSelectAllControl('icsiot');
+
+selectrInstances.cam = new Selectr('#cam', {
 	searchable: true,
-	width: 300
-});new Selectr('#other', {
-	searchable: true,
-	width: 300
+	width: '100%',
+    multiple: true
 });
+addSelectAllControl('cam');
+
+selectrInstances.other = new Selectr('#other', {
+	searchable: true,
+	width: '100%',
+    multiple: true
+});
+addSelectAllControl('other');
     </script>
 </body>
 </html>

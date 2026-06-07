@@ -1,5 +1,4 @@
 from django.db import models
-from jsonfield import JSONField
 
 
 # Create your models here.
@@ -34,6 +33,7 @@ class Device(models.Model):
     scan = models.CharField(max_length=100000, default="")
     exploit = models.CharField(max_length=10000, default="")
     exploited_scanned = models.BooleanField(default=False)
+    favorite = models.BooleanField(default=False)
 
 class DeviceNearby(models.Model):
     device = models.ForeignKey(Device, on_delete=models.CASCADE)
@@ -45,22 +45,6 @@ class DeviceNearby(models.Model):
     org = models.CharField(max_length=100)
 
 
-class TwitterNearby(models.Model):
-    device = models.ForeignKey(Device, on_delete=models.CASCADE)
-    lat = models.CharField(max_length=100)
-    lon = models.CharField(max_length=100)
-    link = models.CharField(max_length=100)
-    tweet = models.CharField(max_length=100)
-
-
-class FlickrNearby(models.Model):
-    device = models.ForeignKey(Device, on_delete=models.CASCADE)
-    lat = models.CharField(max_length=100)
-    lon = models.CharField(max_length=100)
-    url = models.CharField(max_length=100)
-    title = models.CharField(max_length=100)
-
-
 class ShodanScan(models.Model):
     device = models.ForeignKey(Device, on_delete=models.CASCADE)
     ports = models.CharField(max_length=100)
@@ -68,13 +52,6 @@ class ShodanScan(models.Model):
     products = models.CharField(max_length=100)
     module = models.CharField(max_length=100)
     vulns = models.CharField(max_length=100)
-
-
-class BinaryEdgeScore(models.Model):
-    device = models.ForeignKey(Device, on_delete=models.CASCADE)
-    grades = JSONField()
-    cve = JSONField()
-    score = models.CharField(max_length=3)
 
 
 class Whois(models.Model):
@@ -99,4 +76,3 @@ class Dnp3(models.Model):
     source = models.CharField(max_length=100)
     destination = models.CharField(max_length=100)
     control = models.CharField(max_length=100)
-

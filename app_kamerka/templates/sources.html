@@ -2,145 +2,93 @@
 <html lang="en">
 {% load static %}
 {% block page_content %}
-
-
     <head>
-        <!-- META SECTION -->
-        <title>Links - ꓘamerka</title>
+        <title>Resources - ꓘamerka</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <!-- END META SECTION -->
-
-        <!-- CSS INCLUDE -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" type="text/css" id="theme" href="{% static 'css/theme-default.css' %}"/>
-        <!-- EOF CSS INCLUDE -->
+        <link rel="stylesheet" type="text/css" href="{% static 'css/kamerka-ui.css' %}"/>
     </head>
     <body>
-        <!-- START PAGE CONTAINER -->
         <div class="page-container">
-
-            <!-- START PAGE SIDEBAR -->
             <div class="page-sidebar">
-                <!-- START X-NAVIGATION -->
                 <ul class="x-navigation">
                     <li class="xn-logo">
                         <a href="/">ꓘamerka</a>
                         <a href="#" class="x-navigation-control"></a>
                     </li>
                     <li class="xn-profile">
-
                         <div class="profile">
-                            <div class="profile-image">
-                            </div>
+                            <div class="profile-image"></div>
                             <div class="profile-data">
-                                  <img width=200px height=200px src="https://www.offensiveosint.io/content/images/2020/07/OffensiveOsint-logo-RGB-2.png">
-
+                                <img width=200px height=200px src="https://www.offensiveosint.io/content/images/2020/07/OffensiveOsint-logo-RGB-2.png">
                             </div>
-
                         </div>
                     </li>
                     <li class="xn-title">Navigation</li>
-                    <li class="">
-                        <a href="index"><span class="fa fa-desktop"></span> <span class="xn-text">Dashboard</span></a>
-                    </li>
-                    <li class="">
-                        <a href="history"><span class="fa fa-files-o"></span> <span class="xn-text">History</span></a>
-                    </li>
-                    <li class="">
-                        <a href="map"><span class="fa fa-map-marker"></span> <span class="xn-text">Map</span></a>
-                    </li>
-                    <li class="">
-                        <a href="devices"><span class="fa fa-search"></span> <span class="xn-text">Search</span></a>
-                    </li>
-
-                                       <li class="">
-                        <a href="gallery"><span class="fa fa-camera"></span> <span class="xn-text">Gallery</span></a>
-                    </li>
-
-                    <li class="xn-title">Components</li>
-
-                    <li>
-                        <a href="sources.html"><span class="fa fa-book"></span> <span class="xn-text">Useful links</span></a>
-                    </li>
-
-
+                    <li><a href="index"><span class="fa fa-desktop"></span> <span class="xn-text">Dashboard</span></a></li>
+                    <li><a href="history"><span class="fa fa-files-o"></span> <span class="xn-text">History</span></a></li>
+                    <li><a href="map"><span class="fa fa-map-marker"></span> <span class="xn-text">Map</span></a></li>
+                    <li><a href="devices"><span class="fa fa-search"></span> <span class="xn-text">Database</span></a></li>
+                    <li><a href="gallery"><span class="fa fa-camera"></span> <span class="xn-text">Gallery</span></a></li>
+                    <li class="xn-title">Other</li>
+                    <li class="active"><a href="sources"><span class="fa fa-book"></span> <span class="xn-text">Useful links</span></a></li>
                 </ul>
-                <!-- END X-NAVIGATION -->
             </div>
-            <!-- END PAGE SIDEBAR -->
-
-            <!-- PAGE CONTENT -->
             <div class="page-content">
-
-                <!-- START X-NAVIGATION VERTICAL -->
                 <ul class="x-navigation x-navigation-horizontal x-navigation-panel">
-                    <!-- TOGGLE NAVIGATION -->
-
-
+                    <h1 style="display:inline-block;">Resources</h1>
                 </ul>
-                <!-- START BREADCRUMB -->
-
-                <!-- END BREADCRUMB --><div class="page-title">
-                    <h2>Links</h2>
-                </div>
-
-                <!-- PAGE CONTENT WRAPPER -->
                 <div class="page-content-wrap">
-
                     <div class="row">
-                        <div class="col-md-12">
-
+                        <div class="col-md-6">
                             <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Blogs</h3>
+                                </div>
                                 <div class="panel-body">
-
-                                    <h2>Blogs</h2>
-
-                                         <p><h3>Wojciech - <a href="https://offensiveosint.io">Offensive OSINT</a> - <a href="https://twitter.com/@the_wojciech">https://twitter.com/@the_wojciech</a></h3> </p>
-
-
-                                    <h2>Other</h2>
-                                    <p><h3>Default password for Scada devices - <a href="https://github.com/ITI/ICS-Security-Tools/blob/master/configurations/passwords/scadapass.csv">https://github.com/ITI/ICS-Security-Tools/blob/master/configurations/passwords/scadapass.csv</a></h3> </p>
-                                    <p><h3>Default password for Scada devices 2- <a href="http://www.critifence.com/default-password-database/">http://www.critifence.com/default-password-database/</a></h3> </p>
+                                    <ul style="list-style:none;padding:0;margin:0;">
+                                        <li style="padding:8px 0;border-bottom:1px solid rgba(0,172,204,0.07);">
+                                            <a href="https://offensiveosint.io" target="_blank" rel="noopener noreferrer" style="font-weight:600;">Offensive OSINT</a>
+                                            <span style="display:block;font-size:11px;color:#5a7d8e;margin-top:2px;">Wojciech — ICS / IoT / OSINT research</span>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
-
+                        </div>
+                        <div class="col-md-6">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Default Credentials</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <ul style="list-style:none;padding:0;margin:0;">
+                                        <li style="padding:8px 0;border-bottom:1px solid rgba(0,172,204,0.07);">
+                                            <a href="https://github.com/ITI/ICS-Security-Tools/blob/master/configurations/passwords/scadapass.csv" target="_blank" rel="noopener noreferrer" style="font-weight:600;">scadapass.csv</a>
+                                            <span style="display:block;font-size:11px;color:#5a7d8e;margin-top:2px;">ITI / ICS-Security-Tools — SCADA default passwords</span>
+                                        </li>
+                                        <li style="padding:8px 0;">
+                                            <a href="http://www.critifence.com/default-password-database/" target="_blank" rel="noopener noreferrer" style="font-weight:600;">Critifence Default Password DB</a>
+                                            <span style="display:block;font-size:11px;color:#5a7d8e;margin-top:2px;">Extensive default credentials for industrial devices</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
                 </div>
-
-                </div>
-
-                <!-- END PAGE CONTENT WRAPPER -->
             </div>
-            <!-- END PAGE CONTENT -->
-        <!-- END PAGE CONTAINER -->
+        </div>
 
-
-                <script type="text/javascript" src="{% static 'js/plugins/jquery/jquery.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/plugins/jquery/jquery.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/plugins/jquery/jquery-ui.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/plugins/bootstrap/bootstrap.min.js' %}"></script>
-        <!-- END PLUGINS -->
-
-        <!-- START THIS PAGE PLUGINS-->
-
-
-        <!-- END THIS PAGE PLUGINS-->
-
-        <!-- START TEMPLATE -->
-
-
+        <script type="text/javascript" src="{% static 'js/plugins.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/actions.js' %}"></script>
-
-        <!-- END TEMPLATE -->
-    <!-- END SCRIPTS -->
     </body>
 </html>
-
 {% endblock %}
-
-
-
-
-

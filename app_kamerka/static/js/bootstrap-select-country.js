@@ -631,7 +631,7 @@ var countrypicker = function(a) {
                 var I = a(n),
                     e = [];
                 I.data("flag") ? (a.each(T, function(a, S) {
-                    e.push('<option\n\t\t\t\t\t\tdata-tokens="' + S.code + '"\n\t\t\t\t\t\tclass="option-with-flag"\n\t\t\t\t\t\tvalue="' + S.code + '">' + S.name + "</option>")
+                    e.push('<option\n\t\t\t\t\t\tdata-tokens="' + S.code + ' ' + S.name + '"\n\t\t\t\t\t\tclass="option-with-flag"\n\t\t\t\t\t\tvalue="' + S.code + '">' + S.name + "</option>")
                 }), I.on("loaded.bs.select", function(S) {
                     a("a.option-with-flag").each(function() {
                         var S = a(this);

@@ -11,10 +11,12 @@
         <!-- END META SECTION -->
         
         <!-- CSS INCLUDE -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
         <script src="{% static 'js/d3.js' %}"></script>
-        <script src="{% static 'js/d3.layout.cloud.js' %}" charset="UTF-8"></script>
-        <script src="{% static 'js/d3.wordcloud.js' %}" charset="UTF-8"></script>
         <link rel="stylesheet" type="text/css" id="theme" href="{% static 'css/theme-default.css' %}"/>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/kamerka-ui.css' %}"/>
         <!-- EOF CSS INCLUDE -->
     </head>
     <body>
@@ -51,7 +53,7 @@
                         <a href="map"><span class="fa fa-map-marker"></span> <span class="xn-text">Map</span></a>
                     </li>
                     <li class="">
-                        <a href="devices"><span class="fa fa-search"></span> <span class="xn-text">Search</span></a>
+                        <a href="devices"><span class="fa fa-search"></span> <span class="xn-text">Database</span></a>
                     </li>
                     <li class="">
                         <a href="gallery"><span class="fa fa-camera"></span> <span class="xn-text">Gallery</span></a>
@@ -74,90 +76,62 @@
                 
                 <!-- START X-NAVIGATION VERTICAL -->
                 <ul class="x-navigation x-navigation-horizontal x-navigation-panel">
-<center><h1 style="color:#ff00cd; text-align:center">Industrial Control Systems & Internet of Things reconnaissance</h1></center>
+                    <h1 style="display:inline-block;">ICS &amp; IoT Reconnaissance</h1>
+                    <span style="float:right;padding:16px 20px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.18em;color:#2e4d62;text-transform:uppercase;">
+                        <span class="km-blink" style="color:#00e890;">●</span>&nbsp;SYS OPERATIONAL
+                    </span>
                 </ul>
                 <!-- END X-NAVIGATION VERTICAL -->                     
 
                 <!-- START BREADCRUMB -->
                 <ul class="breadcrumb">
 
+                           {% if task_id %}
                            <div class='progress-wrapper'>
-                <div id='progress-bar' class='progress-bar' style="background-color: #0064d7; width: 0%;">&nbsp;</div>
+                <div id='progress-bar' class='progress-bar' style="width: 0%;">&nbsp;</div>
                 </div>
-                <div id="progress-bar-message" style="color:#ff00cd">Starting...</div>
+                <div id="progress-bar-message">Starting...</div>
+                           {% endif %}
                 </ul>
                 <!-- END BREADCRUMB -->                       
                 
                 <!-- PAGE CONTENT WRAPPER -->
                 <div class="page-content-wrap">
                     
-                    <!-- START WIDGETS -->                    
+                    <!-- START WIDGETS -->
                     <div class="row">
                         <div class="col-md-3">
-                            
-                            <!-- START WIDGET SLIDER -->
-                            <div class="widget widget-default widget-carousel">
-                                <div class="owl-carousel" id="owl-example">
-                                    <div>
-                                        <div class="widget-title">Shodan credits</div>
-                                        <div class="widget-int"> {{ credits.0 }}</div>
-                                    </div>
-                                    <div>
-                                        <div class="widget-title">BinaryEdge credits</div>
-                                        <div class="widget-int">{{ credits.1 }}</div>
-                                    </div>
-                                </div>
-                                <div class="widget-controls">
+                            <div class="widget km-tile km-tile-warm">
+                                <i class="fa fa-key km-tile-icon"></i>
+                                <div class="km-tile-data">
+                                    <div class="km-tile-value">{{ credits.0 }}</div>
+                                    <div class="km-tile-label">Shodan Credits</div>
                                 </div>
                             </div>
-                            <!-- END WIDGET SLIDER -->
-
                         </div>
                         <div class="col-md-3">
-
-                            <!-- START WIDGET MESSAGES -->
-                            <div class="widget widget-default widget-item-icon">
-                                <div class="widget-item-left">
-                                    <span class="glyphicon glyphicon-eye-open"></span>
-                                </div>
-                                <div class="widget-data">
-                                    <div class="widget-int num-count">{{ device.count }}</div>
-                                    <div class="widget-title">Devices</div>
-                                </div>
-                                <div class="widget-controls">
+                            <div class="widget km-tile">
+                                <i class="fa fa-crosshairs km-tile-icon"></i>
+                                <div class="km-tile-data">
+                                    <div class="km-tile-value num-count">{{ device.count }}</div>
+                                    <div class="km-tile-label">Devices</div>
                                 </div>
                             </div>
-                            <!-- END WIDGET MESSAGES -->
-
                         </div>
                         <div class="col-md-3">
-
-                            <div class="widget widget-default widget-item-icon">
-                                <div class="widget-item-left">
-                                    <span class="fa fa-search"></span>
-                                </div>
-                                <div class="widget-data">
-                                    <div class="widget-int num-count">{{ search_len.count }}</div>
-                                    <div class="widget-title">Searches</div>
-                                </div>
-                                <div class="widget-controls">
+                            <div class="widget km-tile km-tile-warm">
+                                <i class="fa fa-search km-tile-icon"></i>
+                                <div class="km-tile-data">
+                                    <div class="km-tile-value num-count">{{ search_len.count }}</div>
+                                    <div class="km-tile-label">Searches</div>
                                 </div>
                             </div>
-
                         </div>
                         <div class="col-md-3">
-
-                            <!-- START WIDGET CLOCK -->
-                            <div class="widget widget-info widget-padding-sm">
-                                <br>
-                                <div class="widget-big-int plugin-clock">00:00</div>
-                                <div class="widget-subtitle plugin-date">Loading...</div>
-                                <div class="widget-controls">
-                                </div>
-
+                            <div class="widget km-tile km-tile-clock">
+                                <div class="km-tile-value plugin-clock" style="font-size:30px;">00:00</div>
+                                <div class="km-tile-label plugin-date" style="margin-top:5px;">Loading...</div>
                             </div>
-                            <!-- END WIDGET CLOCK -->
-
                         </div>
                     </div>
                     <!-- END WIDGETS -->
@@ -172,7 +146,7 @@
 
                                     </div>
                                     <div class="panel-body padding-0" >
-                                        <div class="chart-holder" id="dashboard-bar-1" style="height: 200px;background-color:#0a141d"></div>
+                                        <div class="chart-holder" id="dashboard-bar-1" style="height: 200px;"></div>
 
                                 </div>
 
@@ -191,7 +165,7 @@
 
                                 </div>
                                 <div class="panel-body padding-0">
-                                    <div class="chart-holder" id="dashboard-donut-1" style="height: 200px; background-color:#0a141d"></div>
+                                    <div class="chart-holder" id="dashboard-donut-1" style="height: 200px;"></div>
                                 </div>
                             </div>
 
@@ -207,18 +181,26 @@
                                     </div>
 
                                 </div>
-                                <div class="panel-body panel-body-table" style="background-color:#0a141d">
+                                <div class="panel-body panel-body-table">
 
                                     <div class="table-responsive">
                                         <table class="table">
 
                                             <tbody>
-                                                <tr>{% for object in search %}
-
-                                                        <td><strong><a href="{% url 'results' id=object.id %}">{{object.country}} {{object.coordinates }}  {% if object.country == "NMAP Scan" %} {{object.ics}} {% endif %}</strong></td>
-                                                </a>
+                                                {% for object in search %}
+                                                <tr>
+                                                    <td>
+                                                        <strong>
+                                                            <a href="{% url 'results' id=object.id %}">{{object.country}} {{object.coordinates }}  {% if object.country == "NMAP Scan" %} {{object.ics}} {% endif %}</a>
+                                                        </strong>
+                                                    </td>
+                                                    <td style="text-align:right;width:1%;white-space:nowrap;">
+                                                        <form class="search-delete-form" method="post" action="{% url 'delete_search' id=object.id %}">
+                                                            {% csrf_token %}
+                                                            <button class="search-delete-button" type="submit" title="Delete search" aria-label="Delete search" onclick="return confirm('Delete this search and all related devices?');">X</button>
+                                                        </form>
+                                                    </td>
                                                 </tr>
-
                                                 {% endfor %}
 
 
@@ -233,6 +215,21 @@
                     </div>
 
                     <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="panel-title-box">
+                                        <h3>Top Products</h3>
+                                    </div>
+                                </div>
+                                <div class="panel-body padding-0">
+                                    <div id="dashboard-products" style="min-height:50px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
 						<div class="col-md-8">
 
                             <div class="panel panel-default">
@@ -243,7 +240,7 @@
 
 
                                 </div>
-                                <div class="panel-body" style="background-color:#0a141d">
+                                <div class="panel-body">
 
                                             <div id="dashboard-map-seles" style="width: 100%; height: 200px;"></div>
                                 </div>
@@ -257,12 +254,23 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <div class="panel-title-box">
-                                        <h3>Vulnerabilities</h3>
+                                        <h3><span class="fa fa-heart" style="color:#ff00cd; margin-right:6px;"></span> Favorites</h3>
                                     </div>
-
                                 </div>
                                 <div class="panel-body padding-0">
-                                    <div id="wordcloud" class="chart-holder" id="dashboard-line-1" style="height:200px;overflow:hidden; background-color:#0a141d"></div>
+                                    <ul style="list-style:none; padding:10px 14px; margin:0; max-height:210px; overflow-y:auto;">
+                                        {% for fav in favorites %}
+                                        <li style="padding:5px 0; border-bottom:1px solid rgba(255,255,255,0.05);">
+                                            <span class="fa fa-heart" style="color:#ff00cd; font-size:11px; margin-right:6px;"></span>
+                                            <a href="/results/{{ fav.search_id }}/{{ fav.id }}/{{ fav.ip }}" style="font-weight:600;">{{ fav.ip }}</a>
+                                            {% if fav.product %}
+                                            <span style="color:#7F8C9A; font-size:11px; margin-left:6px; display:block; padding-left:20px;">{{ fav.product|truncatechars:40 }}</span>
+                                            {% endif %}
+                                        </li>
+                                        {% empty %}
+                                        <li style="color:#7F8C9A; padding:10px 0; font-size:12px;">No favorites yet. Click the ♥ on a device page.</li>
+                                        {% endfor %}
+                                    </ul>
                                 </div>
                             </div>
 
@@ -276,9 +284,6 @@
             <!-- END PAGE CONTENT -->
         </div>
 
-<script src="{% static 'js/d3.wordcloud.js' %}" charset="UTF-8"></script>
-                <script src="{% static 'js/d3.layout.cloud.js' %}" charset="UTF-8"></script>
-
                 <script type="text/javascript" src="{% static 'js/plugins/jquery/jquery.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/plugins/jquery/jquery-ui.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/plugins/bootstrap/bootstrap.min.js' %}"></script>
@@ -286,18 +291,13 @@
 
         <!-- START THIS PAGE PLUGINS-->
 
-        <script type="text/javascript" src="{% static 'js/plugins/morris/raphael-min.js' %}"></script>
-        <script type="text/javascript" src="{% static 'js/plugins/morris/morris.min.js' %}"></script>
-
         <script type='text/javascript' src="{% static 'js/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js' %}"></script>
         <script type='text/javascript' src="{% static 'js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js' %}"></script>
-        <script type="text/javascript" src="{% static 'js/plugins/owl/owl.carousel.min.js' %}"></script>
-
         <script type="text/javascript" src="{% static 'js/plugins.js' %}"></script>
 
         <script type="text/javascript" src="{% static 'js/index_charts.js' %}"></script>
         <script src="{% static 'celery_progress/celery_progress.js' %}"></script>
-        <script>drawcharts({{ ics.count }}, {{ coordinates.count }}, {{ healthcare.count }}, {{ports|safe}}, {{ countries|safe }});</script>
+        <script>drawcharts({{ ics.count }}, {{ coordinates.count }}, {{ healthcare.count }}, {{ ports|safe }}, {{ countries|safe }}, {{ products|safe }});</script>
         <script>
         {% if task_id %}
 
@@ -310,13 +310,6 @@ function customProgress(progressBarElement, progressBarMessageElement, progress)
   CeleryProgressBar.initProgressBar(progressUrl);
         {% endif %}
 </script>
-<script type="text/javascript">
-      d3v3.wordcloud()
-        .size([400, 200])
-        .selector('#wordcloud')
-        .words([{% for vuln, link in vulns %} {text: "{{  vuln }}", size: "12"}, {% endfor %}])
-        .start();
-    </script>
 
 
 
@@ -326,8 +319,3 @@ function customProgress(progressBarElement, progressBarMessageElement, progress)
 </html>
 
 {% endblock %}
-
-
-
-
-
